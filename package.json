@@ -1,0 +1,23 @@
+{
+  "name": "vg-api-challenge",
+  "version": "0.1.0",
+  "description": "Analyzes a match and reports on a player's performance",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nathancarter/vg-match-analysis.git"
+  },
+  "keywords": [
+    "game",
+    "analytics",
+    "vainglory",
+    "api"
+  ],
+  "author": "Nathan Carter (ncarter@bentley.edu)",
+  "bugs": {
+    "url": "https://github.com/nathancarter/vg-match-analysis/issues"
+  },
+  "homepage": "https://github.com/nathancarter/vg-match-analysis#readme",
+  "dependencies": {
+    "vainglory": "^0.9.9"
+  }
+}
