@@ -293,3 +293,15 @@ Get the latest date on any file in the archive.
             if m = /^archive-([0-9]+)\.json$/.exec file
                 latest = Math.max latest, parseInt m[1]
         if latest then new Date latest else null
+
+If you have recently advanced the archive start time (using `setStartTime`)
+to a (new, later) time for which we currently have an archive file, you can
+clean out the earlier (no longer needed) archive files with the following
+function.
+
+    deleteExpiredArchiveFiles = ->
+        startNumber = startTime.valueOf()
+        fs.readdir ',', ( err, files ) ->
+            files.forEach ( file ) ->
+                if m = /^archive-([0-9]+)\.json$/.exec file
+                    fs.unlinkSync file if startNumber > parseInt m[1]
