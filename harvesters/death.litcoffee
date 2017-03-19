@@ -16,3 +16,9 @@ future; this one is mostly just a proof of concept that things work.
             if event.payload.Killed and event.payload.TargetIsHero
                 match.deaths.push event
         accumulated.deathsPerMatch.push match.deaths.length
+
+    exports.bind = ( accumulated1, accumulated2, result ) ->
+        result.deathsPerMatch = [
+            ( accumulated1.deathsPerMatch ? [ ] )...
+            ( accumulated2.deathsPerMatch ? [ ] )...
+        ]

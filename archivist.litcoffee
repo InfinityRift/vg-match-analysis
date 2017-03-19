@@ -113,17 +113,62 @@ Key, for this module to use when running queries.
 If you would like to archive a maximum number of games from each time frame,
 then call the `setMaxima` function defined below.  It takes as a parameter
 an object whose keys are those shown in the default value below, and whose
-values are the maximum number of each type you'd like to archive.
+values are the maximum number of each type you'd like to archive.  If
+instead you provide a single integer to `setMaxima`, it uses that value for
+all game modes.
 
     matchTypes = [ 'standard', 'blitz', 'battleRoyale' ]
     maxima = { }
     maxima[type] = 5 for type in matchTypes
     exports.getMaxima = -> maxima
-    exports.setMaxima = ( m ) -> maxima = m
+    exports.setMaxima = ( m ) ->
+        if m instanceof Object
+            maxima = m
+        else if 'number' is typeof m
+            maxima[key] = m for own key of maxima
+
+A few related utility functions:
+
     simplifyType = ( typeFromAPI ) ->
         if /blitz/.test typeFromAPI then return 'blitz'
         if /aral/.test typeFromAPI then return 'battleRoyale'
         'standard'
+    emptyAccumulator = ( withCounts = yes ) ->
+        result = { }
+        result[type] = { } for type in matchTypes
+        if withCounts
+            result.found = { }
+            result.found[type] = 0 for type in matchTypes
+        result
+
+If you choose to provide a joining function, which can take two accumulator
+objects and merge them (returning a new, combined object), then do so via
+the function below.  This module can then use it iteratively to merge all
+files in the archive, creating a single (big) report on all the files whose
+data have been saved in the archive.
+
+This default is only functional with the default `archiveFunction` provided
+above, and is of near-zero use in reality.
+
+Note that the joining function is called on accumulated data objects for a
+single game mode only, not across game modes, nor uniting multiple game
+modes at once.
+
+    joiningFunction = ( accumulated1, accumulated2 ) ->
+        matchesSeen : accumulated1.matchesSeen + accumulated2.matchesSeen
+    exports.getJoiningFunction = -> joiningFunction
+    exports.setJoiningFunction = ( f ) -> joiningFunction = f
+
+Execute the joining operation as follows.
+
+    exports.getAllArchiveResults = ->
+        result = emptyAccumulator no
+        for file in fs.readdirSync '.'
+            if m = /^archive-([0-9]+)\.json$/.exec file
+                next = JSON.parse fs.readFileSync file
+                for type in matchTypes
+                    result[type] = joiningFunction result[type], next[type]
+        result
 
 ## API Queries
 
@@ -183,10 +228,6 @@ have in the archive.
             next = if latest then nextDate latest else startTime
             nextnext = nextDate next
             if nextnext > new Date then return exports.stopAPIQueries()
-            accumulated = found : { }
-            for type in matchTypes
-                accumulated[type] = { }
-                accumulated.found[type] = 0
             runningQuery =
                 startDate : next
                 endDate : nextnext
@@ -199,7 +240,7 @@ have in the archive.
                         'createdAt-start': next.toISOString()
                         'createdAt-end': nextnext.toISOString()
                 nextMatchToProcess : 0
-                accumulated : accumulated
+                accumulated : emptyAccumulator()
             console.log "Analyzing time interval from
                 #{runningQuery.startDate} to #{runningQuery.endDate}"
 

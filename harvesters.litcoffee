@@ -3,6 +3,8 @@
 
     https = require 'https'
 
+## Purpose
+
 This file collects together all the harvester functions defined in
 various other files in this repository, so that
 [the Archive Updater](update-archive.litcoffee) can access them and ensure
@@ -14,6 +16,8 @@ first, let's load the modules that contain the harvesters we'll use.
     ]
 
 All of theses modules appear in [the harvesters folder](./harvesters/).
+
+## Main functions
 
 This function can be used to replace the default `archiveFunction` defined
 in [the Archivist module](archivist.litcoffee) with one that runs all the
@@ -63,3 +67,23 @@ Otherwise, you can just process it right now, synchronously.
 
         else
             processMatch()
+
+Similarly, we provide a function that replaces the default joining
+function.  It requires each harvester to provide a `bind` function taking
+three arguments, two to accumulate, and the third into which to embed all
+the accumulated data.
+
+    exports.joiningFunction = ( accumulated1, accumulated2 ) ->
+        result = { }
+        for harvester in harvesters
+            harvester.bind accumulated1, accumulated2, result
+        result
+
+## API
+
+Use the following convenience function to install the above main functions
+into an [archivist](archivist.litcoffee) instance.
+
+    exports.installInto = ( archivist ) ->
+        archivist.setArchiveFunction exports.archiveFunction
+        archivist.setJoiningFunction exports.joiningFunction

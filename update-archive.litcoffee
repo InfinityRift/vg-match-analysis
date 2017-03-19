@@ -20,11 +20,13 @@ Import the Archivist module and set some parameters.  Hand it the
     archivist = require './archivist'
     archivist.setDuration 1*archivist.minutes
     archivist.setStartTime archivist.someTimeAgo 1*archivist.hours
+    archivist.setMaxima 3
     archivist.setQueryObject new vainglory key
-    harvesters = require './harvesters'
-    archivist.setArchiveFunction harvesters.archiveFunction
+    require './harvesters'
+    .installInto archivist
 
 Start the archive-updating process.
 
-    console.log 'Letting archivist run...'
-    archivist.startAPIQueries()
+    # console.log 'Letting archivist run...'
+    # archivist.startAPIQueries()
+    console.log archivist.getAllArchiveResults()
