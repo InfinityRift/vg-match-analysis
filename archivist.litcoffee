@@ -124,6 +124,8 @@ all game modes.
     exports.setMaxima = ( m ) ->
         if m instanceof Object
             maxima = m
+            for type in matchTypes
+                if not maxima.hasOwnProperty type then maxima[type] = 0
         else if 'number' is typeof m
             maxima[key] = m for own key of maxima
 
