@@ -265,7 +265,9 @@ have in the archive.
             latest = latestDateInArchive()
             next = if latest then nextDate latest else startTime
             nextnext = nextDate next
-            if nextnext > endTime then return exports.stopAPIQueries()
+            if nextnext > endTime
+                console.log 'Archive is fully up-to-date.'
+                return exports.stopAPIQueries()
             runningQuery =
                 startDate : next
                 endDate : nextnext
