@@ -60,6 +60,12 @@ so that the archive is rebuilt thereafter.
     exports.getStartTime = -> startTime
     exports.setStartTime = ( t ) -> startTime = t
 
+It can be handy to ask for a certain distance into the past.  This function
+makes that easy.
+
+    exports.someTimeAgo = ( timeDelta ) ->
+        new Date ( new Date ).valueOf() - timeDelta
+
 The frequency of making new queries to the API to extend the archive:  How
 often you set this depends upon the rate limits for your API key.  Changing
 this takes immediate effect, in that any ongoing queries will begin to
@@ -111,6 +117,7 @@ interval will be cleared (and your script may then terminate).
 
     interval = null
     exports.startAPIQueries = ->
+        nextArchiveStep()
         interval = setInterval nextArchiveStep, queryFrequency
     exports.stopAPIQueries = -> clearInterval interval
 
@@ -132,7 +139,7 @@ query, assuming the options for such a query are stored in `runningQuery`.
                matches.messages is 'The specified object could not be
                found.'
                 console.log '    No more data in this query.'
-                runningQuery.lastFetched = data : [ ]
+                runningQuery.lastFetched = match : [ ]
             else
                 runningQuery.lastFetched = matches
                 console.log "    Found #{matches.data.length} more matches"
@@ -187,7 +194,7 @@ all the pages (and thus gotten an empty one).  We therefore save all the
 data we've gleaned from that time interval into the next archive file and
 delete the `runningQuery` object.
 
-        if fetched.data.length is 0
+        if fetched.match.length is 0
             console.log "Completed time interval from
                 #{runningQuery.startDate} to #{runningQuery.endDate}"
             saveArchiveFile runningQuery.startDate, runningQuery.accumulated
@@ -198,12 +205,12 @@ If we haven't yet processed all the matches in the current page, process
 the next one, and then asynchronously come back to this function to do so
 yet again, recursively traversing the whole current page of results.
 
-        if runningQuery.nextMatchToProcess < fetched.data.length
+        if runningQuery.nextMatchToProcess < fetched.match.length
             console.log "      Processing match
                 #{runningQuery.nextMatchToProcess + 1} of
                 #{fetched.data.length}"
             return archiveFunction \
-                fetched.data[runningQuery.nextMatchToProcess++],
+                fetched.match[runningQuery.nextMatchToProcess++],
                 runningQuery.accumulated, nextArchiveStep
 
 The only other possible outcome is that we have processed the entire page of
@@ -213,7 +220,7 @@ fetch another page of data.
 
         # console.log 'about to get the next page of results, with',
         #     runningQuery.accumulated, 'accumulated so far'
-        runningQuery.options.page.offset += fetched.data.length
+        runningQuery.options.page.offset += fetched.match.length
         runningQuery.nextMatchToProcess = 0
         delete runningQuery.lastFetched
 
