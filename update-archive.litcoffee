@@ -29,4 +29,4 @@ Start the archive-updating process.
 
     # console.log 'Letting archivist run...'
     # archivist.startAPIQueries()
-    console.log archivist.getAllArchiveResults()
+    console.log archivist.allArchiveResults()

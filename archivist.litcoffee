@@ -159,9 +159,11 @@ modes at once.
     exports.getJoiningFunction = -> joiningFunction
     exports.setJoiningFunction = ( f ) -> joiningFunction = f
 
-Execute the joining operation as follows.
+## Combining the archive
 
-    exports.getAllArchiveResults = ->
+Execute the joining function on all archived files as follows.
+
+    getAllArchiveResults = ->
         result = emptyAccumulator no
         for file in fs.readdirSync '.'
             if m = /^archive-([0-9]+)\.json$/.exec file
@@ -169,6 +171,31 @@ Execute the joining operation as follows.
                 for type in matchTypes
                     result[type] = joiningFunction result[type], next[type]
         result
+
+Save them into a cache file as follows.
+
+    saveArchiveResults = ->
+        results = getAllArchiveResults()
+        fs.writeFileSync 'full-archive.json', JSON.stringify results
+        results
+
+Read them from the cache (or cause the cache to be created) as follows.  The
+`gameMode` parameter is optional; without it, you get the full cache, but
+with it, you get just the results from your chosen game mode.
+
+    exports.allArchiveResults = ( gameMode ) ->
+        if not fs.existsSync 'full-archive.json'
+            cache = saveArchiveResults()
+        else
+            cache = JSON.parse fs.readFileSync 'full-archive.json'
+        if gameMode then cache[gameMode] else cache
+
+You can clear the cache with this function, and we do whenever we add or
+delete files to the archive (see the last section in this file).
+
+    clearArchiveResultsCache = ->
+        if fs.existsSync 'full-archive.json'
+            fs.unlinkSync 'full-archive.json'
 
 ## API Queries
 
@@ -316,12 +343,14 @@ parameter is the `Date` object for the start of the time period.  The second
 object is the JSON data to store in the archive.
 
     saveArchiveFile = ( dateTime, data ) ->
+        clearArchiveResultsCache()
         fs.writeFile "archive-#{dateTime.valueOf()}.json",
             JSON.stringify( data ), ->
 
 This function deletes the entire set of archived JSON files.
 
     deleteEntireArchive = ->
+        clearArchiveResultsCache()
         fs.readdir '.', ( err, files ) ->
             files.forEach ( file ) ->
                 fs.unlinkSync file if /^archive-[0-9]+\.json$/.test file
@@ -341,6 +370,7 @@ clean out the earlier (no longer needed) archive files with the following
 function.
 
     deleteExpiredArchiveFiles = ->
+        clearArchiveResultsCache()
         startNumber = startTime.valueOf()
         fs.readdir ',', ( err, files ) ->
             files.forEach ( file ) ->
