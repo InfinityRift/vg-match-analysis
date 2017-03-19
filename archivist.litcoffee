@@ -62,6 +62,14 @@ so that the archive is rebuilt thereafter.
     exports.getStartTime = -> startTime
     exports.setStartTime = ( t ) -> startTime = t
 
+The end time of the archive:  Note that setting the archive start time may
+mess up the entire archive, so you may want to call `deleteEntireArchive()`
+so that the archive is rebuilt thereafter.
+
+    endTime = new Date # defaults to now
+    exports.getEndTime = -> endTime
+    exports.setEndTime = ( t ) -> endTime = t
+
 It can be handy to ask for a certain distance into the past.  This function
 makes that easy.
 
@@ -257,7 +265,7 @@ have in the archive.
             latest = latestDateInArchive()
             next = if latest then nextDate latest else startTime
             nextnext = nextDate next
-            if nextnext > new Date then return exports.stopAPIQueries()
+            if nextnext > endTime then return exports.stopAPIQueries()
             runningQuery =
                 startDate : next
                 endDate : nextnext
