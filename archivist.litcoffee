@@ -1,0 +1,244 @@
+
+# The Archivist
+
+    fs = require 'fs'
+
+This file maintains an archive of data sucked from old Vainglory matches. It
+can be configured with a start time (call it S), a time duration (call it
+D), and a function to run (call it F).  For each successive time interval
+T1, T2, ... of length D starting at S, it fetches a sample of the matches
+in that time interval, runs F on each one (together with an accumulation
+object into which F packs its data), and then archives the resulting
+accumulation object in a file stamped with the starting date-time for the
+interval.
+
+Note that this means that we are *not* keeping all the data from the matches
+we fetch; we are simply doing some computations (whatever F does) on those
+matches, and storing the accumulated results of those computations. For
+example, maybe F just wants to compute average gold per minute across all
+six heroes in a match, and one or two other things.  Whatever F computes,
+that's what we archive.
+
+Whenever this script is launched, it deletes any archive files older than
+the start time, and slowly adds new files after the last archive until the
+archive is up-to-date.  Files are stored as `archive-<datetime>.json`.
+The speed at which new queries are run is configurable.
+
+## Units
+
+Convenient words for time units:
+
+    exports.seconds = 1000
+    exports.minutes = 60*exports.seconds
+    exports.hours = 60*exports.minutes
+    exports.days = 24*exports.hours
+
+## Parameters
+
+Here are the default parameters described above, together with functions
+for getting and setting them.
+
+The duration of each file in the archive:  Note that setting the archive
+interval will probably mess up the entire archive, so you should probably
+then call `deleteEntireArchive()` so that the archive is rebuilt thereafter.
+
+    duration = 1*exports.days
+    exports.getDuration = -> duration
+    exports.setDuration = ( d ) -> duration = d
+
+You can also take a given `Date` object and increase it by that duration
+with the following convenience function.
+
+    nextDate = ( afterThisDate ) ->
+        new Date afterThisDate.valueOf() + duration
+
+The start time of the archive:  Note that setting the archive start time may
+mess up the entire archive, so you may want to call `deleteEntireArchive()`
+so that the archive is rebuilt thereafter.
+
+    startTime = new Date 2017, 2, 15 # Y M D, with 0=January
+    exports.getStartTime = -> startTime
+    exports.setStartTime = ( t ) -> startTime = t
+
+The frequency of making new queries to the API to extend the archive:  How
+often you set this depends upon the rate limits for your API key.  Changing
+this takes immediate effect, in that any ongoing queries will begin to
+happen more frequently.
+
+    queryFrequency = 5*exports.seconds
+    exports.getQueryFrequency = -> queryFrequency
+    exports.setQueryFrequency = ( f ) ->
+        queryFrequency = f
+        exports.stopAPIQueries()
+        exports.startAPIQueries()
+
+The function that creates the next archive gets run repeatedly.  Each time
+it gets run, it takes three parameters: a new Match object, the object into
+which it's accumulating all the data it scrapes from the matches, and a
+callback function, because it's asynchronous.
+
+For the first call of each new archive file, the second parameter will be
+the empty object, and the function will need to add any fields it wants.
+Later, those fields will already exist and it can extend them or add to
+them.
+
+Be sure to end your implementation by calling the callback.  The default
+value just counts how many matches it saw, as a simple test of this module.
+
+If you call `setArchiveFunction`, you should probably then call
+`deleteEntireArchive`, so that the archive will be rebuilt thereafter with
+your new function.
+
+    archiveFunction = ( match, accumulated, callback ) ->
+        accumulated.matchesSeen ?= 0
+        accumulated.matchesSeen++
+        callback()
+    exports.getArchiveFunction = -> archiveFunction
+    exports.setArchiveFunction = ( f ) -> archiveFunction = f
+
+You must also provide a valid `Vainglory` object, initialized with your API
+Key, for this module to use when running queries.
+
+    vg = null
+    exports.setQueryObject = ( v ) -> vg = v
+
+## API Queries
+
+Functions for starting and stopping the regular running of API queries.
+If you call `startAPIQueries`, they will continue to happen every
+`queryFrequency` until the archive is fully up-to-date, at which point the
+interval will be cleared (and your script may then terminate).
+
+    interval = null
+    exports.startAPIQueries = ->
+        interval = setInterval nextArchiveStep, queryFrequency
+    exports.stopAPIQueries = -> clearInterval interval
+
+We keep track of a running API query, which may return many pages of matches
+that we must process slowly, asynchronously.  Initially, there is no such
+query.
+
+    runningQuery = null
+
+The following function fetches the next page of results from the running
+query, assuming the options for such a query are stored in `runningQuery`.
+
+    fetchNextPage = ( callback ) ->
+        console.log '  Fetching page at offset',
+            runningQuery.options.page.offset
+        vg.matches.collection runningQuery.options
+        .then ( matches ) ->
+            if matches.errors and \
+               matches.messages is 'The specified object could not be
+               found.'
+                console.log '    No more data in this query.'
+                runningQuery.lastFetched = data : [ ]
+            else
+                runningQuery.lastFetched = matches
+                console.log "    Found #{matches.data.length} more matches"
+            callback()
+
+The following function fetches the next page that isn't yet in the archive.
+Note that a single file in the archive represents a specific time frame,
+which consists of several pages.  This function loads and processes the next
+page.
+
+If there is such a page, the callback is called after it, and other pages
+are not processed until the next time this function is called.  Any
+accumulating data is not yet saved to the archive.  If there is not such a
+page, then this time interval was completed, and the accumulated data will
+be saved to the archive, and then the callback called.
+
+    nextArchiveStep = ->
+
+If no query is running, set one up for the next time interval we don't yet
+have in the archive.
+
+        if not runningQuery
+            latest = latestDateInArchive()
+            next = if latest then nextDate latest else startTime
+            nextnext = nextDate next
+            if nextnext > new Date then return exports.stopAPIQueries()
+            runningQuery =
+                startDate : next
+                endDate : nextnext
+                options :
+                    page :
+                        offset : 0
+                        limit : 50
+                    sort : 'createdAt'
+                    filter :
+                        'createdAt-start': next.toISOString()
+                        'createdAt-end': nextnext.toISOString()
+                nextMatchToProcess : 0
+                accumulated : { }
+            console.log "Analyzing time interval from
+                #{runningQuery.startDate} to #{runningQuery.endDate}"
+
+If the current query (whether we just created it or not) has no page of
+data loaded, then call `fetchNextPage` with this routine as the callback.
+
+        if not fetched = runningQuery.lastFetched
+            # console.log 'time to call fetch next page'
+            return fetchNextPage nextArchiveStep
+
+If the page of data in the current query is empty, we must have exhausted
+all the pages (and thus gotten an empty one).  We therefore save all the
+data we've gleaned from that time interval into the next archive file and
+delete the `runningQuery` object.
+
+        if fetched.data.length is 0
+            console.log "Completed time interval from
+                #{runningQuery.startDate} to #{runningQuery.endDate}"
+            saveArchiveFile runningQuery.startDate, runningQuery.accumulated
+            runningQuery = null
+            return
+
+If we haven't yet processed all the matches in the current page, process
+the next one, and then asynchronously come back to this function to do so
+yet again, recursively traversing the whole current page of results.
+
+        if runningQuery.nextMatchToProcess < fetched.data.length
+            console.log "      Processing match
+                #{runningQuery.nextMatchToProcess + 1} of
+                #{fetched.data.length}"
+            return archiveFunction \
+                fetched.data[runningQuery.nextMatchToProcess++],
+                runningQuery.accumulated, nextArchiveStep
+
+The only other possible outcome is that we have processed the entire page of
+results, so we delete the processed page of data.  This will force the next
+call of this function (by the `setInterval` ticker in `startAPIQueries`) to
+fetch another page of data.
+
+        # console.log 'about to get the next page of results, with',
+        #     runningQuery.accumulated, 'accumulated so far'
+        runningQuery.options.page.offset += fetched.data.length
+        runningQuery.nextMatchToProcess = 0
+        delete runningQuery.lastFetched
+
+## Archive files
+
+This function adds a new file to the archived JSON files.  The first
+parameter is the `Date` object for the start of the time period.  The second
+object is the JSON data to store in the archive.
+
+    saveArchiveFile = ( dateTime, data ) ->
+        fs.writeFile "archive-#{dateTime.valueOf()}.json",
+            JSON.stringify( data ), ->
+
+This function deletes the entire set of archived JSON files.
+
+    deleteEntireArchive = ->
+        fs.readdir '.', ( err, files ) ->
+            files.forEach ( file ) ->
+                fs.unlinkSync file if /^archive-[0-9]+\.json$/.test file
+
+Get the latest date on any file in the archive.
+
+    latestDateInArchive = ->
+        latest = 0
+        for file in fs.readdirSync '.'
+            if m = /^archive-([0-9]+)\.json$/.exec file
+                latest = Math.max latest, parseInt m[1]
+        if latest then new Date latest else null

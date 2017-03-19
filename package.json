@@ -6,6 +6,10 @@
     "type": "git",
     "url": "git+https://github.com/nathancarter/vg-match-analysis.git"
   },
+  "scripts": {
+     "update-archive": "coffee update-archive.litcoffee",
+     "clear": "rm archive-*.json"
+  },
   "keywords": [
     "game",
     "analytics",
