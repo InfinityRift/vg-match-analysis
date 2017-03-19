@@ -28,7 +28,6 @@ callback.  We will run this function later.
         processMatch = ->
             for harvester in harvesters
                 harvester.reap match, accumulated
-            console.log 'accumulated:', accumulated
             callback()
 
 First, I fetch the telemetry data for the match.  This requires a hack to

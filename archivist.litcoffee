@@ -24,6 +24,8 @@ the start time, and slowly adds new files after the last archive until the
 archive is up-to-date.  Files are stored as `archive-<datetime>.json`.
 The speed at which new queries are run is configurable.
 
+There are other configurable parameters described further below.
+
 ## Units
 
 Convenient words for time units:
@@ -108,6 +110,21 @@ Key, for this module to use when running queries.
     vg = null
     exports.setQueryObject = ( v ) -> vg = v
 
+If you would like to archive a maximum number of games from each time frame,
+then call the `setMaxima` function defined below.  It takes as a parameter
+an object whose keys are those shown in the default value below, and whose
+values are the maximum number of each type you'd like to archive.
+
+    matchTypes = [ 'standard', 'blitz', 'battleRoyale' ]
+    maxima = { }
+    maxima[type] = 5 for type in matchTypes
+    exports.getMaxima = -> maxima
+    exports.setMaxima = ( m ) -> maxima = m
+    simplifyType = ( typeFromAPI ) ->
+        if /blitz/.test typeFromAPI then return 'blitz'
+        if /aral/.test typeFromAPI then return 'battleRoyale'
+        'standard'
+
 ## API Queries
 
 Functions for starting and stopping the regular running of API queries.
@@ -166,6 +183,10 @@ have in the archive.
             next = if latest then nextDate latest else startTime
             nextnext = nextDate next
             if nextnext > new Date then return exports.stopAPIQueries()
+            accumulated = found : { }
+            for type in matchTypes
+                accumulated[type] = { }
+                accumulated.found[type] = 0
             runningQuery =
                 startDate : next
                 endDate : nextnext
@@ -178,7 +199,7 @@ have in the archive.
                         'createdAt-start': next.toISOString()
                         'createdAt-end': nextnext.toISOString()
                 nextMatchToProcess : 0
-                accumulated : { }
+                accumulated : accumulated
             console.log "Analyzing time interval from
                 #{runningQuery.startDate} to #{runningQuery.endDate}"
 
@@ -201,17 +222,40 @@ delete the `runningQuery` object.
             runningQuery = null
             return
 
+If we have found enough matches of each type, then behave exactly as if the
+query were empty, that is, as if we can be done processing this entire time
+interval.
+
+        foundEnoughOfEachType = yes
+        for type in matchTypes
+            if runningQuery.accumulated.found[type] < maxima[type]
+                foundEnoughOfEachType = no
+                break
+        if foundEnoughOfEachType
+            console.log "We now have enough of each type - this time frame
+                is complete"
+            saveArchiveFile runningQuery.startDate, runningQuery.accumulated
+            runningQuery = null
+            return
+
 If we haven't yet processed all the matches in the current page, process
 the next one, and then asynchronously come back to this function to do so
 yet again, recursively traversing the whole current page of results.
 
         if runningQuery.nextMatchToProcess < fetched.match.length
+            match = fetched.match[runningQuery.nextMatchToProcess++]
+            type = simplifyType match.gameMode
+            if runningQuery.accumulated.found[type] >= maxima[type]
+                console.log "      Skipping match
+                    #{runningQuery.nextMatchToProcess} of
+                    #{fetched.data.length} - seen enough #{type}"
+                return nextArchiveStep()
             console.log "      Processing match
-                #{runningQuery.nextMatchToProcess + 1} of
-                #{fetched.data.length}"
-            return archiveFunction \
-                fetched.match[runningQuery.nextMatchToProcess++],
-                runningQuery.accumulated, nextArchiveStep
+                #{runningQuery.nextMatchToProcess} of
+                #{fetched.data.length} - type #{type}"
+            runningQuery.accumulated.found[type]++
+            return archiveFunction match, runningQuery.accumulated[type],
+                nextArchiveStep
 
 The only other possible outcome is that we have processed the entire page of
 results, so we delete the processed page of data.  This will force the next
