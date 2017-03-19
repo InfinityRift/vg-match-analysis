@@ -25,15 +25,6 @@ data scraping tools defined in other modules
 
     exports.archiveFunction = ( match, accumulated, callback ) ->
 
-The following is what we want to do to each match, but for now we just
-declare it as a function.  We just run each harvester in turn, then call the
-callback.  We will run this function later.
-
-        processMatch = ->
-            for harvester in harvesters
-                harvester.reap match, accumulated
-            callback()
-
 First, I fetch the telemetry data for the match.  This requires a hack to
 [the Vainglory JavaScript API](https://github.com/seripap/vainglory) at the
 moment, which doesn't yet have telemetry support.  So this won't work
@@ -43,7 +34,7 @@ what I did.
 Check: is there any telemetry data?
 
         telemetryAsset = null
-        for asset in match.assets
+        for asset in match.assets ? [ ]
             if asset.attributes.name is 'telemetry'
                 telemetryAsset = asset
                 break
@@ -60,13 +51,20 @@ asynchronous fetching is done.
                     match.events += data
                 res.on 'end', ->
                     match.events = JSON.parse match.events
-                    processMatch()
+
+Now that we have the full match data, including telemetry, we run each
+harvester in turn, then call the callback.
+
+                    for harvester in harvesters
+                        harvester.reap match, accumulated
+                    callback()
             request.end()
 
 Otherwise, you can just process it right now, synchronously.
 
         else
-            processMatch()
+            console.log '        --> Could not process: no telemetry data!'
+            callback()
 
 Similarly, we provide a function that replaces the default joining
 function.  It requires each harvester to provide a `bind` function taking
