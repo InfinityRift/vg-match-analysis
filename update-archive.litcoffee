@@ -18,9 +18,10 @@ Import the Archivist module and set some parameters.  Hand it the
 `vainglory` object just created, so it can make queries using my API key.
 
     archivist = require './archivist'
-    archivist.setDuration 1*archivist.minutes
-    archivist.setStartTime archivist.someTimeAgo 1*archivist.hours
-    archivist.setMaxima 3
+    archivist.setDuration 6*archivist.hours
+    archivist.setStartTime new Date 2017, 2, 16
+    archivist.setEndTime new Date 2017, 2, 18
+    archivist.setMaxima ranked : 5 # everything else zero
     archivist.setQueryObject new vainglory key
     require './harvesters'
     .installInto archivist
@@ -28,5 +29,5 @@ Import the Archivist module and set some parameters.  Hand it the
 Start the archive-updating process.
 
     # console.log 'Letting archivist run...'
-    # archivist.startAPIQueries()
-    console.log archivist.allArchiveResults()
+    archivist.startAPIQueries()
+    # console.log archivist.allArchiveResults()
