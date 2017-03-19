@@ -117,7 +117,7 @@ values are the maximum number of each type you'd like to archive.  If
 instead you provide a single integer to `setMaxima`, it uses that value for
 all game modes.
 
-    matchTypes = [ 'standard', 'blitz', 'battleRoyale' ]
+    matchTypes = [ 'casual', 'ranked', 'blitz', 'battleRoyale' ]
     maxima = { }
     maxima[type] = 5 for type in matchTypes
     exports.getMaxima = -> maxima
@@ -132,7 +132,8 @@ A few related utility functions:
     simplifyType = ( typeFromAPI ) ->
         if /blitz/.test typeFromAPI then return 'blitz'
         if /aral/.test typeFromAPI then return 'battleRoyale'
-        'standard'
+        if typeFromAPI is 'ranked' then return 'ranked'
+        'casual'
     emptyAccumulator = ( withCounts = yes ) ->
         result = { }
         result[type] = { } for type in matchTypes
