@@ -324,7 +324,16 @@ harvesters require (bind) is also provided.
 
 ## Finding time-dependent player data
 
-First, find the last event before a given `Date` object in a given match.
+How about just finding a specific player?  This takes a match and an IGN and
+returns the participant object who has that IGN.
+
+    exports.getParticipantFromIGN = ( match, ign ) ->
+        for roster in match.rosters
+            for participant in roster.participants
+                return participant if participant.player.name is ign
+        null
+
+Now, find the last event before a given `Date` object in a given match.
 We use a binary search.
 
     lastIndexBefore = ( match, date ) ->
