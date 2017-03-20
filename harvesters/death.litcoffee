@@ -11,14 +11,16 @@ future; this one is mostly just a proof of concept that things work.
 
     exports.reap = ( match, accumulated ) ->
         accumulated.deathsPerMatch ?= [ ]
-        match.deaths = [ ]
+        count = 0
         for event in match.events
-            if event.payload.Killed and event.payload.TargetIsHero
-                match.deaths.push event
-        accumulated.deathsPerMatch.push match.deaths.length
+            count++ if event.payload.Killed and event.payload.TargetIsHero
+        accumulated.deathsPerMatch.push count
 
     exports.bind = ( accumulated1, accumulated2, result ) ->
         result.deathsPerMatch = [
             ( accumulated1.deathsPerMatch ? [ ] )...
             ( accumulated2.deathsPerMatch ? [ ] )...
         ]
+
+    exports.pick = ( match, accumulated ) ->
+        # do nothing yet

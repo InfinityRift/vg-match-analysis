@@ -1,7 +1,7 @@
 
 # Harvesters
 
-    https = require 'https'
+    utils = require './harvesters/utils'
 
 ## Purpose
 
@@ -24,40 +24,12 @@ in [the Archivist module](archivist.litcoffee) with one that runs all the
 data scraping tools defined in other modules
 
     exports.archiveFunction = ( match, accumulated, callback ) ->
-
-Check: is there any telemetry data?
-
-        telemetryAsset = null
-        for asset in match.assets ? [ ]
-            if asset.attributes.name is 'telemetry'
-                telemetryAsset = asset
-                break
-
-If so, go get it from the internet, *then* process the match after that
-asynchronous fetching is done.
-
-        if telemetryAsset
-            match.events = ''
-            request = https.request asset.attributes.URL
-            count = 1
-            request.on 'response', ( res ) ->
-                res.on 'data', ( data ) ->
-                    match.events += data
-                res.on 'end', ->
-                    match.events = JSON.parse match.events
-
-Now that we have the full match data, including telemetry, we run each
-harvester in turn, then call the callback.
-
-                    for harvester in harvesters
-                        harvester.reap match, accumulated
-                    callback()
-            request.end()
-
-Otherwise, you can just process it right now, synchronously.
-
-        else
-            console.log '        --> Could not process: no telemetry data!'
+        utils.fetchTelemetryData match, ( result ) ->
+            if result
+                for harvester in harvesters
+                    harvester.reap match, accumulated
+            else
+                console.log '        --> No telemetry data to process'
             callback()
 
 Similarly, we provide a function that replaces the default joining
@@ -79,3 +51,13 @@ into an [archivist](archivist.litcoffee) instance.
     exports.installInto = ( archivist ) ->
         archivist.setArchiveFunction exports.archiveFunction
         archivist.setJoiningFunction exports.joiningFunction
+
+Use the following function to run a deeper analysis (not just the data
+skimming for archival purposes, but a deep dive into a single match) on a
+match object.
+
+    exports.pick = ( match ) ->
+        accumulated = { }
+        for harvester in harvesters
+            harvester.pick match, accumulated
+        accumulated
