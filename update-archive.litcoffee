@@ -18,7 +18,6 @@ Import the Archivist module and set some parameters.  Hand it the
 `vainglory` object just created, so it can make queries using my API key.
 
     archivist = require './archivist'
-    archivist.setDuration 6*archivist.hours
     archivist.setStartTime new Date 2017, 2, 16
     archivist.setEndTime new Date 2017, 2, 17
     archivist.setMaxima ranked : 2 # everything else zero
@@ -26,8 +25,49 @@ Import the Archivist module and set some parameters.  Hand it the
     require './harvesters'
     .installInto archivist
 
+Now I want to choose the value for `setDuration` based on having a priori
+chosen how many matches I want in my archive.  This is not necessary for
+every use of the `archivist` module; it's just what I want to do here.  So
+I choose this value:
+
+    getThisManyMatches = 40
+
+Now I compute all this stuff to figure out what value to pass to
+`setDuration`, and doing so then completes the archivist setup process.
+
+    numberEachInterval = 0
+    for own gameMode, count of archivist.getMaxima()
+        numberEachInterval += count
+    numberOfIntervals = getThisManyMatches / numberEachInterval
+    totalDuration = archivist.getEndTime() - archivist.getStartTime()
+    archivist.setDuration totalDuration / numberOfIntervals
+
 Start the archive-updating process.
 
     # console.log 'Letting archivist run...'
-    archivist.startAPIQueries()
+    process.on 'unhandledRejection', ( err ) -> console.log err
+    startedAt = new Date
+    console.log 'Starting to update archive...'
+    archivist.startAPIQueries ( progress ) ->
+        progress ?= archivist.getStartTime()
+        elapsed = ( new Date ) - startedAt
+        completed = progress - archivist.getStartTime()
+        toComplete = archivist.getEndTime() - archivist.getStartTime()
+        estimatedTotalTime = if completed > 0
+            elapsed * toComplete / completed
+        else
+            undefined
+        percentDone = if toComplete > 0
+            100 * completed / toComplete
+        else
+            undefined
+        remainingString = if estimatedTotalTime
+            left = ( estimatedTotalTime - elapsed ) / 60000
+            "estimating #{Number( left ).toFixed 1}min left"
+        else
+            'no completion estimate available yet'
+        console.log "Completed #{Number( percentDone ).toFixed 1}% in
+            #{Number( elapsed / 60000 ).toFixed 1}min,
+            #{remainingString}"
+
     # console.log archivist.allArchiveResults()
