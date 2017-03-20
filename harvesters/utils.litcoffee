@@ -261,7 +261,10 @@ rather than the numbers -1 through 29 for unranked through vainglorious
 gold, which is too confusing and too granular for my needs).
 
     exports.simpleSkillTier = ( participant ) ->
-        ( ( participant.stats.skillTier + 3 ) / 3 ) | 0
+        try
+            ( ( participant.stats.skillTier + 3 ) / 3 ) | 0
+        catch e
+            return null
 
 ## Storing stats by role and tier
 
@@ -306,8 +309,14 @@ lists stored in the corresponding members of each.  The version of this that
 harvesters require (bind) is also provided.
 
     exports.bindStat = ( accumulator1, accumulator2, result ) ->
+        keys = [ ]
         for own key of accumulator1
-            result[key] = accumulator1[key].concat accumulator2[key]
+            if key not in keys then keys.push key
+        for own key of accumulator2
+            if key not in keys then keys.push key
+        for key in keys
+            result[key] =
+                ( accumulator1[key] ? [ ] ).concat accumulator2[key] ? [ ]
     exports.joinStat = ( accumulator1, accumulator2 ) ->
         result = { }
         exports.bindStat accumulator1, accumulator2, result

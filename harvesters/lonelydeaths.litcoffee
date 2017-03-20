@@ -23,11 +23,12 @@ Then the counting function.
             if event.type is 'KillActor' and \
                utils.isEventTarget( match, participant, event )
                 time = new Date event.time
-                myPos = event.payload.Position
+                if not myPos = event.payload.Position then continue
                 nearby = no
                 for ally in allies
                     if utils.isAlive( match, ally, time )
                         allyPos = utils.lastKnownPosition match, ally, time
+                        if not allyPos then continue
                         distance = utils.positionDifference myPos, allyPos
                         if distance < aloneRadius
                             nearby = yes

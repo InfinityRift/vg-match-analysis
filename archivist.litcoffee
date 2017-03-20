@@ -26,6 +26,12 @@ The speed at which new queries are run is configurable.
 
 There are other configurable parameters described further below.
 
+## Debugging controls
+
+    debugging = off
+    debug = ( args... ) -> if debugging then console.log args...
+    exports.setDebugging = ( onOrOff ) -> debugging = onOrOff
+
 ## Units
 
 Convenient words for time units:
@@ -215,10 +221,17 @@ If you call `startAPIQueries`, they will continue to happen every
 `queryFrequency` until the archive is fully up-to-date, at which point the
 interval will be cleared (and your script may then terminate).
 
+The optional callback will be called every time another tick happens, and
+it will report the latest time in the archive.  This is useful for
+implementing progress reporting in the caller.
+
     interval = null
-    exports.startAPIQueries = ->
+    exports.startAPIQueries = ( callback ) ->
         nextArchiveStep()
-        interval = setInterval nextArchiveStep, queryFrequency
+        interval = setInterval ->
+            callback? latestDateInArchive()
+            nextArchiveStep()
+        , queryFrequency
     exports.stopAPIQueries = -> clearInterval interval
 
 We keep track of a running API query, which may return many pages of matches
@@ -231,18 +244,17 @@ The following function fetches the next page of results from the running
 query, assuming the options for such a query are stored in `runningQuery`.
 
     fetchNextPage = ( callback ) ->
-        console.log '  Fetching page at offset',
-            runningQuery.options.page.offset
+        debug '  Fetching page at offset', runningQuery.options.page.offset
         vg.matches.collection runningQuery.options
         .then ( matches ) ->
             if matches.errors and \
                matches.messages is 'The specified object could not be
                found.'
-                console.log '    No more data in this query.'
+                debug '    No more data in this query.'
                 runningQuery.lastFetched = match : [ ]
             else
                 runningQuery.lastFetched = matches
-                console.log "    Found #{matches.data.length} more matches"
+                debug "    Found #{matches.data.length} more matches"
             callback()
 
 The following function fetches the next page that isn't yet in the archive.
@@ -266,7 +278,7 @@ have in the archive.
             next = if latest then nextDate latest else startTime
             nextnext = nextDate next
             if nextnext > endTime
-                console.log 'Archive is fully up-to-date.'
+                debug 'Archive is fully up-to-date.'
                 return exports.stopAPIQueries()
             runningQuery =
                 startDate : next
@@ -281,14 +293,14 @@ have in the archive.
                         'createdAt-end': nextnext.toISOString()
                 nextMatchToProcess : 0
                 accumulated : emptyAccumulator()
-            console.log "Analyzing time interval from
+            debug "Analyzing time interval from
                 #{runningQuery.startDate} to #{runningQuery.endDate}"
 
 If the current query (whether we just created it or not) has no page of
 data loaded, then call `fetchNextPage` with this routine as the callback.
 
         if not fetched = runningQuery.lastFetched
-            # console.log 'time to call fetch next page'
+            # debug 'time to call fetch next page'
             return fetchNextPage nextArchiveStep
 
 If the page of data in the current query is empty, we must have exhausted
@@ -296,8 +308,12 @@ all the pages (and thus gotten an empty one).  We therefore save all the
 data we've gleaned from that time interval into the next archive file and
 delete the `runningQuery` object.
 
+        if not fetched?.match?
+            debug "Something is wrong with this fetched data:", fetched
+            runningQuery = null
+            return
         if fetched.match.length is 0
-            console.log "Completed time interval from
+            debug "Completed time interval from
                 #{runningQuery.startDate} to #{runningQuery.endDate}"
             saveArchiveFile runningQuery.startDate, runningQuery.accumulated
             runningQuery = null
@@ -313,7 +329,7 @@ interval.
                 foundEnoughOfEachType = no
                 break
         if foundEnoughOfEachType
-            console.log "We now have enough of each type - this time frame
+            debug "We now have enough of each type - this time frame
                 is complete"
             saveArchiveFile runningQuery.startDate, runningQuery.accumulated
             runningQuery = null
@@ -327,11 +343,11 @@ yet again, recursively traversing the whole current page of results.
             match = fetched.match[runningQuery.nextMatchToProcess++]
             type = simplifyType match.gameMode
             if runningQuery.accumulated.found[type] >= maxima[type]
-                console.log "      Skipping match
+                debug "      Skipping match
                     #{runningQuery.nextMatchToProcess} of
                     #{fetched.data.length} - seen enough #{type}"
                 return nextArchiveStep()
-            console.log "      Processing match
+            debug "      Processing match
                 #{runningQuery.nextMatchToProcess} of
                 #{fetched.data.length} - type #{type}"
             runningQuery.accumulated.found[type]++
@@ -343,7 +359,7 @@ results, so we delete the processed page of data.  This will force the next
 call of this function (by the `setInterval` ticker in `startAPIQueries`) to
 fetch another page of data.
 
-        # console.log 'about to get the next page of results, with',
+        # debug 'about to get the next page of results, with',
         #     runningQuery.accumulated, 'accumulated so far'
         runningQuery.options.page.offset += fetched.match.length
         runningQuery.nextMatchToProcess = 0

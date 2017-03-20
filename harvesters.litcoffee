@@ -32,8 +32,12 @@ data scraping tools defined in other modules
     exports.archiveFunction = ( match, accumulated, callback ) ->
         utils.fetchTelemetryData match, ( result ) ->
             if result
-                for harvester in harvesters
-                    harvester.reap match, accumulated
+                for harvester, index in harvesters
+                    try
+                        harvester.reap match, accumulated
+                    catch e
+                        console.log "Error in harvester #{index}: #{e}",
+                            e.stack
             else
                 console.log '        --> No telemetry data to process'
             callback()
