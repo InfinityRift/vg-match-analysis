@@ -9,7 +9,8 @@
   "scripts": {
     "update-archive": "coffee update-archive.litcoffee",
     "clear": "rm -f archive-*.json full-archive.json",
-    "refresh-archive": "rm -f archive-*.json full-archive.json && coffee update-archive.litcoffee"
+    "refresh-archive": "rm -f archive-*.json full-archive.json && coffee update-archive.litcoffee",
+    "start": "coffee server.litcoffee"
   },
   "keywords": [
     "game",
@@ -23,6 +24,7 @@
   },
   "homepage": "https://github.com/nathancarter/vg-match-analysis#readme",
   "dependencies": {
+    "express": "^4.15.2",
     "simple-statistics": "^2.5.0",
     "vainglory": "^0.9.9"
   }

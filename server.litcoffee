@@ -6,12 +6,23 @@ Important globals.
     vainglory = require 'vainglory'
     { key } = require './my-api-key'
     vg = new vainglory key
+    fs = require 'fs'
 
 This is the server for the main app.
 
 ## Start the server
 
-Not built yet...
+Standard issue stuff, here.
+
+    express = require 'express'
+    app = express()
+    path = require 'path'
+    app.use express.static path.join __dirname, 'pages'
+    # app.get '/other.html', ( req, res ) ->
+    #     res.send 'Ah, the Easter egg.'
+    port = 7777
+    app.listen port, ->
+        console.log "Listening on port #{port}"
 
 ## Utility functions
 
