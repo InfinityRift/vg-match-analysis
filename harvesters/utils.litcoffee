@@ -284,3 +284,64 @@ lists stored in the corresponding members of each.
         for own key of accumulator1
             result[key] = accumulator1[key].concat accumulator2[key]
         result
+
+## Finding time-dependent player data
+
+First, find the last event before a given `Date` object in a given match.
+We use a binary search.
+
+    lastIndexBefore = ( match, date ) ->
+        leftIndex = 0
+        rightIndex = match.telemetry.length - 1
+        if ( new Date match.telemetry[rightIndex].time ) < date
+            return rightIndex
+        while leftIndex < rightIndex
+            middleIndex = ( ( leftIndex + rightIndex ) / 2 ) | 0
+            middleTime = new Date match.telemetry[middleIndex].time
+            if middleTime < date
+                if leftIndex is middleIndex then return leftIndex
+                leftIndex = middleIndex
+            else
+                rightIndex = middleIndex
+        leftIndex
+
+Where was the player last seen at a given time in a given match?
+
+    exports.lastKnownPosition = ( match, participant, date ) ->
+        team = sideForParticipant match, participant
+        actor = participant.actor
+        index = lastIndexBefore match, date
+        while index >= 0
+            event = match.telemetry[index]
+            if event.payload.Position?
+                doer = correctHeroName event.payload.Actor
+                if team.toLowerCase() is event.payload.Team.toLowerCase() \
+                   and doer.toLowerCase() is actor.toLowerCase()
+                    return event.payload.Position
+            index--
+        null
+
+Is the player alive at a given time in a given match?  This is not reliable,
+because there is no respawn event.  Consequently, a player will seem dead
+until they take some action, which may be after they've actually respawned
+(such as hitting a monster) or even while they're still dead (such as
+buying an item), so this is just a temporary approximation to reality.
+
+    exports.isAlive = ( match, participant, date ) ->
+        team = sideForParticipant match, participant
+        actor = participant.actor
+        index = lastIndexBefore match, date
+        while index >= 0
+            event = match.telemetry[index]
+            doer = correctHeroName event.payload.Actor
+            if event.payload.Killed
+                dier = correctHeroName event.payload.Killed
+                if team.toLowerCase() is \
+                   event.payload.KilledTeam.toLowerCase() \
+                   and dier.toLowerCase() is actor.toLowerCase()
+                    return no
+            if team.toLowerCase() is event.payload.Team.toLowerCase() \
+               and doer.toLowerCase() is actor.toLowerCase()
+                return yes
+            index--
+        yes
