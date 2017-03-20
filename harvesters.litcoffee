@@ -11,9 +11,15 @@ various other files in this repository, so that
 that it runs them all.  In fact, we provide a function to do just that.  But
 first, let's load the modules that contain the harvesters we'll use.
 
-    harvesters = [
-        require './harvesters/death'
-    ]
+    harvesters = ( require "./harvesters/#{name}" for name in [
+        'kills'
+        'deaths'
+        'gold'
+        'objectives'
+        'stealing'
+        'gotstolen'
+        'lonelydeaths'
+    ] )
 
 All of theses modules appear in [the harvesters folder](./harvesters/).
 

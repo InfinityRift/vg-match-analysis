@@ -13,6 +13,7 @@ function.  You must also provide a text key to use in accumulators for the
 stat you're computing (e.g., "gold" if you're counting gold earned).
 
     exports.setup = ( harvester, key, computeStat ) ->
+        key = key.split( '/' )[-1..][0].split( '.' )[0]
         harvester.reap = ( match, accumulated ) ->
             utils.reapStat match, accumulated, key, computeStat
         harvester.bind = utils.bindStat

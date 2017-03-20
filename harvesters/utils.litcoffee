@@ -84,17 +84,32 @@ actual name of the hero.
 From a match-participant pair, find the word for the participant's team
 (left or right, lower case).
 
-    sideForParticipant = ( match, participant ) ->
+    exports.sideForParticipant = ( match, participant ) ->
         for roster in match.rosters
             for p in roster.participants
                 if p is participant
                     return roster.stats.side.split( '/' )[0]
 
+Similar idea, now find the participant's roster, by index (0 or 1).
+
+    exports.rosterIndexForParticipant = ( match, participant ) ->
+        for p in match.rosters[0].participants
+            if p.player.name is participant.player.name
+                return 0
+        1
+
+From the above data, get the participant's allies, if any.
+
+    exports.getAllies = ( match, participant ) ->
+        rosterIndex = exports.rosterIndexForParticipant match, participant
+        ( x for x in match.rosters[rosterIndex].participants \
+            when x isnt participant )
+
 This makes it easy to ask whether a given participant is the doer of an
 event, the target of the event, or neither.
 
     exports.isEventActor = ( match, participant, event ) ->
-        team = sideForParticipant match, participant
+        team = exports.sideForParticipant match, participant
         doer = correctHeroName event.payload.Actor
         team.toLowerCase() is event.payload.Team.toLowerCase() and \
             participant.actor.toLowerCase() is doer.toLowerCase()
@@ -105,7 +120,7 @@ event, the target of the event, or neither.
             target = correctHeroName event.payload.Killed
         else
             return no
-        team = sideForParticipant match, participant
+        team = exports.sideForParticipant match, participant
         team.toLowerCase() isnt event.payload.Team.toLowerCase() and \
             participant.actor.toLowerCase() is target.toLowerCase()
 
@@ -347,3 +362,9 @@ buying an item), so this is just a temporary approximation to reality.
                 return yes
             index--
         yes
+
+Distance between two positions, Euclidean.
+
+    exports.positionDifference = ( position1, position2 ) ->
+        ds = ( position1[i] - position2[i] for i in [0,1,2] )
+        Math.sqrt ds[0]*ds[0] + ds[1]*ds[1] + ds[2]*ds[2]

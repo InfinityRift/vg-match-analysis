@@ -8,7 +8,8 @@
   },
   "scripts": {
      "update-archive": "coffee update-archive.litcoffee",
-     "clear": "rm -f archive-*.json full-archive.json"
+     "clear": "rm -f archive-*.json full-archive.json",
+     "refresh-archive": "rm -f archive-*.json full-archive.json && coffee update-archive.litcoffee"
   },
   "keywords": [
     "game",
