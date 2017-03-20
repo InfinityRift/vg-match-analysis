@@ -56,8 +56,8 @@ Use the following function to run a deeper analysis (not just the data
 skimming for archival purposes, but a deep dive into a single match) on a
 match object.
 
-    exports.pick = ( match ) ->
+    exports.pick = ( match, participant ) ->
         accumulated = { }
         for harvester in harvesters
-            harvester.pick match, accumulated
+            harvester.pick match, participant, accumulated
         accumulated

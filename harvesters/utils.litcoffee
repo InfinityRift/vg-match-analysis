@@ -282,17 +282,20 @@ participant's role and skill tier.
             for participant in roster.participants
                 soFar = exports.getRoleTierData accumulator,
                     match, participant, key, [ ]
-                soFar.push computeStat match.telemetry, participant
+                soFar.push computeStat match, participant
                 exports.setRoleTierData accumulator, match, participant,
                     key, soFar
 
 To join two accumulators that were built in this way, we simply concat the
-lists stored in the corresponding members of each.
+lists stored in the corresponding members of each.  The version of this that
+harvesters require (bind) is also provided.
 
-    exports.joinStat = ( accumulator1, accumulator2 ) ->
-        result = { }
+    exports.bindStat = ( accumulator1, accumulator2, result ) ->
         for own key of accumulator1
             result[key] = accumulator1[key].concat accumulator2[key]
+    exports.joinStat = ( accumulator1, accumulator2 ) ->
+        result = { }
+        exports.bindStat accumulator1, accumulator2, result
         result
 
 ## Finding time-dependent player data
