@@ -229,3 +229,58 @@ killed.
         if max is captainPoints then return 'captain'
         if max is junglerPoints then return 'jungler'
         'carry'
+
+Convert the skill tier number in a participant into one of the actual
+numbers used in the game (0 through 10 for unranked through vainglorious,
+rather than the numbers -1 through 29 for unranked through vainglorious
+gold, which is too confusing and too granular for my needs).
+
+    exports.simpleSkillTier = ( participant ) ->
+        ( ( participant.stats.skillTier + 3 ) / 3 ) | 0
+
+## Storing stats by role and tier
+
+Create an accumulator key that contains both role and simple skill tier,
+for partitioning gathered data into these categories.
+
+    exports.roleTierKey = ( match, participant, key ) ->
+        "#{exports.estimateRole match, participant}
+         #{exports.simpleSkillTier participant} #{key}"
+
+This function uses that key to extract data from an accumulator.
+
+    exports.getRoleTierData =
+    ( accumulator, match, participant, key, defaultValue ) ->
+        fullKey = exports.roleTierKey match, participant, key
+        accumulator[fullKey] ? defaultValue
+
+This function uses the same key to save data into an accumulator.
+
+    exports.setRoleTierData =
+    ( accumulator, match, participant, key, value ) ->
+        fullKey = exports.roleTierKey match, participant, key
+        accumulator[fullKey] = value
+
+The following function takes a `computeStat` function as its final argument,
+which must take match-participant pairs to single numbers.  It runs that
+stat computer on each participant in the match, storing the resulting data
+in the appropriate category of the given accumulator, based on the
+participant's role and skill tier.
+
+    exports.reapStat = ( match, accumulator, key, computeStat ) ->
+        for roster in match.rosters
+            for participant in roster.participants
+                soFar = exports.getRoleTierData accumulator,
+                    match, participant, key, [ ]
+                soFar.push computeStat match.telemetry, participant
+                exports.setRoleTierData accumulator, match, participant,
+                    key, soFar
+
+To join two accumulators that were built in this way, we simply concat the
+lists stored in the corresponding members of each.
+
+    exports.joinStat = ( accumulator1, accumulator2 ) ->
+        result = { }
+        for own key of accumulator1
+            result[key] = accumulator1[key].concat accumulator2[key]
+        result
