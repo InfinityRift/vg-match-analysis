@@ -145,7 +145,7 @@ all game modes.
 
 A few related utility functions:
 
-    simplifyType = ( typeFromAPI ) ->
+    exports.simplifyType = ( typeFromAPI ) ->
         if /blitz/.test typeFromAPI then return 'blitz'
         if /aral/.test typeFromAPI then return 'battleRoyale'
         if typeFromAPI is 'ranked' then return 'ranked'
@@ -341,7 +341,7 @@ yet again, recursively traversing the whole current page of results.
 
         if runningQuery.nextMatchToProcess < fetched.match.length
             match = fetched.match[runningQuery.nextMatchToProcess++]
-            type = simplifyType match.gameMode
+            type = exports.simplifyType match.gameMode
             if runningQuery.accumulated.found[type] >= maxima[type]
                 debug "      Skipping match
                     #{runningQuery.nextMatchToProcess} of
