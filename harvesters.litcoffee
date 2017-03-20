@@ -25,12 +25,6 @@ data scraping tools defined in other modules
 
     exports.archiveFunction = ( match, accumulated, callback ) ->
 
-First, I fetch the telemetry data for the match.  This requires a hack to
-[the Vainglory JavaScript API](https://github.com/seripap/vainglory) at the
-moment, which doesn't yet have telemetry support.  So this won't work
-unless you modify your copy in `node_modules` in a similarly hacky way to
-what I did.
-
 Check: is there any telemetry data?
 
         telemetryAsset = null
