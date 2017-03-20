@@ -3,3 +3,4 @@ my-api-key.*
 archive-*.json
 full-archive.json
 .DS_Store
+testing.litcoffee
