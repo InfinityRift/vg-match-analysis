@@ -4,3 +4,4 @@ archive-*.json
 full-archive.json
 .DS_Store
 testing.litcoffee
+backup-archive/
