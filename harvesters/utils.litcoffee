@@ -37,7 +37,7 @@ the `telemetry` member of the match object itself.
                 try
                     callback match.telemetry = JSON.parse fetchedData
                 catch e
-                    console.log e, fetchedData
+                    console.log e, fetchedData[...500]
                     callback null
         request.end()
 
