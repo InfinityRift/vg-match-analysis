@@ -14,6 +14,7 @@ the professors we'll use.
 
     faculty = ( require "./faculty/#{name}" for name in [
         'petal'
+        'krul'
     ] )
 
 All of theses modules appear in [the faculty folder](./faculty/).
