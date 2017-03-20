@@ -19,7 +19,8 @@ skill tier for a whole match, use `matchSkillTier`, defined below.
 
 Fetch telemetry data for a match, and call the callback.  If the parameter
 to the callback is empty, we could not fetch telemetry data.  If it is not,
-then it contains the telemetry data.
+then it contains the telemetry data, and that same data is also stored in
+the `telemetry` member of the match object itself.
 
     exports.fetchTelemetryData = ( match, callback ) ->
         telemetryAsset = null
@@ -34,7 +35,7 @@ then it contains the telemetry data.
             res.on 'data', ( data ) -> fetchedData += data
             res.on 'end', ->
                 try
-                    callback JSON.parse fetchedData
+                    callback match.telemetry = JSON.parse fetchedData
                 catch e
                     console.log e, fetchedData
                     callback null
@@ -80,13 +81,24 @@ actual name of the hero.
         if telemetryHeroName is 'Hero016' then telemetryHeroName = 'Rona'
         telemetryHeroName
 
+From a match-participant pair, find the word for the participant's team
+(left or right, lower case).
+
+    sideForParticipant = ( match, participant ) ->
+        for roster in match.rosters
+            for p in roster.participants
+                if p is participant
+                    return roster.stats.side.split( '/' )[0]
+
 Compute total gold earned in a match from various sources.  The `source`
 parameter can be lane, jungle, or kills.  The events parameter is the match
 telemetry data array.
 
-    exports.goldEarnedFrom = ( telemetry, team, actor, source ) ->
+    exports.goldEarnedFrom = ( match, participant, source ) ->
+        team = sideForParticipant match, participant
+        actor = participant.actor
         result = 0
-        for event in telemetry
+        for event in match.telemetry
             if event.type is 'KillActor'
                 doer = correctHeroName event.payload.Actor
                 targ = correctHeroName event.payload.Killed
@@ -182,9 +194,11 @@ A dictionary that tells what category of the shop each item sits in:
 Compute the total gold spent on items of a particular category from the
 values in the above dictionary.
 
-    exports.goldSpentInCategory = ( telemetry, team, actor, category ) ->
+    exports.goldSpentInCategory = ( match, participant, category ) ->
+        team = sideForParticipant match, participant
+        actor = participant.actor
         result = 0
-        for event in telemetry
+        for event in match.telemetry
             if event.type is 'BuyItem'
                 doer = correctHeroName event.payload.Actor
                 if team.toLowerCase() is event.payload.Team.toLowerCase() \
@@ -197,16 +211,17 @@ Estimate the role a participant had in a match, by what hero they chose,
 what items they bought, and what minions or jungle creeps they mostly
 killed.
 
-    exports.estimateRole = ( telemetry, team, actor ) ->
-        util = exports.goldSpentInCategory telemetry, team, actor, 'Utility'
-        def = exports.goldSpentInCategory telemetry, team, actor, 'Defense'
-        wp = exports.goldSpentInCategory telemetry, team, actor, 'Weapon'
-        cp = exports.goldSpentInCategory telemetry, team, actor, 'Ability'
+    exports.estimateRole = ( match, participant ) ->
+        util = exports.goldSpentInCategory match, participant, 'Utility'
+        def = exports.goldSpentInCategory match, participant, 'Defense'
+        wp = exports.goldSpentInCategory match, participant, 'Weapon'
+        cp = exports.goldSpentInCategory match, participant, 'Ability'
+        actor = participant.actor
         cap = if 'captain' is exports.typicalHeroRole actor then 3000 else 0
         jun = if 'jungler' is exports.typicalHeroRole actor then 1500 else 0
         car = if 'carry' is exports.typicalHeroRole actor then 1500 else 0
-        lane = exports.goldEarnedFrom telemetry, team, actor, 'lane'
-        jungle = exports.goldEarnedFrom telemetry, team, actor, 'jungle'
+        lane = exports.goldEarnedFrom match, participant, 'lane'
+        jungle = exports.goldEarnedFrom match, participant, 'jungle'
         captainPoints = util*1.5 + def + cap
         junglerPoints = wp + cp + jun + jungle
         carryPoints = wp + cp + car + lane
