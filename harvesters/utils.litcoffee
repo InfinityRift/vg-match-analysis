@@ -90,32 +90,46 @@ From a match-participant pair, find the word for the participant's team
                 if p is participant
                     return roster.stats.side.split( '/' )[0]
 
+This makes it easy to ask whether a given participant is the doer of an
+event, the target of the event, or neither.
+
+    exports.isEventActor = ( match, participant, event ) ->
+        team = sideForParticipant match, participant
+        doer = correctHeroName event.payload.Actor
+        team.toLowerCase() is event.payload.Team.toLowerCase() and \
+            participant.actor.toLowerCase() is doer.toLowerCase()
+    exports.isEventTarget = ( match, participant, event ) ->
+        if event.type is 'DealDamage'
+            target = correctHeroName event.payload.Target
+        else if event.type is 'KillActor'
+            target = correctHeroName event.payload.Killed
+        else
+            return no
+        team = sideForParticipant match, participant
+        team.toLowerCase() isnt event.payload.Team.toLowerCase() and \
+            participant.actor.toLowerCase() is target.toLowerCase()
+
 Compute total gold earned in a match from various sources.  The `source`
 parameter can be lane, jungle, or kills.  The events parameter is the match
 telemetry data array.
 
     exports.goldEarnedFrom = ( match, participant, source ) ->
-        team = sideForParticipant match, participant
-        actor = participant.actor
         result = 0
         for event in match.telemetry
-            if event.type is 'KillActor'
-                doer = correctHeroName event.payload.Actor
-                targ = correctHeroName event.payload.Killed
-                minion = /Minion/.test targ
-                jungle = /Jungle/.test targ
-                if team.toLowerCase() is event.payload.Team.toLowerCase() \
-                   and doer.toLowerCase() is actor.toLowerCase()
-                    switch source
-                        when 'lane'
-                            if minion and not jungle
-                                result += parseInt event.payload.Gold
-                        when 'jungle'
-                            if jungle and minion
-                                result += parseInt event.payload.Gold
-                        when 'kills'
-                            if event.payload.TargetIsHero
-                                result += parseInt event.payload.Gold
+            if event.type is 'KillActor' and \
+               exports.isEventActor match, participant, event
+                minion = /Minion/.test event.payload.Killed
+                jungle = /Jungle/.test event.payload.Killed
+                switch source
+                    when 'lane'
+                        if minion and not jungle
+                            result += parseInt event.payload.Gold
+                    when 'jungle'
+                        if jungle and minion
+                            result += parseInt event.payload.Gold
+                    when 'kills'
+                        if event.payload.TargetIsHero
+                            result += parseInt event.payload.Gold
         result
 
 A dictionary that tells what category of the shop each item sits in:
@@ -195,16 +209,12 @@ Compute the total gold spent on items of a particular category from the
 values in the above dictionary.
 
     exports.goldSpentInCategory = ( match, participant, category ) ->
-        team = sideForParticipant match, participant
-        actor = participant.actor
         result = 0
         for event in match.telemetry
-            if event.type is 'BuyItem'
-                doer = correctHeroName event.payload.Actor
-                if team.toLowerCase() is event.payload.Team.toLowerCase() \
-                   and doer.toLowerCase() is actor.toLowerCase() \
-                   and category is itemCategories[event.payload.Item]
-                    result += parseInt event.payload.Cost
+            if event.type is 'BuyItem' and \
+               category is itemCategories[event.payload.Item] and \
+               exports.isEventActor match, participant, event
+                result += parseInt event.payload.Cost
         result
 
 Estimate the role a participant had in a match, by what hero they chose,
@@ -308,16 +318,12 @@ We use a binary search.
 Where was the player last seen at a given time in a given match?
 
     exports.lastKnownPosition = ( match, participant, date ) ->
-        team = sideForParticipant match, participant
-        actor = participant.actor
         index = lastIndexBefore match, date
         while index >= 0
             event = match.telemetry[index]
-            if event.payload.Position?
-                doer = correctHeroName event.payload.Actor
-                if team.toLowerCase() is event.payload.Team.toLowerCase() \
-                   and doer.toLowerCase() is actor.toLowerCase()
-                    return event.payload.Position
+            if event.payload.Position? and \
+               exports.isEventActor match, participant, event
+                return event.payload.Position
             index--
         null
 
@@ -328,20 +334,13 @@ until they take some action, which may be after they've actually respawned
 buying an item), so this is just a temporary approximation to reality.
 
     exports.isAlive = ( match, participant, date ) ->
-        team = sideForParticipant match, participant
-        actor = participant.actor
         index = lastIndexBefore match, date
         while index >= 0
             event = match.telemetry[index]
-            doer = correctHeroName event.payload.Actor
-            if event.payload.Killed
-                dier = correctHeroName event.payload.Killed
-                if team.toLowerCase() is \
-                   event.payload.KilledTeam.toLowerCase() \
-                   and dier.toLowerCase() is actor.toLowerCase()
-                    return no
-            if team.toLowerCase() is event.payload.Team.toLowerCase() \
-               and doer.toLowerCase() is actor.toLowerCase()
+            if event.payload.Killed and \
+               exports.isEventTarget match, participant, event
+                return no
+            if exports.isEventActor match, participant, event
                 return yes
             index--
         yes
