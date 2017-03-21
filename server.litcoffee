@@ -1,61 +1,54 @@
 
 # Main module
 
-Important globals.
-
-    vainglory = require 'vainglory'
-    { key } = require './my-api-key'
-    vg = new vainglory key
-    fs = require 'fs'
-
 This is the server for the main app.
 
 ## Start the server
 
-Standard issue stuff, here.
+Set up a simple express web server for the website's static assets.
 
     express = require 'express'
     app = express()
     path = require 'path'
     app.use express.static path.join __dirname, 'pages'
-    # app.get '/other.html', ( req, res ) ->
-    #     res.send 'Ah, the Easter egg.'
+
+There is one endpoint that is not static, for two different actions that the
+server must take -- fetching player match lists, or analyzing one particular
+match.
+
+    app.get '/query', ( req, res ) ->
+        return unless query = req.url.split( '?' )[1..][0]
+        dict = { }
+        for pair in query.split '&'
+            halves = pair.split '='
+            dict[halves[0]] = halves[1]
+        if dict.match? and dict.ign?
+            queries = require './queries'
+            queries.getAdviceForPlayerInMatch dict.match, dict.ign,
+                ( error, result ) ->
+                    res.setHeader 'Content-Type', 'application/json'
+                    if error
+                        res.send error : error
+                    else
+                        res.send JSON.stringify result
+        else if dict.ign?
+            queries = require './queries'
+            queries.recentMatchesForPlayer
+                ign : dict.ign
+                shard : dict.shard?.toLowerCase() ? 'na'
+                howRecent : 30*24*60*60*1000
+            , ( error, result ) ->
+                res.setHeader 'Content-Type', 'application/json'
+                if error
+                    res.send error : error
+                else
+                    res.send JSON.stringify \
+                        ( match.id for match in result.data )
+        else
+            res.status( 404 ).send '404 - Not found'
+
+Start the server listening.
+
     port = 7777
     app.listen port, ->
         console.log "Listening on port #{port}"
-
-## Utility functions
-
-Fetch all recent matches for the given player in the given region.  The
-parameters are in the form of an options object with these attributes.
-
- * `ign` - player's in-game name, required, case sensitive
- * `region` - lower-case string of region name, such as na or sea
-   (defaults to na)
- * `howRecent` - how old (time before now) should we look for matches
-   (in milliseconds, defaults to one day, `24*60*60*1000`)
- * `offset` - matches are returned in pages of 50, and you can page through
-   them by calling this routine again with offsets of 50, 100, etc.
-   (default is zero)
- * `pageSize` - defaults to 50, used when paging; if you change it, then
-   `offset` should be supplied in multiples of the new value you provide
-
-
-    exports.recentMatchesForPlayer = ( options, callback ) ->
-        options.region ?= 'na'
-        options.howRecent ?= 24*60*60*1000
-        options.offset ?= 0
-        options.pageSize ?= 50
-        now = new Date
-        before = new Date now.valueOf() - options.howRecent
-        vg.setRegion options.region
-        vg.matches.collection
-            page :
-                offset : options.offset
-                limit : options.pageSize
-            sort : '-createdAt'
-            filter :
-                'createdAt-start': before.toISOString()
-                'createdAt-end': now.toISOString()
-                'playerNames' : [ options.ign ]
-        .then callback
