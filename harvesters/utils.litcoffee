@@ -25,10 +25,10 @@ the `telemetry` member of the match object itself.
     exports.fetchTelemetryData = ( match, callback ) ->
         telemetryAsset = null
         for asset in match.assets ? [ ]
-            if asset.attributes.name is 'telemetry'
+            if asset?.attributes?.name is 'telemetry'
                 telemetryAsset = asset
                 break
-        callback null unless telemetryAsset
+        return callback null unless telemetryAsset?
         fetchedData = ''
         request = https.request telemetryAsset.attributes.URL
         request.on 'response', ( res ) ->
@@ -39,6 +39,7 @@ the `telemetry` member of the match object itself.
                 catch e
                     console.log e, fetchedData[...500]
                     callback null
+            res.on 'error', -> callback null
         request.end()
 
 Average skill tier for all players in a match.
