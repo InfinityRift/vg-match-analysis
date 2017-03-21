@@ -6,11 +6,11 @@ jQuery(function($) {
 			interval: 8000
 		});
 	});
-	
-	
+
+
 	//Initiat WOW JS
 	new WOW().init();
-	
+
 	$(window).scroll(function(){
 		if ($(this).scrollTop() > 100) {
 			$('.scrollup').fadeIn();
@@ -22,7 +22,7 @@ jQuery(function($) {
 			$("html, body").animate({ scrollTop: 0 }, 1000);
 				return false;
 		});
-	
+
 	// portfolio filter
 	$(window).load(function(){'use strict';
 		var $portfolio_selectors = $('.portfolio-filter >li>a');
@@ -31,7 +31,7 @@ jQuery(function($) {
 			itemSelector : '.portfolio-item',
 			layoutMode : 'fitRows'
 		});
-		
+
 		$portfolio_selectors.on('click', function(){
 			$portfolio_selectors.removeClass('active');
 			$(this).addClass('active');
@@ -45,9 +45,10 @@ jQuery(function($) {
 	//Pretty Photo
 	$("a[rel^='prettyPhoto']").prettyPhoto({
 		social_tools: false
-	});	
-    
+	});
+
     //Google Map
+	/*
     var get_latitude = $('#google-map').data('latitude');
     var get_longitude = $('#google-map').data('longitude');
 
@@ -65,4 +66,5 @@ jQuery(function($) {
         });
     }
     google.maps.event.addDomListener(window, 'load', initialize_google_map);
+	*/
 });
