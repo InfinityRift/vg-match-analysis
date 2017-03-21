@@ -61,12 +61,13 @@ the callback.
             participant = utils.getParticipantFromIGN matchObject, ign
             utils.fetchTelemetryData matchObject, ( result ) ->
                 if not result?
-                    callback 'Could not fetch telemetry data', null
+                    callback 'Could not fetch telemetry data', null, null
                 else
                     try
-                        callback null,
+                        callback null, matchObject,
                             faculty.getAllAdvice matchObject, participant
                     catch e
-                        callback e, null
+                        console.log e
+                        callback e, null, null
         .catch ( err ) ->
-            callback err, null
+            callback err, null, null

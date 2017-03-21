@@ -67,7 +67,8 @@
     -->
 
 	<section id="login-form" style="display: none;">
-        <div class="container" style="margin-top: 1em;">
+        <div class="container" style="margin-top: 1em;"
+             id="login-form-inside">
             <div class="center">
                 <h2>Log in</h2>
                 <p>Provide your IGN and Region to get started.</p>
@@ -87,6 +88,7 @@
                         </select>
                         <br>
                         <button type="submit" name="submit" class="btn btn-primary btn-lg" required="required">Go</button>
+                        <p>&nbsp;</p>
                     </form>
                 </div>
             </div><!--/.row-->
@@ -94,14 +96,20 @@
     </section><!--/#contact-page-->
 
 	<section id="choose-a-match" style="display: none;">
-        <div class="container" style="margin: 1em;">
-            <h2 class="text-center">Loading matches...</h2>
+        <div class="container center"
+             style="margin-top: 1em; margin-bottom: 1em;">
+            <div class="center row" id="choose-a-match-inside">
+                <h2 class="text-center">Loading matches...</h2>
+            </div>
         </div><!--/.container-->
     </section><!--/#contact-page-->
 
 	<section id="report-results" style="display: none;">
-        <div class="container" style="margin: 1em;">
-            <h2 class="text-center">Loading match analysis...</h2>
+        <div class="container center" id="report-results-inside"
+             style="margin-top: 1em; margin-bottom: 1em;">
+            <div class="center" row>
+                <h2 class="text-center">Loading match analysis...</h2>
+            </div>
         </div><!--/.container-->
     </section><!--/#contact-page-->
 
@@ -111,6 +119,7 @@
 				<div class="social-icon">
 					<div class="col-md-4">
 						<ul class="social-network">
+                            <li><a href="https://github.com/nathancarter/vg-match-analysis"><svg viewBox="0 0 16 16" width="20px" height="20px"><path fill="#cccccc" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/></svg></li>
                             <!--
 							<li><a href="#" class="fb tool-tip" title="Facebook"><i class="fa fa-facebook"></i></a></li>
                             -->
@@ -160,42 +169,46 @@
             document.getElementById( 'choose-a-match' ),
             document.getElementById( 'report-results' )
         ];
+        var insides = [
+            document.getElementById( 'login-form-inside' ),
+            document.getElementById( 'choose-a-match-inside' ),
+            document.getElementById( 'report-results-inside' )
+        ];
         // do we have a query string?
         var queryStart = window.location.href.indexOf( '?' );
         if ( queryStart > -1 ) {
             var parts = window.location.href.substr( queryStart + 1 )
                               .split( '&' );
-            var dict = { };
+            window.queryDict = { };
             for ( var i = 0 ; i < parts.length ; i++ ) {
                 var halves = parts[i].split( '=' );
-                dict[halves[0]] = halves[1];
+                window.queryDict[halves[0]] = halves[1];
             }
             // if the player has logged in:
-            if ( dict.ign ) {
+            if ( window.queryDict.ign ) {
                 // if he or she has not chosen a match:
-                if ( !dict.match ) {
+                if ( !window.queryDict.match ) {
                     sections[1].style.display = 'block';
                     $.ajax( {
-                        url: '/query?ign=' + dict.ign
-                           + '&shard=' + dict.shard
+                        url: '/query?ign=' + window.queryDict.ign
+                           + '&shard=' + window.queryDict.shard
                     } ).done( function( data ) {
-                        sections[1].childNodes[1].innerHTML =
-                            renderMatchList( data );
+                        insides[1].innerHTML = renderMatchList( data );
                     } ).fail( function ( xhr, status, error ) {
-                        sections[1].childNodes[1].innerHTML =
+                        insides[1].innerHTML =
                             renderMatchListError( error );
                     } );
                 } else { // or if he or she has chosen a match:
                     sections[2].style.display = 'block';
                     $.ajax( {
-                        url: '/query?ign=' + dict.ign
-                           + '&shard=' + dict.shard
-                           + '&match=' + dict.match
+                        url: '/query?ign=' + window.queryDict.ign
+                           + '&shard=' + window.queryDict.shard
+                           + '&match=' + window.queryDict.match
                     } ).done( function( data ) {
-                        sections[2].childNodes[1].innerHTML =
+                        insides[2].innerHTML =
                             renderMatchAnalysis( data );
                     } ).fail( function ( xhr, status, error ) {
-                        sections[2].childNodes[1].innerHTML =
+                        insides[2].innerHTML =
                             renderMatchAnalysisError( error );
                     } );
                 }
@@ -206,17 +219,171 @@
             sections[0].style.display = 'block';
         }
         // rendering functions
+        function renderHero ( name ) {
+            return '<img width="50%" src="images/heroes/'
+                 + name.toLowerCase() + '.png">';
+        }
+        function renderIGN ( ign ) {
+            return ( ign == window.queryDict.ign ) ?
+                '<strong>' + ign + '</strong>' : ign;
+        }
+        function renderStats ( participant ) {
+            return participant.kills
+                 + '/' + participant.deaths
+                 + '/' + participant.assists;
+        }
+        function renderTeam ( team ) {
+            var result = '<table border=0><tr>';
+            for ( var i = 0 ; i < team.length ; i++ )
+                result += '<td align=center>' + renderHero( team[i].hero )
+                        + '</td>';
+            result += '</tr><tr>'
+            for ( var i = 0 ; i < team.length ; i++ )
+                result += '<td align=center><p>'
+                       + renderIGN( team[i].ign ) + '<br>'
+                       + renderStats( team[i] ) + '</p></td>';
+            result += '</tr></table>'
+            return result;
+        }
+        function renderMatch ( match, withButton ) {
+            var result = '<hr>';
+            result += '<table align=center border=0>';
+            result += '<tr><td colspan=3 align=center><h4>'
+                    + new Date( match.time ) + '</h4></td></tr>';
+            result += '<tr><td align=center>';
+            result += renderTeam( match.left );
+            result += '</td><td align=center><h2>vs.</h2></td>'
+                    + '<td align=center>';
+            result += renderTeam( match.right );
+            result += '</td>';
+            if ( withButton )
+                result += '<td>'
+                        + '<a role="button" name="analyze-'
+                        + match.id + '" class="btn btn-primary btn-lg"'
+                        + ' href="analysis.html?ign='
+                        + window.queryDict.ign + '&shard='
+                        + window.queryDict.shard + '&match='
+                        + match.id + '">Go</a>'
+                        + '</td>';
+            result += '</tr></table>';
+            return result;
+        }
         function renderMatchList ( data ) {
-            return '<p>' + JSON.stringify( data ) + '</p>';
+            if ( ( data.length == 0 ) || data.error )
+                return renderMatchListError();
+            var result = '<h2>Which match should the professors'
+                       + ' analyze?</h2>';
+            for ( var i = 0 ; i < data.length ; i++ )
+                result += renderMatch( data[i], true );
+            return result;
         }
         function renderMatchListError ( error ) {
-            return '<p>' + JSON.stringify( error ) + '</p>';
+            return '<h2>Could not find your matches</h2>'
+                 + '<p>Did you type your IGN correctly?</p>'
+                 + '<p>Did you select the correct region?</p>'
+                 + '<p>If so, then perhaps there is something '
+                 + 'wrong on our end.</p>'
+                 + '<p>Feel free to report it using the GitHub link'
+                 + ' at the bottom of the page.</p>'
+                 + '<h2><a href="analysis.html">'
+                 + '<i class="fa fa-backward"></i>'
+                 + ' Back to login page '
+                 + '<i class="fa fa-backward"></i></a></h2>'
+                 + ( error ?
+                     '<pre>' + JSON.stringify( error, null, 4 ) + '</pre>'
+                     : '' );
+        }
+        function renderData ( data ) {
+            if ( data instanceof Array ) {
+                var result = '';
+                for ( var i = 0 ; i < data.length ; i++ )
+                    result += renderData( data[i] );
+                return result;
+            }
+            if ( data.type == 'positionInData' ) {
+                var max = Math.max( data.quartiles[4], data.value );
+                var pct = max ? 100 * data.value / max : 0;
+                pct = Number( pct ).toFixed( 0 );
+                return '<p><strong>' + data.name
+                     + ': ' + data.value + '</strong></p>'
+                     + '<div class="progress">'
+                     + '  <div class="progress-bar color1"'
+                     + '       role="progressbar"'
+                     + '       aria-valuemin="0" aria-valuemax="'+max+'"'
+                     + '       style="width: '+pct+'%">'
+                     + '         <span class="bar-width">'+pct+'%</span>'
+                     + '  </div>'
+                     + '</div>'
+                     + '<p>(others ranged from ' + data.quartiles[0]
+                     + ' to ' + data.quartiles[4] + ')</p>'
+                     + '<p>&nbsp;</p>';
+            }
+            return '<pre>' + JSON.stringify( data, null, 2 ) + '</pre>';
+        }
+        function renderOneProfessor ( advice ) {
+            var result = '<div class="row"><hr>';
+            result += '<h3>' + advice.prof + '</h3>';
+            result += '<hr></div>';
+            result += '<div class="row">'
+                    + '<div class="col-md-4">'
+                    + '<img class="img-responsive" width="290"'
+                    + '     src="images/prof-heroes/' + advice.shortName
+                    + '.png" alt=""></div>';
+            var adviceBlock =
+                '<h3>' + advice.quote + '</h3>'
+              + '<h4>' + advice.topic + '</h4>'
+              + '<div class="panel panel-default">'
+              + '<div class="panel-heading">' + advice.short + '</div>'
+              + '<div class="panel-body"><p>' + advice.long + '</p></div>'
+              + '</div>';
+            if ( advice.data.length > 0 ) {
+                result += '<div class="col-md-4" '
+                        + '     style="padding-right: 2em;">'
+                        + adviceBlock + '</div>'
+                        + '<div class="col-md-4">'
+                        + renderData( advice.data )
+                        + '</div>';
+            } else {
+                result += '<div class="col-md-8">' + adviceBlock + '</div>'
+            }
+            result += '</div>';
+            return result;
         }
         function renderMatchAnalysis ( data ) {
-            return '<p>' + JSON.stringify( data ) + '</p>';
+            if ( data.error ) return renderMatchAnalysisError( data );
+            var result = '<div class="row">'
+                       + '<h2>Class in session for this match...</h2>'
+                       + '</div>';
+            result += renderMatch( data.match, false );
+            result += '<hr>'
+                    + '<div class="row"><h2>The professors say:</h2></div>';
+            for ( var i = 0 ; i < data.advice.length ; i++ )
+                result += renderOneProfessor( data.advice[i] );
+            return result;
         }
         function renderMatchAnalysisError ( error ) {
-            return renderMatchListError( error );
+            if ( error.error == 'Could not fetch telemetry data' ) {
+                return '<h2>Match data not available</h2>'
+                     + '<p>The Vainglory servers don\'t seem to have'
+                     + ' play-by-play information for that match,'
+                     + '<br>so the professors don\'t have anything to '
+                     + ' coach you on.</p>'
+                     + '<h2><a href="analysis.html?ign='
+                     + window.queryDict.ign + '&shard='
+                     + window.queryDict.shard + '">'
+                     + '<i class="fa fa-backward"></i>'
+                     + ' Pick a different match '
+                     + '<i class="fa fa-backward"></i></a></h2>';
+            } else {
+                return '<h2>Internal error</h2>'
+                     + '<p>How embarrassing.  I wish this website were '
+                     + 'perfect, but it turns out we\'ve hit an error.'
+                     + ' Feel free to report it using the GitHub link'
+                     + ' at the bottom of the page.</p>'
+                     + '<pre>'
+                     + JSON.stringify( error.error, null, 4 )
+                     + '</pre>';
+            }
         }
     </script>
 </body>
