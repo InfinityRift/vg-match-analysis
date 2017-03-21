@@ -25,6 +25,7 @@ sampled data.
         utils = require '../harvesters/utils'
         stats = require 'simple-statistics'
         compare = { }
+        include = [ ]
         goods = { }
         for own statName of statDescriptions
             compare[statName] =
@@ -34,36 +35,46 @@ sampled data.
                 # lower is better
                 cutoff = stats.quantile compare[statName], 0.25
                 if matchData[statName] < cutoff
+                    include.push statName
                     goods["#{statDescriptions[statName]}"] = 'low'
             else
                 # higher is better
                 cutoff = stats.quantile compare[statName], 0.75
                 if matchData[statName] > cutoff
+                    include.push statName
                     goods["#{statDescriptions[statName]}"] = 'high'
 
 Return Petal's advice.
 
         role = utils.estimateRole match, participant
         tier = utils.simpleSkillTier participant
-        short = ''
-        for own key, value of goods
-            if short isnt '' then short += ' and '
-            short += "#{value} #{key}"
-        short = "A #{short}."
+        if include.length > 0
+            short = ''
+            for own key, value of goods
+                if short isnt '' then short += ' and '
+                short += "#{value} #{key}"
+            short = "A #{short}."
+        else
+            short = 'How to say this...you didn\'t really excel in any
+                category.  But I\'m sure you\'ll do well in the next match!'
+        data = [ ]
+        for statName in include
+            data.push
+                type : 'positionInData'
+                name : statDescriptions[statName]
+                value : matchData[statName]
+                data : compare[statName]
+                quartiles : [
+                    stats.min compare[statName]
+                    stats.quantile compare[statName], 0.25
+                    stats.quantile compare[statName], 0.50
+                    stats.quantile compare[statName], 0.75
+                    stats.max compare[statName]
+                ]
         prof : 'Prof. Petal'
         quote : 'I\'ll light up your life!'
         topic : 'Let\'s see where you\'re doing well.'
         short : short
         long : "I'm comparing you only to other tier-#{tier} players in the
             #{role} role."
-        data : for own key, value of statDescriptions
-            type : 'positionInData'
-            value : matchData[key]
-            data : compare[key]
-            quartiles : [
-                stats.min compare[key]
-                stats.quantile compare[key], 0.25
-                stats.quantile compare[key], 0.50
-                stats.quantile compare[key], 0.75
-                stats.max compare[key]
-            ]
+        data : data
