@@ -12,10 +12,13 @@ match and produce advice data to show to players.  In fact, we provide a
 function to do just that.  But first, let's load the modules that contain
 the professors we'll use.
 
-    faculty = ( require "./faculty/#{name}" for name in [
+    facultyNames = [
         'petal'
         'krul'
-    ] )
+    ]
+    faculty = { }
+    for name in facultyNames
+        faculty[name] = require "./faculty/#{name}"
 
 All of theses modules appear in [the faculty folder](./faculty/).
 
@@ -65,5 +68,7 @@ single object for use by all professors.
 
 Now ask each professor for advice.
 
-        for professor, i in faculty
-            professor.advice match, participant, matchData, archive
+        for own name, professor of faculty
+            advice = professor.advice match, participant, matchData, archive
+            advice.shortName = name
+            advice
