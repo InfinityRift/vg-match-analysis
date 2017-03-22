@@ -30,6 +30,8 @@ Right now, only ranked mode is used on this server.
         options.howRecent ?= 24*60*60*1000
         options.offset ?= 0
         options.pageSize ?= 50
+        console.log 'fetching recent matches for',
+            options.ign, 'in', options.region
         now = new Date
         before = new Date now.valueOf() - options.howRecent
         vg.setRegion options.region
@@ -54,6 +56,7 @@ API.  Then fetch the telemetry data attached to the match.  Pass that to
 the callback.
 
     exports.getAdviceForPlayerInMatch = ( matchId, ign, callback ) ->
+        console.log 'fetching advice for', ign, 'in', matchId
         faculty = require './faculty'
         utils = require './harvesters/utils'
         vg.matches.single matchId
