@@ -6,13 +6,6 @@ as I can by
 [the challenge deadline](https://developer.vainglorygame.com/rules),
 and if I like what I have by then, I'll submit it.
 
-## New professor: Ringo
-
- * Focuses on your CS
- * Quote: Ha, I don't miss.
- * Report CS/minute in early, mid, and late game
- * Compare this to others in your role and tier (still by game time block!)
-
 ## New professor: SAW
 
  * Focuses on your damage
