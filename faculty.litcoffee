@@ -17,6 +17,7 @@ the professors we'll use.
         'krul'
         'ringo'
         'saw'
+        'ardan'
     ]
     faculty = { }
     for name in facultyNames

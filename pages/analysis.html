@@ -317,6 +317,16 @@
                 return result;
             }
             if ( data.type == 'positionInData' ) {
+                function niceNum ( x ) {
+                    return ( x == 0 ) ? '0' :
+                        ( -0.1 < x ) && ( x < 0.1 ) ?
+                            Number( x ).toFixed( 3 ) :
+                        ( -1 < x ) && ( x < 1 ) ?
+                            Number( x ).toFixed( 2 ) :
+                        ( -10 < x ) && ( x < 10 ) ?
+                            Number( x ).toFixed( 1 ) :
+                            Number( x ).toFixed( 0 );
+                }
                 var max = Math.max( data.quartiles[4], data.value );
                 var pct = max ? 100 * data.value / max : 0;
                 pct = Number( pct ).toFixed( 0 );
@@ -330,9 +340,45 @@
                      + '         <span class="bar-width">'+pct+'%</span>'
                      + '  </div>'
                      + '</div>'
-                     + '<p>(others ranged from ' + data.quartiles[0]
-                     + ' to ' + data.quartiles[4] + ')</p>'
+                     + '<p>(others ranged from '
+                     + niceNum( data.quartiles[0] ) + ' to '
+                     + niceNum( data.quartiles[4] ) + ')</p>'
                      + '<p>&nbsp;</p>';
+            }
+            if ( data.type == 'table' ) {
+                var result = '<table align=center border=0'
+                           + ' style="border-spacing: 0.5em; '
+                           + '        border-collapse: separate;">'
+                var lastRowSize = 0;
+                for ( var i = 0 ; i < data.rows.length ; i++ ) {
+                    if ( i > 0 )
+                        result += '\n<tr><td colspan=' + lastRowSize
+                                + '</td><hr></td></tr>';
+                    result += '\n<tr>';
+                    var row = data.rows[i];
+                    var numRows = ( row.headings ? 1 : 0 )
+                                + ( row.data ? 1 : 0 );
+                    if ( row.icon ) {
+                        result += '\n<td rowspan=' + numRows + '>'
+                                + '<img src="images/icons/' + row.icon
+                                + '.png"></td>';
+                        if ( i == 0 ) lastRowSize++;
+                    }
+                    function addRow ( cells, tag ) {
+                        for ( var j = 0 ; j < cells.length ; j++ )
+                            result += '<' + tag + '><p>&nbsp;' + cells[j]
+                                    + '&nbsp;</p></' + tag + '>';
+                    }
+                    if ( row.headings ) {
+                        addRow( row.headings, 'th' );
+                        if ( i == 0 ) lastRowSize += row.headings.length;
+                    }
+                    if ( numRows == 2 ) result += '\n</tr>\n<tr>';
+                    if ( row.data ) addRow( row.data, 'td' );
+                    result += '\n</tr>';
+                }
+                console.log( result + '\n</table>' );
+                return result + '\n</table>';
             }
             return '<pre>' + JSON.stringify( data, null, 2 ) + '</pre>';
         }
@@ -360,12 +406,18 @@
               + '<div class="panel-footer"><p>' + advice.long + '</p></div>'
               + '</div>';
             if ( advice.data.length > 0 ) {
-                result += '<div class="col-md-4" '
-                        + '     style="padding-right: 2em;">'
-                        + adviceBlock + '</div>'
-                        + '<div class="col-md-4">'
-                        + renderData( advice.data )
-                        + '</div>';
+                if ( advice.data[0].type == 'table' ) {
+                    result += '<div class="col-md-8">' + adviceBlock
+                            + renderData( advice.data )
+                            + '</div>';
+                } else {
+                    result += '<div class="col-md-4" '
+                            + '     style="padding-right: 2em;">'
+                            + adviceBlock + '</div>'
+                            + '<div class="col-md-4">'
+                            + renderData( advice.data )
+                            + '</div>';
+                }
             } else {
                 result += '<div class="col-md-8">' + adviceBlock + '</div>'
             }

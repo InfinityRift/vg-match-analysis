@@ -6,18 +6,6 @@ as I can by
 [the challenge deadline](https://developer.vainglorygame.com/rules),
 and if I like what I have by then, I'll submit it.
 
-## New professor: Ardan
-
- * Analyzes your support
- * Quote: I go where I'm needed.
- * How early you got fountain (earlyfountain)
- * How early you got the next t3 support item after fountain (secondsupport)
- * How much damage you soaked up from enemies per death (dmgperspawn)
- * Total damage to your team divided by total team deaths (teamdmgperspawn,
-   means your team can get out of danger or heal to stay alive) -- this is
-   a proxy until telemetry data will tell us when fountains or crucibles are
-   activated and what their results are
-
 ## New professor: Baron
 
  * Targeting and focusing

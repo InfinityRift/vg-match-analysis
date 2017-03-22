@@ -291,6 +291,10 @@ for partitioning gathered data into these categories.
     exports.roleTierKey = ( match, participant, key ) ->
         "#{exports.estimateRole match, participant}
          #{exports.simpleSkillTier participant} #{key}"
+    exports.changeKeyRole = ( key, newRole ) ->
+        parts = key.split ' '
+        parts[0] = newRole
+        parts.join ' '
 
 This function uses that key to extract data from an accumulator.
 
