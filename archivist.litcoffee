@@ -230,7 +230,7 @@ implementing progress reporting in the caller.
     exports.startAPIQueries = ( callback ) ->
         nextArchiveStep()
         interval = setInterval ->
-            callback? latestDateInArchive()
+            callback? exports.latestDateInArchive()
             nextArchiveStep()
         , queryFrequency
     exports.stopAPIQueries = ->
@@ -283,7 +283,7 @@ If no query is running, set one up for the next time interval we don't yet
 have in the archive.
 
         if not runningQuery
-            latest = latestDateInArchive()
+            latest = exports.latestDateInArchive()
             next = if latest then nextDate latest else startTime
             nextnext = nextDate next
             if nextnext > endTime
@@ -399,7 +399,7 @@ This function deletes the entire set of archived JSON files.
 
 Get the latest date on any file in the archive.
 
-    latestDateInArchive = ->
+    exports.latestDateInArchive = ->
         latest = 0
         for file in fs.readdirSync '.'
             if m = /^archive-([0-9]+)\.json$/.exec file
