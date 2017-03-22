@@ -10,6 +10,7 @@
     "update-archive": "coffee update-archive.litcoffee",
     "clear": "rm -f archive-*.json full-archive.json",
     "refresh-archive": "rm -f archive-*.json full-archive.json && coffee update-archive.litcoffee",
+    "backup-archive": "rm -f backup-archive/* && cp archive-*.json full-archive.json backup-archive/",
     "start": "coffee server.litcoffee"
   },
   "keywords": [

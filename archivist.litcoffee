@@ -279,6 +279,8 @@ have in the archive.
             nextnext = nextDate next
             if nextnext > endTime
                 debug 'Archive is fully up-to-date.'
+                saveArchiveResults()
+                debug 'Also created full summary file.  Done.'
                 return exports.stopAPIQueries()
             runningQuery =
                 startDate : next

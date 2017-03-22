@@ -19,7 +19,7 @@ Import the Archivist module and set some parameters.  Hand it the
 
     archivist = require './archivist'
     archivist.setStartTime new Date 2017, 2, 16
-    archivist.setEndTime new Date 2017, 2, 17
+    archivist.setEndTime new Date 2017, 2, 21
     archivist.setMaxima ranked : 2 # everything else zero
     archivist.setQueryObject new vainglory key
     require './harvesters'
@@ -30,7 +30,7 @@ chosen how many matches I want in my archive.  This is not necessary for
 every use of the `archivist` module; it's just what I want to do here.  So
 I choose this value:
 
-    getThisManyMatches = 40
+    getThisManyMatches = 200
 
 Now I compute all this stuff to figure out what value to pass to
 `setDuration`, and doing so then completes the archivist setup process.
@@ -44,7 +44,6 @@ Now I compute all this stuff to figure out what value to pass to
 
 Start the archive-updating process.
 
-    # console.log 'Letting archivist run...'
     process.on 'unhandledRejection', ( err ) -> console.log err
     startedAt = new Date
     console.log 'Starting to update archive...'
@@ -69,5 +68,3 @@ Start the archive-updating process.
         console.log "Completed #{Number( percentDone ).toFixed 1}% in
             #{Number( elapsed / 60000 ).toFixed 1}min,
             #{remainingString}"
-
-    # console.log archivist.allArchiveResults()
