@@ -127,6 +127,20 @@ event, the target of the event, or neither.
         team.toLowerCase() isnt event.payload.Team.toLowerCase() and \
             participant.actor.toLowerCase() is target.toLowerCase()
 
+Similarly, we can ask whether an event actor or target was one of our
+participant's allies.  Note that a participant counts as his or her own ally
+for the purposes of these functions.  You can disambiguate by using these
+functions in combination with the previous ones.
+
+    exports.eventActorIsOnMyTeam = ( match, participant, event ) ->
+        team = exports.sideForParticipant match, participant
+        team.toLowerCase() is event.payload.Team.toLowerCase()
+    exports.eventTargetIsOnMyTeam = ( match, participant, event ) ->
+        if event.type isnt 'DealDamage' and event.type isnt 'KillActor'
+            return no
+        team = exports.sideForParticipant match, participant
+        team.toLowerCase() isnt event.payload.Team.toLowerCase()
+
 Compute total gold earned in a match from various sources.  The `source`
 parameter can be lane, jungle, or kills.  The events parameter is the match
 telemetry data array.

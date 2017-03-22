@@ -10,13 +10,12 @@ and if I like what I have by then, I'll submit it.
 
  * Analyzes your support
  * Quote: I go where I'm needed.
- * How early you got fountain (compared to archive)
- * How early you got the next t3 support item after fountain (compared
-   to the archive)
- * How much damage you soaked up in fights (compared across the archive)
- * Total damage to your team divided by total team deaths (means your
-   team can get out of danger or heal to stay alive) -- this is a proxy
-   until telemetry data will tell us when fountains or crucibles are
+ * How early you got fountain (earlyfountain)
+ * How early you got the next t3 support item after fountain (secondsupport)
+ * How much damage you soaked up from enemies per death (dmgperspawn)
+ * Total damage to your team divided by total team deaths (teamdmgperspawn,
+   means your team can get out of danger or heal to stay alive) -- this is
+   a proxy until telemetry data will tell us when fountains or crucibles are
    activated and what their results are
 
 ## New professor: Vox

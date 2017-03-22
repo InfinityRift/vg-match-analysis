@@ -25,6 +25,10 @@ first, let's load the modules that contain the harvesters we'll use.
         'dmgheroes'
         'dpsheroes'
         'dpsobjectives'
+        'dmgperspawn'
+        'earlyfountain'
+        'secondsupport'
+        'teamdmgperspawn'
     ] )
 
 All of theses modules appear in [the harvesters folder](./harvesters/).
