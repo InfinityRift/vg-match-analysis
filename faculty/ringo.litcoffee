@@ -2,7 +2,7 @@
 # Professor Ringo
 
 This is the robot brain of Professor Ringo, one of the professors at VGU.
-She tries to bring out the positive in your game play.
+He focuses on your gold earned at various game phases.
 
 As with all faculty, he provides one method, `advice`, which takes a match,
 participant, and harvested match data, and creates an object of advice, as
