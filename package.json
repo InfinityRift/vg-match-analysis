@@ -11,6 +11,7 @@
     "clear": "rm -f archive-*.json full-archive.json",
     "refresh-archive": "rm -f archive-*.json full-archive.json && coffee update-archive.litcoffee",
     "backup-archive": "rm -f backup-archive/* && cp archive-*.json full-archive.json backup-archive/",
+    "restore-backup": "rm -f archive-*.json full-archive.json && cp backup-archive/archivs-*.json backup-archive/full-archive.json .",
     "start": "coffee server.litcoffee"
   },
   "keywords": [
