@@ -18,6 +18,36 @@ and if I like what I have by then, I'll submit it.
    a proxy until telemetry data will tell us when fountains or crucibles are
    activated and what their results are
 
+## New professor: Baron
+
+ * Targeting and focusing
+ * Quote: Focus is good, but kill everything just in case.
+ * New routine:
+    * First loop through the telemetry data and for every 2-second interval
+      in which the player in question hit an enemy, create a list of that
+      interval's DealDamage events.  The result of this pass is thus a list
+      of lists of events, each sublist for a separate 2-second interval.
+    * Now loop through those lists of interval lists, and classify each one
+      as one of these categories:
+       * The player had no allies nearby who were hitting enemies (type 1)
+       * The player or one of its nearby allies was hitting multiple
+         enemies during that interval (type 2)
+       * The player and each nearby ally were all hitting the same enemy
+         (type 3)
+       * The player and each nearby ally were each hitting a different
+         enemy (type 4)
+       * The player and both nearby allies were hitting two different
+         enemies (type 5)
+    * Delete and ignore everything of type 1.
+    * The other four types then make up a partition of the whole, which can
+      be expressed as percents of a pie chart.  Describe them to the user
+      like so:
+       * Type 3 - Good teamwork (all focusing the same enemy)
+       * Type 5 - Neutral (all focusing two enemies)
+       * Type 4 - Bad teamwork (all focusing different enemies)
+       * Type 2 - In transition (shifting focus among enemies)
+ * Show this as a pie chart, the team fight pie!
+
 ## New professor: Vox
 
  * Need this new utility:  A function that assesses whether a build was WP,
@@ -68,29 +98,6 @@ and if I like what I have by then, I'll submit it.
           * Within a cluster of other deaths (big fight)?
           * Within a cluster of ally deaths only (slaughter)?
           * Within a cluster of enemy deaths (worth it)?
-
-## New professor: Baron
-
- * New routine:  For every 2-second interval in the match in which the
-   player hit an enemy hero, classify it as:
-    * You focused the same person all your nearby teammates were also
-      hitting in that interval - Good teamwork
-    * You focused one enemy, but one nearby ally was focusing a different
-      one, or both nearby allies were focusing two different ones - Bad
-      teamwork
-    * You focused one enemy, but two nearby allies were focusing the same
-      different enemy - Get with the program
-    * You shot multiple people during that interval, or all other types of
-      situation besides those considered above - Don't include in data
- * Targeting and focusing
- * Quote: Focus is good, but kill everything just in case.
- * How often was I hitting X and both teammates were hitting Y?  (You
-   were the one not with the program.)
- * How often were we all hitting different enemies?  (Bad teamwork.)
- * How often were we all hitting the same enemy?  (Good teamwork.)
- * How often was one of my allies not with the program?  (Not your
-   fault.)
- * Show this as a pie chart, the team fight pie!
 
 ## New professor: Lyra
 
