@@ -91,8 +91,9 @@ happen more frequently.
     exports.getQueryFrequency = -> queryFrequency
     exports.setQueryFrequency = ( f ) ->
         queryFrequency = f
-        exports.stopAPIQueries()
-        exports.startAPIQueries()
+        if exports.isRunning()
+            exports.stopAPIQueries()
+            exports.startAPIQueries()
 
 The function that creates the next archive gets run repeatedly.  Each time
 it gets run, it takes three parameters: a new Match object, the object into
@@ -232,7 +233,10 @@ implementing progress reporting in the caller.
             callback? latestDateInArchive()
             nextArchiveStep()
         , queryFrequency
-    exports.stopAPIQueries = -> clearInterval interval
+    exports.stopAPIQueries = ->
+        clearInterval interval
+        interval = null
+    exports.isRunning = -> interval?
 
 We keep track of a running API query, which may return many pages of matches
 that we must process slowly, asynchronously.  Initially, there is no such
@@ -245,13 +249,18 @@ query, assuming the options for such a query are stored in `runningQuery`.
 
     fetchNextPage = ( callback ) ->
         debug '  Fetching page at offset', runningQuery.options.page.offset
+        # debug JSON.stringify runningQuery.options
         vg.matches.collection runningQuery.options
         .then ( matches ) ->
+            # debug matches
             if matches.errors and \
                matches.messages is 'The specified object could not be
                found.'
                 debug '    No more data in this query.'
                 runningQuery.lastFetched = match : [ ]
+            else if matches.errors
+                console.log 'API ERROR:', matches.messages
+                throw matches.messages
             else
                 runningQuery.lastFetched = matches
                 debug "    Found #{matches.data.length} more matches"
@@ -291,8 +300,10 @@ have in the archive.
                         limit : 50
                     sort : 'createdAt'
                     filter :
-                        'createdAt-start': next.toISOString()
-                        'createdAt-end': nextnext.toISOString()
+                        'createdAt-start' : next.toISOString()
+                        'createdAt-end' : nextnext.toISOString()
+                        'gameMode' :
+                            ( x for own x of maxima when maxima[x] > 0 )
                 nextMatchToProcess : 0
                 accumulated : emptyAccumulator()
             debug "Analyzing time interval from
