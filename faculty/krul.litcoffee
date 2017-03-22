@@ -71,10 +71,26 @@ Return Krul's advice.
                     stats.quantile compare[statName], 0.75
                     stats.max compare[statName]
                 ]
+        letterIndex = Math.min 4, include.length
         prof : 'Prof. Krul'
         quote : 'This is your mistake.'
         topic : 'Let\'s see where you\'re doing badly.'
         short : short
         long : "I'm comparing you only to other tier-#{tier} players in the
-            #{role} role."
+            #{role} role.  " + [
+                'I wish you had more fatal flaws, but alas, it seems you
+                 have earned a good grade.'
+                'Having only one fatal flaw, I shall give you a B.  Let that
+                 be some small consolation on your slow but sure march to
+                 your grave.'
+                'I find two serious problems with your gameplay.  Join the
+                 legions of students earning a C.  But trust me, it could
+                 be worse.'
+                'No, my grades are not vengeance.  They are earned by your
+                 folly.'
+                'Although I am sure you wanted to pass my class, let this
+                 be your wake-up call.  Life is not sunshine and roses.
+                 And then you die.  Or not.'
+            ][letterIndex]
+        letter : 'ABCDF'[letterIndex]
         data : data

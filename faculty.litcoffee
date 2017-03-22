@@ -36,6 +36,7 @@ must contain these fields:
    (string)
  * `short` - a brief heading summarizing the advice returned (string)
  * `long` - a few sentences containing the advice (string)
+ * `letter` - a letter grade, a string from among A B C D F
  * `data` - this is the only optional field, and may contain arbitrary
    additional data that the UI may know how to render to show data about
    the advice, such as a table, pie chart, etc.

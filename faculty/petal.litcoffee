@@ -71,10 +71,18 @@ Return Petal's advice.
                     stats.quantile compare[statName], 0.75
                     stats.max compare[statName]
                 ]
+        letterIndex = Math.min 2, Math.max 0, include.length - 2
         prof : 'Prof. Petal'
         quote : 'I\'ll light up your life!'
         topic : 'Let\'s see where you\'re doing well.'
         short : short
         long : "I'm comparing you only to other tier-#{tier} players in the
-            #{role} role."
+            #{role} role.  " + [
+                'I\'d give you a better grade if I had more things to
+                 praise -- sorry!'
+                'I found three things you\'re doing well -- keep up the
+                 good work!'
+                'Wow, so many things you\'re doing great at!  Gold star!'
+            ][letterIndex]
+        letter : 'CBA'[letterIndex]
         data : data

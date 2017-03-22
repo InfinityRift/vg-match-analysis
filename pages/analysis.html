@@ -338,19 +338,26 @@
         }
         function renderOneProfessor ( advice ) {
             var result = '<div class="row"><hr>';
-            result += '<h3>' + advice.prof + '</h3>';
+            advice.letter = advice.letter.toUpperCase();
+            var article = advice.letter == 'A' ? 'an' :
+                          advice.letter == 'F' ? 'an' : 'a';
+            result += '<h3><strong>' + advice.prof + '</strong>'
+                    + ' gives you ' + article + ' '
+                    + '<strong>' + advice.letter + '</strong>.</h3>';
             result += '<hr></div>';
             result += '<div class="row">'
-                    + '<div class="col-md-4">'
-                    + '<img class="img-responsive" width="290"'
+                    + '<div class="col-md-4" style="text-align: center;">'
+                    + '<img width="290"'
                     + '     src="images/prof-heroes/' + advice.shortName
-                    + '.png" alt=""></div>';
+                    + '.png" alt="">'
+                    + '<h3>"' + advice.quote + '"</h3>'
+                    + '</div>';
             var adviceBlock =
-                '<h3>' + advice.quote + '</h3>'
-              + '<h4>' + advice.topic + '</h4>'
-              + '<div class="panel panel-default">'
-              + '<div class="panel-heading">' + advice.short + '</div>'
-              + '<div class="panel-body"><p>' + advice.long + '</p></div>'
+                '<div class="panel panel-default">'
+              + '<div class="panel-heading"><h4>' + advice.topic
+              + '</h4></div>'
+              + '<div class="panel-body"><p>' + advice.short + '</p></div>'
+              + '<div class="panel-footer"><p>' + advice.long + '</p></div>'
               + '</div>';
             if ( advice.data.length > 0 ) {
                 result += '<div class="col-md-4" '
@@ -368,11 +375,11 @@
         function renderMatchAnalysis ( data ) {
             if ( data.error ) return renderMatchAnalysisError( data );
             var result = '<div class="row">'
-                       + '<h2>Class in session for this match...</h2>'
+                       + '<h2>The faculty have reviewed this match:</h2>'
                        + '</div>';
             result += renderMatch( data.match, false );
             result += '<hr>'
-                    + '<div class="row"><h2>The professors say:</h2></div>';
+                    + '<div class="row"><h2>The grades are in:</h2></div>';
             for ( var i = 0 ; i < data.advice.length ; i++ )
                 result += renderOneProfessor( data.advice[i] );
             return result;

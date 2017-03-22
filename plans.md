@@ -6,11 +6,6 @@ as I can by
 [the challenge deadline](https://developer.vainglorygame.com/rules),
 and if I like what I have by then, I'll submit it.
 
-## General improvements
-
- * Have faculty start to give letter grades in their subjects, and put them
-   next to the faculty member's name, but on the right, in big letters
-
 ## New professor: Ringo
 
  * Focuses on your CS
