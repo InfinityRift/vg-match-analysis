@@ -51,7 +51,7 @@ This code answers queries to get lists of recent player ranked matches.
                     res.send error : error
                 else
                     res.send JSON.stringify \
-                        matchToJSON match for match in result.match
+                        ( matchToJSON match for match in result.match )
         else
             res.status( 404 ).send '404 - Not found'
 
