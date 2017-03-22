@@ -4,7 +4,7 @@
 This is the robot brain of Professor Krul, one of the professors at VGU.
 He tries to bring out the negative in your game play.
 
-As with all faculty, she provides one method, `advice`, which takes a match,
+As with all faculty, he provides one method, `advice`, which takes a match,
 participant, and harvested match data, and creates an object of advice, as
 documented in [the faculty module](../faculty.litcoffee).  The match is
 required to already have its telemetry data embedded.
