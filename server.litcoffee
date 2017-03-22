@@ -85,3 +85,4 @@ This function creates JSON data from a match.
         time : match.data.attributes.createdAt
         left : participantToJSON p for p in left.participants
         right : participantToJSON p for p in right.participants
+        telemetry : require( './harvesters/utils' ).hasTelemetryData match

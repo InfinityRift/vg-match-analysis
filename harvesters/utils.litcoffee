@@ -22,12 +22,14 @@ to the callback is empty, we could not fetch telemetry data.  If it is not,
 then it contains the telemetry data, and that same data is also stored in
 the `telemetry` member of the match object itself.
 
-    exports.fetchTelemetryData = ( match, callback ) ->
-        telemetryAsset = null
+    exports.getTelemetryAsset = ( match ) ->
         for asset in match.assets ? [ ]
-            if asset?.attributes?.name is 'telemetry'
-                telemetryAsset = asset
-                break
+            return asset if asset?.attributes?.name is 'telemetry'
+        null
+    exports.hasTelemetryData = ( match ) ->
+        exports.getTelemetryAsset( match )?
+    exports.fetchTelemetryData = ( match, callback ) ->
+        telemetryAsset = exports.getTelemetryAsset match
         return callback null unless telemetryAsset?
         fetchedData = ''
         request = https.request telemetryAsset.attributes.URL

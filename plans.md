@@ -8,9 +8,6 @@ and if I like what I have by then, I'll submit it.
 
 ## General improvements
 
- * The match list should say which ones have telemetry data available, so
-   you don't have to click through, but you already know beforehand which
-   ones to not bother clicking
  * Have faculty start to give letter grades in their subjects, and put them
    next to the faculty member's name, but on the right, in big letters
 

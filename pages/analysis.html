@@ -194,6 +194,9 @@
                            + '&shard=' + window.queryDict.shard
                     } ).done( function( data ) {
                         insides[1].innerHTML = renderMatchList( data );
+                        $( document ).ready( function () {
+                            $( '[data-toggle="tooltip"]' ).tooltip();
+                        } );
                     } ).fail( function ( xhr, status, error ) {
                         insides[1].innerHTML =
                             renderMatchListError( error );
@@ -256,15 +259,28 @@
                     + '<td align=center>';
             result += renderTeam( match.right );
             result += '</td>';
-            if ( withButton )
-                result += '<td>'
-                        + '<a role="button" name="analyze-'
-                        + match.id + '" class="btn btn-primary btn-lg"'
-                        + ' href="analysis.html?ign='
-                        + window.queryDict.ign + '&shard='
-                        + window.queryDict.shard + '&match='
-                        + match.id + '">Go</a>'
-                        + '</td>';
+            if ( withButton ) {
+                if ( match.telemetry ) {
+                    result += '<td>'
+                            + '<a role="button" name="analyze-'
+                            + match.id + '" class="btn btn-primary btn-lg"'
+                            + ' href="analysis.html?ign='
+                            + window.queryDict.ign + '&shard='
+                            + window.queryDict.shard + '&match='
+                            + match.id + '">Go</a>'
+                            + '</td>';
+                } else {
+                    result += '<td>'
+                            + '<a role="button" name="analyze-' + match.id
+                            + '" class="btn btn-danger btn-lg"'
+                            + ' data-toggle="tooltip"'
+                            + ' title="The Vainglory servers do not '
+                            + 'provide play-by-play data for every single '
+                            + 'match yet.  The service is still new."'
+                            + '>Unavailable</a>'
+                            + '</td>';
+                }
+            }
             result += '</tr></table>';
             return result;
         }
