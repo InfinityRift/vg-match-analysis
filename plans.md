@@ -6,16 +6,6 @@ as I can by
 [the challenge deadline](https://developer.vainglorygame.com/rules),
 and if I like what I have by then, I'll submit it.
 
-## New professor: SAW
-
- * Focuses on your damage
- * Quote: Here comes the pain!
- * Compares your total damage to all objectives across data archive
- * Compares your damage per second to all objectives across data archive
- * Compares your total damage in all team fights across data archive
- * Compares your damage per second in team fights across data archive
- * Compares your total damage-to-(kills+assists) ratio across archive
-
 ## New professor: Ardan
 
  * Analyzes your support

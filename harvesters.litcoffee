@@ -22,6 +22,10 @@ first, let's load the modules that contain the harvesters we'll use.
         'goldinearlygame'
         'goldinmidgame'
         'goldinlategame'
+        'dmgheroes'
+        'dpsheroes'
+        'dmgobjectives'
+        'dpsobjectives'
     ] )
 
 All of theses modules appear in [the harvesters folder](./harvesters/).

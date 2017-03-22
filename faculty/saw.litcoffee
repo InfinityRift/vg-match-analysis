@@ -1,8 +1,8 @@
 
-# Professor Ringo
+# Doctor SAW
 
-This is the robot brain of Professor Ringo, one of the professors at VGU.
-He focuses on your gold earned at various game phases.
+This is the robot brain of Doctor SAW, one of the professors at VGU.
+He looks into your damage output.
 
 As with all faculty, he provides one method, `advice`, which takes a match,
 participant, and harvested match data, and creates an object of advice, as
@@ -14,11 +14,17 @@ required to already have its telemetry data embedded.
 For each statistics we care about, get the array of values of it across the
 sampled data.
 
-        statNames = [ 'goldinearlygame', 'goldinmidgame', 'goldinlategame' ]
+        statNames = [
+            'dmgheroes'
+            'dpsheroes'
+            'dmgobjectives'
+            'dpsobjectives'
+        ]
         statDescriptions =
-            goldinearlygame : 'gold earned in the early game'
-            goldinmidgame : 'gold earned in the mid game'
-            goldinlategame : 'gold earned in the late game'
+            dmgheroes : 'damage done to enemies'
+            dpsheroes : 'highest dps against enemies'
+            dmgobjectives : 'damage done to objectives'
+            dpsobjectives : 'highest dps against objectives'
         n = statNames.length
         utils = require '../harvesters/utils'
         stats = require 'simple-statistics'
@@ -40,32 +46,25 @@ sampled data.
         else if average < 90 then letterIndex = 3
         else letterIndex = 4
 
-Return Ringo's advice.
+Return SAW's advice.
 
         role = utils.estimateRole match, participant
         tier = utils.simpleSkillTier participant
-        ordered = percentiles[..]
-        ordered.sort ( a, b ) -> a - b
-        if percentiles[0] is ordered[2] then best = 2
-        else if percentiles[1] is ordered[2] then best = 1
-        else best = 0
-        if percentiles[0] is ordered[0] then worst = 2
-        else if percentiles[1] is ordered[0] then worst = 1
-        else worst = 0
-        times = [ 'early', 'mid', 'late' ]
-        if letterIndex is 4
-            short = "I got no advice for you, man.  You're acing this."
-        else if ordered[2] - 10 > ordered[1]
-            short = "You're doing best in the #{times[best]} game.  Try to
-                work on keeping farm up at other times, too."
-        else if ordered[0] + 10 < ordered[1]
-            short = "You're clearly weak in the #{times[worst]} game.  Pay
-                careful attention to farming at that time.  Well, and not
-                dying, of course."
-        else
-            short = "You're consistent across all three major phases of the
-                game, so any improvement will probably effect your whole
-                game."
+        short = ''
+        if percentiles[0] + percentiles[1] < 100
+            short += 'You\'re not hitting the enemies hard, mate.  Gotta
+                make \'em bleed.'
+        if percentiles[0] + percentiles[1] > 150
+            short += 'You\'re really punishing the enemies.  Keep it up.
+                Don\'t slack on the push-ups, either.'
+        if percentiles[1] + percentiles[2] < 100
+            short += 'Your job is to push turrets.  You\'re slackin\'!'
+        if percentiles[1] + percentiles[2] > 150
+            short += 'I love your persistence in lane.  A turret is no match
+                for a mad cannon, is it?'
+        if short is ''
+            short = 'You\'re not doing bad, but not really lighting \'em up
+                either.  Have you tried three sorrowblades at once yet?'
         data = [ ]
         for i in [0...n]
             data.push
@@ -80,20 +79,21 @@ Return Ringo's advice.
                     stats.quantile standards[i], 0.75
                     stats.max standards[i]
                 ]
-        prof : 'Prof. Ringo'
-        quote : 'Ha!  I don\'t miss.'
-        topic : 'Let\'s talk about farming gold.'
+        prof : 'Dr. SAW'
+        quote : 'Here comes the pain!'
+        topic : 'How\'s your damage output, mate?'
         short : short
         long : "I'm comparing you only to other tier-#{tier} players in the
             #{role} role.  " + [
-                'You\'re, like, below average all the time.  Have you tried
-                 drinking?  Just sayin\', it could help.'
-                'You\'re doing about average.  Focus on those last
-                 hits, man.  Ya gotta climb if you want to get out of the
-                 Undersprawl.'
-                'You\'re above average.  Meh.'
-                'Dude, I\'m proud.  You\'re really getting those last hits.'
-                'You don\'t miss either!  Bottoms up, bro.'
+                'You seem to need some more red items.  Or more time spent
+                 with your finger on the trigger.  You know to get Bonesaw
+                 if they build brown, right?'
+                'Average damage is just average.  Maybe you need some
+                 cardio to go with your bench work.'
+                'You\'re above average.  Alright.'
+                'Now this is some good damage output.  You\'re making the
+                 old man proud over here.'
+                'Now that\'s what I call some pain!  Nice work!'
             ][letterIndex]
         letter : 'FDBCA'[letterIndex]
         data : data
