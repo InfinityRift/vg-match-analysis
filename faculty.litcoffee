@@ -15,6 +15,8 @@ the professors we'll use.
     facultyNames = [
         'petal'
         'krul'
+        'ringo'
+        'saw'
     ]
     faculty = { }
     for name in facultyNames

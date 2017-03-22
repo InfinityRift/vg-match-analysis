@@ -17,13 +17,13 @@ sampled data.
         statNames = [
             'dmgheroes'
             'dpsheroes'
-            'dmgobjectives'
+            'objectives'
             'dpsobjectives'
         ]
         statDescriptions =
             dmgheroes : 'damage done to enemies'
             dpsheroes : 'highest dps against enemies'
-            dmgobjectives : 'damage done to objectives'
+            objectives : 'damage done to objectives'
             dpsobjectives : 'highest dps against objectives'
         n = statNames.length
         utils = require '../harvesters/utils'

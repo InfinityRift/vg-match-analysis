@@ -24,7 +24,6 @@ first, let's load the modules that contain the harvesters we'll use.
         'goldinlategame'
         'dmgheroes'
         'dpsheroes'
-        'dmgobjectives'
         'dpsobjectives'
     ] )
 

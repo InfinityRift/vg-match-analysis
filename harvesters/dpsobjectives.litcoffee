@@ -25,7 +25,7 @@ Feel free to change it if you wish to alter the definition of
         lastHitTime = startOfInterval = null
         for event in match.telemetry
             if event.type is 'DealDamage' and \
-               /Miner|Kraken|Turret|Crystal/.test event.payload.Target and \
+               not event.payload.TargetIsHero and \
                utils.isEventActor match, participant, event
                 now = new Date event.time
 
@@ -33,14 +33,14 @@ If this is the start of an interval, just save it as such.
 
                 if not startOfInterval?
                     lastHitTime = startOfInterval = now
-                    totalDmgInInterval = event.payload.Delt # always so sad
+                    totalDmgInInterval = parseInt event.payload.Delt
 
 Or if it is the continuation of an earlier interval, then accumulate and
 update.
 
-                else if now < new Date lastHitTime + deltaT
+                else if now > new Date lastHitTime + deltaT
                     lastHitTime = now
-                    totalDmgInInterval += event.payload.Delt # mrr
+                    totalDmgInInterval += parseInt event.payload.Delt
 
 Otherwise, the interval has ended.  Log its DPS and clear out the interval's
 data.
