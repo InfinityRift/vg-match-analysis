@@ -58,12 +58,7 @@ We load the archive for matches of this type and store the results in a
 single object for use by all professors.
 
         archivist = require './archivist'
-        #
-        # THE NEXT LINE IS WRONG!
-        # JUST HERE FOR TESTING!
-        # FIX THIS BEFORE COMMITTING!
-        #
-        gameMode = 'ranked' # archivist.simplifyType match.gameMode
+        gameMode = archivist.simplifyType match.gameMode
         archive = archivist.allArchiveResults gameMode
 
 Now ask each professor for advice.
