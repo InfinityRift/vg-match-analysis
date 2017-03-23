@@ -48,6 +48,7 @@ Start the archive-updating process.
     process.on 'unhandledRejection', ( err ) -> console.log err
     startedAt = new Date
     startedWithArchiveAt = archivist.latestDateInArchive()
+    startedWithArchiveAt ?= archivist.getStartTime()
     console.log 'Starting to update archive...'
     archivist.setDebugging on
     archivist.startAPIQueries ( progress ) ->
