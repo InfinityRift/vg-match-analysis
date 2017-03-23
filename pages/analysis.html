@@ -414,12 +414,18 @@
         }
         function renderOneProfessor ( advice ) {
             var result = '<div class="row"><hr>';
-            advice.letter = advice.letter.toUpperCase();
+            if ( advice.letter )
+                advice.letter = advice.letter.toUpperCase();
             var article = advice.letter == 'A' ? 'an' :
-                          advice.letter == 'F' ? 'an' : 'a';
-            result += '<h3><strong>' + advice.prof + '</strong>'
-                    + ' gives you ' + article + ' '
-                    + '<strong>' + advice.letter + '</strong>.</h3>';
+                          advice.letter == 'F' ? 'an' :
+                          advice.letter == 'incomplete' ? 'an' : 'a';
+            result += '<h3><strong>' + advice.prof + '</strong>';
+            if ( advice.letter ) {
+                result += ' gives you ' + article + ' '
+                        + '<strong>' + advice.letter + '</strong>.</h3>';
+            } else {
+                result += ' did not give you a grade.</h3>';
+            }
             result += '<hr></div>';
             result += '<div class="row">'
                     + '<div class="col-md-4" style="text-align: center;">'

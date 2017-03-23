@@ -12,8 +12,11 @@ required to already have its telemetry data embedded.
     exports.advice = ( match, participant, matchData, archive ) ->
         prof : 'Prof. Celeste'
         quote : 'Does it burn?'
-        topic : 'Coming soon'
+        topic : 'Capitalizing on your power spikes (like overdriven helios,
+            for example), and shutting down power spikes of the enemy team.'
         short : 'Coming soon'
-        long : 'Coming soon'
-        letter : '...'
-        data : [ ]
+        long : 'Prof. Celeste is doing some field work and we expect her
+            back in the laboratory with freshly captured minions any day
+            now.'
+        # letter : ''
+        # data : [ ]

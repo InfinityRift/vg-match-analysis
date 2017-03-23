@@ -12,8 +12,11 @@ required to already have its telemetry data embedded.
     exports.advice = ( match, participant, matchData, archive ) ->
         prof : 'Dr. Flicker'
         quote : 'No one is in this bush, no one at all!'
-        topic : 'Coming soon'
+        topic : 'Did your team have plenty of vision, and make good use of
+            it?'
         short : 'Coming soon'
-        long : 'Coming soon'
-        letter : '...'
-        data : [ ]
+        long : 'Doctor Flicker was just here, but now he\'s not.  It\'s an
+            annoying habit of his.  As soon as we find him, we\'ll get him
+            back here to teach you something...'
+        # letter : ''
+        # data : [ ]
