@@ -19,6 +19,11 @@ the professors we'll use.
         'saw'
         'ardan'
         'baron'
+        'celeste'
+        'vox'
+        'samuel'
+        'lyra'
+        'flicker'
     ]
     faculty = { }
     for name in facultyNames
