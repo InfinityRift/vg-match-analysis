@@ -27,6 +27,7 @@
         .ct-series-b .ct-slice-pie { fill: #007D16; }
         .ct-series-c .ct-slice-pie { fill: #888; }
         .ct-series-d .ct-slice-pie { fill: #bbb; }
+        .panel-footer > ul { color: #000; }
     </style>
   </head>
   <body>
@@ -385,7 +386,10 @@
                         if ( i == 0 ) lastRowSize += row.headings.length;
                     }
                     if ( numRows == 2 ) result += '\n</tr>\n<tr>';
-                    if ( row.data ) addRow( row.data, 'td' );
+                    if ( row.data ) {
+                        addRow( row.data, 'td' );
+                        if ( i == 0 ) lastRowSize += row.data.length;
+                    }
                     result += '\n</tr>';
                 }
                 return result + '\n</table>';
@@ -441,8 +445,19 @@
               + '<div class="panel-body"><p>' + advice.short + '</p></div>'
               + '<div class="panel-footer"><p>' + advice.long + '</p></div>'
               + '</div>';
-            if ( advice.data.length > 0 ) {
-                if ( advice.data[0].type == 'table' ) {
+            if ( advice.data && ( advice.data.length > 0 ) ) {
+                if ( ( advice.data.length == 3 )
+                  && ( advice.data[0].type == 'table' ) ) {
+                    result += '<div class="col-md-8">'
+                            + adviceBlock + '</div>'
+                            + '</div><div class="row">'
+                            + '<div class="col-md-4">'
+                            + renderData( advice.data[0] ) + '</div>'
+                            + '<div class="col-md-4">'
+                            + renderData( advice.data[1] ) + '</div>'
+                            + '<div class="col-md-4">'
+                            + renderData( advice.data[2] ) + '</div>';
+                } else if ( advice.data[0].type == 'table' ) {
                     result += '<div class="col-md-8">' + adviceBlock
                             + renderData( advice.data )
                             + '</div>';

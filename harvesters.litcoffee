@@ -29,6 +29,7 @@ first, let's load the modules that contain the harvesters we'll use.
         'earlyfountain'
         'secondsupport'
         'teamdmgperspawn'
+        # 'abilitynames' # was for a temporary purpose -- all done
     ] )
 
 All of theses modules appear in [the harvesters folder](./harvesters/).

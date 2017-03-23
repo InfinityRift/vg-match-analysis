@@ -6,22 +6,6 @@ as I can by
 [the challenge deadline](https://developer.vainglorygame.com/rules),
 and if I like what I have by then, I'll submit it.
 
-## New professor: Samuel
-
- * Focuses on your deaths
-    * Where did I die?
-       * Absolute positioning: list of regions on the map where you died,
-         and how often in each (requires a utility, listed below)
-       * Relative positioning: how many times you died with one ally near,
-         with two near, and with none near
-    * When did I die?
-       * Absolute: number of deaths in early game (before 8m), mid game
-         (from then until 15m) and late game (after 15m)
-       * Relative:
-          * Within a cluster of other deaths (big fight)?
-          * Within a cluster of ally deaths only (slaughter)?
-          * Within a cluster of enemy deaths (worth it)?
-
 ## New professor: Celeste
 
  * Focuses on power spikes

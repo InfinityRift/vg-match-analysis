@@ -20,7 +20,7 @@ Import the Archivist module and set some parameters.  Hand it the
     archivist = require './archivist'
     archivist.setStartTime new Date 2017, 2, 16
     archivist.setEndTime new Date 2017, 2, 21
-    archivist.setMaxima ranked : 2 # everything else zero
+    archivist.setMaxima casual : 5 # everything else zero
     archivist.setQueryFrequency 7*archivist.seconds
     archivist.setQueryObject new vainglory key
     require './harvesters'
