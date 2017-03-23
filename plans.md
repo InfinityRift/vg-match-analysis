@@ -6,36 +6,6 @@ as I can by
 [the challenge deadline](https://developer.vainglorygame.com/rules),
 and if I like what I have by then, I'll submit it.
 
-## New professor: Baron
-
- * Targeting and focusing
- * Quote: Focus is good, but kill everything just in case.
- * New routine:
-    * First loop through the telemetry data and for every 2-second interval
-      in which the player in question hit an enemy, create a list of that
-      interval's DealDamage events.  The result of this pass is thus a list
-      of lists of events, each sublist for a separate 2-second interval.
-    * Now loop through those lists of interval lists, and classify each one
-      as one of these categories:
-       * The player had no allies nearby who were hitting enemies (type 1)
-       * The player or one of its nearby allies was hitting multiple
-         enemies during that interval (type 2)
-       * The player and each nearby ally were all hitting the same enemy
-         (type 3)
-       * The player and each nearby ally were each hitting a different
-         enemy (type 4)
-       * The player and both nearby allies were hitting two different
-         enemies (type 5)
-    * Delete and ignore everything of type 1.
-    * The other four types then make up a partition of the whole, which can
-      be expressed as percents of a pie chart.  Describe them to the user
-      like so:
-       * Type 3 - Good teamwork (all focusing the same enemy)
-       * Type 5 - Neutral (all focusing two enemies)
-       * Type 4 - Bad teamwork (all focusing different enemies)
-       * Type 2 - In transition (shifting focus among enemies)
- * Show this as a pie chart, the team fight pie!
-
 ## New professor: Vox
 
  * Need this new utility:  A function that assesses whether a build was WP,

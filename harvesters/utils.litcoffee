@@ -73,7 +73,7 @@ categorization of heroes.
 Take a hero name as it shows up in telemetry data and change it into the
 actual name of the hero.
 
-    correctHeroName = ( telemetryHeroName ) ->
+    exports.correctHeroName = ( telemetryHeroName ) ->
         if telemetryHeroName[0] is '*'
             telemetryHeroName = telemetryHeroName[1..]
         if telemetryHeroName[-1..] is '*'
@@ -113,14 +113,14 @@ event, the target of the event, or neither.
 
     exports.isEventActor = ( match, participant, event ) ->
         team = exports.sideForParticipant match, participant
-        doer = correctHeroName event.payload.Actor
+        doer = exports.correctHeroName event.payload.Actor
         team.toLowerCase() is event.payload.Team.toLowerCase() and \
             participant.actor.toLowerCase() is doer.toLowerCase()
     exports.isEventTarget = ( match, participant, event ) ->
         if event.type is 'DealDamage'
-            target = correctHeroName event.payload.Target
+            target = exports.correctHeroName event.payload.Target
         else if event.type is 'KillActor'
-            target = correctHeroName event.payload.Killed
+            target = exports.correctHeroName event.payload.Killed
         else
             return no
         team = exports.sideForParticipant match, participant

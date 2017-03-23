@@ -18,6 +18,16 @@
         Author: BootstrapMade
         Author URL: https://bootstrapmade.com
     ======================================================= -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
+    <script src="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
+    <!-- override some default chartist colors -->
+    <style>
+        .ct-label { font-size : 1.5rem; }
+        .ct-series-a .ct-slice-pie { fill: #1BBD36; }
+        .ct-series-b .ct-slice-pie { fill: #007D16; }
+        .ct-series-c .ct-slice-pie { fill: #888; }
+        .ct-series-d .ct-slice-pie { fill: #bbb; }
+    </style>
   </head>
   <body>
 	<header>
@@ -309,6 +319,7 @@
                      '<pre>' + JSON.stringify( error, null, 4 ) + '</pre>'
                      : '' );
         }
+        var nextChartNumber = 0;
         function renderData ( data ) {
             if ( data instanceof Array ) {
                 var result = '';
@@ -377,8 +388,27 @@
                     if ( row.data ) addRow( row.data, 'td' );
                     result += '\n</tr>';
                 }
-                console.log( result + '\n</table>' );
                 return result + '\n</table>';
+            }
+            if ( data.type == 'pie' ) {
+                var pieChartData = {
+                    labels : [ ],
+                    series : [ ],
+                    colors : [ ]
+                };
+                for ( var key in data.portions ) {
+                    if ( data.portions.hasOwnProperty( key )
+                      && ( data.portions[key] > 0 ) ) {
+                        pieChartData.labels.push( key );
+                        pieChartData.series.push( data.portions[key] );
+                    }
+                }
+                nextChartNumber++;
+                setTimeout( function ( num ) {
+                    new Chartist.Pie( '#chartist'+num, pieChartData );
+                }, 100, nextChartNumber );
+                return '<div id="chartist' + nextChartNumber
+                     + '" class="ct-chart ct-perfect-fourth"></div>';
             }
             return '<pre>' + JSON.stringify( data, null, 2 ) + '</pre>';
         }
