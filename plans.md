@@ -6,19 +6,21 @@ as I can by
 [the challenge deadline](https://developer.vainglorygame.com/rules),
 and if I like what I have by then, I'll submit it.
 
-## New professor: Vox
+## New professor: Samuel
 
- * Need this new utility:  A function that assesses whether a build was WP,
-   CP, or neither
- * How common was my build?
- * This will not only be a comparison among people in your tier and role,
-   but restricted to the same WP/CP choice as you made (requires a
-   utility given below)
- * A list of your items (with pictures) and next to each, a progress bar
-   of length proportional to how common the item was among the population
-   mentioned in the previous bullet point
- * At the end, some comments about whether you might need to rethink your
-   build or not
+ * Focuses on your deaths
+    * Where did I die?
+       * Absolute positioning: list of regions on the map where you died,
+         and how often in each (requires a utility, listed below)
+       * Relative positioning: how many times you died with one ally near,
+         with two near, and with none near
+    * When did I die?
+       * Absolute: number of deaths in early game (before 8m), mid game
+         (from then until 15m) and late game (after 15m)
+       * Relative:
+          * Within a cluster of other deaths (big fight)?
+          * Within a cluster of ally deaths only (slaughter)?
+          * Within a cluster of enemy deaths (worth it)?
 
 ## New professor: Celeste
 
@@ -55,49 +57,32 @@ and if I like what I have by then, I'll submit it.
     * Count each FDCBA as 50, 60, 75, 85, 100, respectively, and average
       for an overall grade from Celeste.
 
-## New professor: Samuel
+## New professor: Vox
 
- * Requires this data and routine:
-    * A partitioning of the map (exhaustively) into named regions
-    * A function that maps any position to its named region
- * Focuses on your deaths
-    * Where did I die?
-       * Absolute positioning: list of regions on the map where you died,
-         and how often in each (requires a utility, listed below)
-       * Relative positioning: how many times you died with one ally near,
-         with two near, and with none near
-    * When did I die?
-       * Absolute: number of deaths in early game (before 8m), mid game
-         (from then until 15m) and late game (after 15m)
-       * Relative:
-          * Within a cluster of other deaths (big fight)?
-          * Within a cluster of ally deaths only (slaughter)?
-          * Within a cluster of enemy deaths (worth it)?
+ * Need this new utility:  A function that assesses whether a build was WP,
+   CP, or neither
+ * How common was my build?
+ * This will not only be a comparison among people in your tier and role,
+   but restricted to the same WP/CP choice as you made (requires a
+   utility given below)
+ * A list of your items (with pictures) and next to each, a progress bar
+   of length proportional to how common the item was among the population
+   mentioned in the previous bullet point
+ * At the end, some comments about whether you might need to rethink your
+   build or not
 
 ## New professor: Lyra
 
- * New data:
+ * Topic: Team composition and drafting
+    * List all positive synergies in your team and counters against enemies
+    * List all snyergies on enemy team and their counters to your team
+ * New data required, which I just won't have time to get before the
+   challeng ends:
     * A list of which heroes work well or poorly into which other heroes,
       and why
     * A list of which heroes synergize well or poorly with other heroes,
       and why.
- * Topic: Team composition and drafting
-   (All of these require some utilities listed below.)
-    * List all positive snyergies in your team and counters against enemies
-    * List all snyergies on enemy team and their counters to your team
-
-## New professor: Flicker
-
- * Topic: vision
- * Unfortunately, many of these may not yet be possible...check the
-   telemetry details.
- * Average number of traps on map at once (all these are compared across
-   all teams at your skill tier)
- * Percent of the time someone on your team possessed flares, gun, or
-   contraption
- * Average number of traps in the enemy's side of the map at once
- * Number of flares fired
- * Number of flares that revealed enemies or traps
+ * So Lyra is on hold for now.
 
 ## Extend professors Petal and Krul with counterbuilding information
 
@@ -117,3 +102,17 @@ and if I like what I have by then, I'll submit it.
    and how many times you failed to rotate when you should have rotated
  * Petal can praise you for high % of siezing rotation opportunities
  * Krul can criticize you for a low % of them
+
+## New professor: Flicker
+
+ * Topic: vision
+ * Unfortunately, many of these are not yet possible with the telemetry data
+   we have now, so Flicker is on indefinite hold.  When the data is
+   available, I'd like to do this with it:
+ * Average number of traps on map at once (all these are compared across
+   all teams at your skill tier)
+ * Percent of the time someone on your team possessed flares, gun, or
+   contraption
+ * Average number of traps in the enemy's side of the map at once
+ * Number of flares fired
+ * Number of flares that revealed enemies or traps
