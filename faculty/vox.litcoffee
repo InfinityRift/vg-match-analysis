@@ -100,7 +100,7 @@ Create the advice texts.
             with about #{Number( freq ).toFixed 0}% of them.
             See the crazy bars to the right."
         long : long
-        letter : grade
+        letter : "#{grade} on your build"
         data : [
             type : 'bars'
             bars : for index in myBuild

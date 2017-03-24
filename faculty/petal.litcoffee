@@ -85,5 +85,5 @@ Return Petal's advice.
                  good work!'
                 'Wow, so many things you\'re doing great at!  Gold star!'
             ][letterIndex]
-        letter : 'CBA'[letterIndex]
+        letter : "#{'CBA'[letterIndex]} in sunshine and sparkles"
         data : data

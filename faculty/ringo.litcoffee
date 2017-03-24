@@ -96,5 +96,5 @@ Return Ringo's advice.
                 'Dude, I\'m proud.  You\'re really getting those last hits.'
                 'You don\'t miss either!  Bottoms up, bro.'
             ][letterIndex]
-        letter : 'FDBCA'[letterIndex]
+        letter : "#{'FDBCA'[letterIndex]} in farming"
         data : data

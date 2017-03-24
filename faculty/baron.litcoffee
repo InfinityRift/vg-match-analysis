@@ -172,7 +172,7 @@ Return Baron's advice.
             heroes.'
         short : short
         long : long
-        letter : 'FDCBA'[grade score]
+        letter : "#{'FDCBA'[grade score]} in focus"
         data : [
             type : 'pie'
             portions :

@@ -175,7 +175,7 @@ Report final results.
             spike and don\'t use it for anything.</li>
             </ul>
             Why yes, you\'re right, I am the best instructor at VGU.'
-        letter : overallGrade
+        letter : "#{overallGrade} in power spikes"
         data : [ table ]
 
 The names of all ultimate abilities:

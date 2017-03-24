@@ -92,5 +92,5 @@ Return Krul's advice.
                  be your wake-up call.  Life is not sunshine and roses.
                  And then you die.  Or not.'
             ][letterIndex]
-        letter : 'ABCDF'[letterIndex]
+        letter : "#{'ABCDF'[letterIndex]} in avoiding mistakes"
         data : data

@@ -180,5 +180,5 @@ Final result object:
         short : 'I look at damage you took per spawn because captains should
             draw enemy fire.  And live.'
         long : long.join '<br>'
-        letter : 'FDCBA'[grade average]
+        letter : "#{'FDCBA'[grade average]} in support"
         data : [ table ]

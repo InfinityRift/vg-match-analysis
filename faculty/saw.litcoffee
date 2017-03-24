@@ -96,5 +96,5 @@ Return SAW's advice.
                  old man proud over here.'
                 'Now that\'s what I call some pain!  Nice work!'
             ][letterIndex]
-        letter : 'FDBCA'[letterIndex]
+        letter : "#{'FDBCA'[letterIndex]} in damage output"
         data : data

@@ -260,7 +260,7 @@ Return an advice object (finally!).
             'You didn\'t die in this match?  And I was so hoping to talk
             about your stupidity.  Oh well.  Good job, I guess.'
         long : long
-        letter : grade
+        letter : "#{grade} in deaths"
         data : if total > 0
             [
                 zoneTable
