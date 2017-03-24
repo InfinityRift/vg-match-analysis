@@ -57,7 +57,7 @@ This code answers queries to get lists of recent player ranked matches.
 
 Start the server listening.
 
-    port = 7777
+    port = process.env.PORT
     app.listen port, ->
         console.log "Listening on port #{port}"
 
