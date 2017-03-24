@@ -23,7 +23,7 @@ then it contains the telemetry data, and that same data is also stored in
 the `telemetry` member of the match object itself.
 
     exports.getTelemetryAsset = ( match ) ->
-        console.log match.assets
+        console.log match
         for asset in match.assets ? [ ]
             return asset if asset?.attributes?.name is 'telemetry'
         null
