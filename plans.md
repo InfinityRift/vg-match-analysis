@@ -3,7 +3,6 @@
 
 ## Before end of contest goals:
 
- 1. Get the app deployed to Heroku
  1. Improve error handling
      a. Improve the Internal Error reporter to not show error messages
         themselves, but just apologize and suggest refreshing or trying a
