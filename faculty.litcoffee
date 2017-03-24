@@ -13,15 +13,15 @@ function to do just that.  But first, let's load the modules that contain
 the professors we'll use.
 
     facultyNames = [
-        'petal'
-        'krul'
         'ringo'
         'saw'
-        'ardan'
-        'baron'
-        'celeste'
-        'vox'
         'samuel'
+        'petal'
+        'krul'
+        'baron'
+        'vox'
+        'ardan'
+        'celeste'
         'lyra'
         'flicker'
     ]
@@ -68,7 +68,7 @@ We load the archive for matches of this type and store the results in a
 single object for use by all professors.
 
         archivist = require './archivist'
-        gameMode = archivist.simplifyType match.gameMode
+        gameMode = 'casual' # archivist.simplifyType match.gameMode
         archive = archivist.allArchiveResults gameMode
 
 Now ask each professor for advice.

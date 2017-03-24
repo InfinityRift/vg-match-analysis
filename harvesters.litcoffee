@@ -29,6 +29,7 @@ first, let's load the modules that contain the harvesters we'll use.
         'earlyfountain'
         'secondsupport'
         'teamdmgperspawn'
+        'builds'
         # 'abilitynames' # was for a temporary purpose -- all done
     ] )
 

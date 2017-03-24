@@ -295,6 +295,10 @@ for partitioning gathered data into these categories.
         parts = key.split ' '
         parts[0] = newRole
         parts.join ' '
+    exports.changeKeyTier = ( key, newTier ) ->
+        parts = key.split ' '
+        parts[1] = newTier
+        parts.join ' '
 
 This function uses that key to extract data from an accumulator.
 

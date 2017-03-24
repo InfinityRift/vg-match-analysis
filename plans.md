@@ -6,20 +6,6 @@ as I can by
 [the challenge deadline](https://developer.vainglorygame.com/rules),
 and if I like what I have by then, I'll submit it.
 
-## New professor: Vox
-
- * Need this new utility:  A function that assesses whether a build was WP,
-   CP, or neither
- * How common was my build?
- * This will not only be a comparison among people in your tier and role,
-   but restricted to the same WP/CP choice as you made (requires a
-   utility given below)
- * A list of your items (with pictures) and next to each, a progress bar
-   of length proportional to how common the item was among the population
-   mentioned in the previous bullet point
- * At the end, some comments about whether you might need to rethink your
-   build or not
-
 ## New professor: Lyra
 
  * Topic: Team composition and drafting

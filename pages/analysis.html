@@ -27,7 +27,8 @@
         .ct-series-b .ct-slice-pie { fill: #007D16; }
         .ct-series-c .ct-slice-pie { fill: #888; }
         .ct-series-d .ct-slice-pie { fill: #bbb; }
-        .panel-footer > ul { color: #000; }
+        .panel-body { color: #000; }
+        .panel-footer { color: #000; }
     </style>
   </head>
   <body>
@@ -44,6 +45,8 @@
 						</button>
 						<div class="navbar-brand">
 							<a href="index.html"><h1><span>VG</span>U</h1></a>
+                            <img src='images/vgu-logo-large.png'
+                                 width='20%'>
 						</div>
 					</div>
 
@@ -80,12 +83,12 @@
 	<section id="login-form" style="display: none;">
         <div class="container" style="margin-top: 1em;"
              id="login-form-inside">
-            <div class="center">
-                <h2>Log in</h2>
-                <p>Provide your IGN and Region to get started.</p>
-            </div>
-            <div class="row contact-wrap">
-                <div class="col-md-6 col-md-offset-3">
+            <div class="row">
+                <div class="col-md-3 col-md-offset-3">
+                    <div class="center">
+                        <h2>Log in</h2>
+                        <p>Provide your IGN and Region to get started.</p>
+                    </div>
                     <form action="" method="get" role="form" class="form-inline text-center">
                         <input type="text" name="ign" class="form-control"
                                id="ign" placeholder="Your IGN"/>
@@ -101,6 +104,9 @@
                         <button type="submit" name="submit" class="btn btn-primary btn-lg" required="required">Go</button>
                         <p>&nbsp;</p>
                     </form>
+                </div>
+                <div class="col-md-3">
+                    <img src='images/vgu-logo-large.png'>
                 </div>
             </div><!--/.row-->
         </div><!--/.container-->
@@ -373,7 +379,7 @@
                     if ( row.icon ) {
                         result += '\n<td rowspan=' + numRows + '>'
                                 + '<img src="images/icons/' + row.icon
-                                + '.png"></td>';
+                                + '.png" width="75"></td>';
                         if ( i == 0 ) lastRowSize++;
                     }
                     function addRow ( cells, tag ) {
@@ -413,6 +419,36 @@
                 }, 100, nextChartNumber );
                 return '<div id="chartist' + nextChartNumber
                      + '" class="ct-chart ct-perfect-fourth"></div>';
+            }
+            if ( data.type == 'bars' ) {
+                var result = '<div class="container">';
+                for ( var i = 0 ; i < data.bars.length ; i++ ) {
+                    var bar = data.bars[i];
+                    var color = bar.type == 'WP' ? 'danger' :
+                                bar.type == 'CP' ? 'info' : 'warning';
+                    var row = '<div class="row">'
+                            + '<div class="col-md-1">'
+                            + '<img src="images/icons/'
+                            + bar.icon + '.png" width="50"></div>'
+                            + '<div class="col-md-3">'
+                            + '<p>' + bar.title + '</p>'
+                            + '<div class="progress">'
+                            + '  <div class="progress-bar '
+                            + 'progress-bar-' + color + '"'
+                            + ' role="progressbar"'
+                            + ' aria-valuenow="' + bar.value + '"'
+                            + ' aria-valuemin="' + bar.min + '"'
+                            + ' aria-valuemax="' + bar.max + '"'
+                            + ' style="min-width: 2em;'
+                            + ' width: ' + bar.percent + '%">'
+                            + '    ' + bar.label
+                            + '  </div>'
+                            + '</div>'
+                            + '</div></div>'
+                    console.log( row );
+                    result += row;
+                }
+                return result + '</div>';
             }
             return '<pre>' + JSON.stringify( data, null, 2 ) + '</pre>';
         }
@@ -459,6 +495,8 @@
                             + renderData( advice.data[2] ) + '</div>';
                 } else if ( advice.data[0].type == 'table' ) {
                     result += '<div class="col-md-8">' + adviceBlock
+                            + '</div><div class="row">'
+                            + '<div class="col-md-8 col-md-offset-2">'
                             + renderData( advice.data )
                             + '</div>';
                 } else {
