@@ -1,6 +1,31 @@
 
 # Plans for the future of this project
 
+## Before end of contest goals:
+
+ 1. Get the app deployed to Heroku
+ 1. Improve error handling
+     a. Improve the Internal Error reporter to not show error messages
+        themselves, but just apologize and suggest refreshing or trying a
+        different match.
+     a. Look up how to handle timeout AJAX requests in jQuery and do that
+        for each time the analysis page sends one, giving an appropriate
+        error page each time.
+     a. Change the npm start command to dump console stuff to a log file
+        with `tee`.
+ 1. Add a data browsing page
+     * Provide new server queries for:
+        * getting list of harvesters
+        * getting archive metadata
+        * getting role-tier-harvester data for any given set of such triples
+     * Provide a cache for such results
+     * Provide a UI for choosing role (or all together), tier (or all
+       together), and harvester (must be a specific one), all in a left
+       column of controls
+     * Enable that UI to just dump JSON data into the right column
+     * Make the page smart enough to know how to make charts
+ 1. Add a link from the other pages to that one for more data details
+
 Here's a list of things I'd like to add to this project.  I'll add as many
 as I can by
 [the challenge deadline](https://developer.vainglorygame.com/rules),
