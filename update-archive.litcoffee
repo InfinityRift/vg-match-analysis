@@ -20,7 +20,7 @@ Import the Archivist module and set some parameters.  Hand it the
     archivist = require './archivist'
     archivist.setStartTime new Date 2017, 2, 16
     archivist.setEndTime new Date 2017, 2, 21
-    archivist.setMaxima casual : 5 # everything else zero
+    archivist.setMaxima ranked : 5 # everything else zero
     archivist.setQueryFrequency 7*archivist.seconds
     archivist.setQueryObject new vainglory key
     require './harvesters'
@@ -31,7 +31,7 @@ chosen how many matches I want in my archive.  This is not necessary for
 every use of the `archivist` module; it's just what I want to do here.  So
 I choose this value:
 
-    getThisManyMatches = 200
+    getThisManyMatches = 3000
 
 Now I compute all this stuff to figure out what value to pass to
 `setDuration`, and doing so then completes the archivist setup process.
