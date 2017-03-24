@@ -30,4 +30,4 @@ course for matches in which you don't die, that gives an undefined value.
 So in reality we divide by the number of deaths plus 1, which is the number
 of times you spawned, or the number of "lives" you had in that game.
 
-        damageTaken / ( participant.stats.deaths + 1 )
+        damageTaken / ( participant._stats.deaths + 1 )

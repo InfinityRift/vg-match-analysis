@@ -70,9 +70,9 @@ This function creates JSON data from a participant.
     participantToJSON = ( participant ) ->
         hero : participant.actor
         ign : participant.player.name
-        kills : participant.stats.kills
-        deaths : participant.stats.deaths
-        assists : participant.stats.assists
+        kills : participant._stats.kills
+        deaths : participant._stats.deaths
+        assists : participant._stats.assists
 
 This function creates JSON data from a match.
 
@@ -81,8 +81,9 @@ This function creates JSON data from a match.
         leftIndex = if /left/.test zeroSide then 0 else 1
         left = match.rosters[leftIndex]
         right = match.rosters[1-leftIndex]
+        utils = require './harvesters/utils'
         id : match.data.id
         time : match.data.attributes.createdAt
         left : participantToJSON p for p in left.participants
         right : participantToJSON p for p in right.participants
-        telemetry : require( './harvesters/utils' ).hasTelemetryData match
+        telemetry : utils.hasTelemetryData match

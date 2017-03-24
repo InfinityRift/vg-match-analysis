@@ -29,7 +29,7 @@
     "coffeescript": "^1.12.4",
     "express": "^4.15.2",
     "simple-statistics": "^2.5.0",
-    "vainglory": "^0.9.9"
+    "vainglory": "^1.0.0"
   },
   "engines": {
     "node": "7.6.0"

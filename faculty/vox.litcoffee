@@ -21,7 +21,7 @@ skill tier and role.
         fullKey = utils.roleTierKey match, participant, 'builds'
         role = utils.estimateRole match, participant
         tier = utils.simpleSkillTier participant
-        next = Math.max tier + 1, 10
+        next = Math.min tier + 1, 10
         fullKey = utils.changeKeyTier fullKey, next
         otherBuilds = archive[fullKey] ? [ ]
 
@@ -44,10 +44,10 @@ stuff.
 
         stats = require 'simple-statistics'
         freq = stats.mean ( frequencies[i] for i in myBuild )
-        if freq < 20 then grade = 'F'
-        else if freq < 40 then grade = 'D'
-        else if freq < 60 then grade = 'C'
-        else if freq < 80 then grade = 'B'
+        if freq < 15 then grade = 'F'
+        else if freq < 30 then grade = 'D'
+        else if freq < 45 then grade = 'C'
+        else if freq < 60 then grade = 'B'
         else grade = 'A'
 
 Now look for really commonly purchased things that they did not purchase,
@@ -93,11 +93,11 @@ Create the advice texts.
             #{Number( freq ).toFixed 0}% of those players.
             See the crazy bars to the right."
         else
-            "Normally I builds with those in the next tier up, to help
-            players learn.  But you're Vainglorious, man, so like, that's
-            awesome.  I'll just compare you to other Vainglorious players
-            in the #{role} role.  You built in line with about
-            #{Number( freq ).toFixed 0}% of them.
+            "Normally I compare your builds with those in the next tier up,
+            to help players improve.  But you're Vainglorious, man, so
+            like, that's awesome.  I'll just compare you to other
+            Vainglorious players in the #{role} role.  You built in line
+            with about #{Number( freq ).toFixed 0}% of them.
             See the crazy bars to the right."
         long : long
         letter : grade
@@ -165,6 +165,6 @@ build, or something else.
 And the icon name can be computed for each item as follows.
 
     nameToIcon = ( name ) ->
-        name.replace ' ', '-'
+        name.replace RegExp( ' ', 'g' ), '-'
         .replace '\'', ''
         .toLowerCase()

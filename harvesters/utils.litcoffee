@@ -12,7 +12,7 @@ so on.
 For some things, no utility function is needed, just some notes on how to
 compute the thing very easily without assistance of any method.  Given a
 match, one can get the skill tier of any player in it using code such as
-`match.rosters[i].participants[j].stats.skillTier`.  To get the average
+`match.rosters[i].participants[j]._stats.skillTier`.  To get the average
 skill tier for a whole match, use `matchSkillTier`, defined below.
 
 ## Tools in this module
@@ -23,9 +23,8 @@ then it contains the telemetry data, and that same data is also stored in
 the `telemetry` member of the match object itself.
 
     exports.getTelemetryAsset = ( match ) ->
-        console.log match.data.relationships.assets
         for asset in match.assets ? [ ]
-            return asset if asset?.attributes?.name is 'telemetry'
+            return asset if asset?.name is 'telemetry'
         null
     exports.hasTelemetryData = ( match ) ->
         exports.getTelemetryAsset( match )?
@@ -33,7 +32,7 @@ the `telemetry` member of the match object itself.
         telemetryAsset = exports.getTelemetryAsset match
         return callback null unless telemetryAsset?
         fetchedData = ''
-        request = https.request telemetryAsset.attributes.URL
+        request = https.request telemetryAsset.URL
         request.on 'response', ( res ) ->
             res.on 'data', ( data ) -> fetchedData += data
             res.on 'end', ->
@@ -51,7 +50,7 @@ Average skill tier for all players in a match.
         total = count = 0
         for roster in match.rosters
             for participant in roster.participants
-                total += participant.stats.skillTier
+                total += participant._stats.skillTier
                 count++
         if count then total / count else undefined
 
@@ -280,7 +279,7 @@ gold, which is too confusing and too granular for my needs).
 
     exports.simpleSkillTier = ( participant ) ->
         try
-            ( ( participant.stats.skillTier + 3 ) / 3 ) | 0
+            ( ( participant._stats.skillTier + 3 ) / 3 ) | 0
         catch e
             return null
 

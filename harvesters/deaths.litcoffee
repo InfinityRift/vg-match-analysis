@@ -12,4 +12,4 @@ folder](basic.litcoffee).
     utils = require './utils'
     ( require './basic' ).setup exports, module.filename,
     ( match, participant ) ->
-        participant.stats.deaths
+        participant._stats.deaths

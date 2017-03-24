@@ -151,9 +151,9 @@ all game modes.
 A few related utility functions:
 
     exports.simplifyType = ( typeFromAPI ) ->
-        if /blitz/.test typeFromAPI then return 'blitz'
-        if /aral/.test typeFromAPI then return 'battleRoyale'
-        if typeFromAPI is 'ranked' then return 'ranked'
+        if /blitz/i.test typeFromAPI then return 'blitz'
+        if /aral/i.test typeFromAPI then return 'battleRoyale'
+        if /ranked/i.test typeFromAPI then return 'ranked'
         'casual'
     emptyAccumulator = ( withCounts = yes ) ->
         result = { }

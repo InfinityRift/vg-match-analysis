@@ -32,7 +32,7 @@ undefined value. So in reality we divide by the number of deaths plus 1
 the number of times you or a teammate spawned, or the number of "lives" your
 team had in that game.
 
-        totalSpawns = participant.stats.deaths + 1
+        totalSpawns = participant._stats.deaths + 1
         for ally in utils.getAllies match, participant
-            totalSpawns += ally.stats.deaths + 1
+            totalSpawns += ally._stats.deaths + 1
         damageTaken / totalSpawns
