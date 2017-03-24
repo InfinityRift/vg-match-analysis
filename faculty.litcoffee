@@ -68,7 +68,7 @@ We load the archive for matches of this type and store the results in a
 single object for use by all professors.
 
         archivist = require './archivist'
-        gameMode = 'casual' # archivist.simplifyType match.gameMode
+        gameMode = archivist.simplifyType match.gameMode
         archive = archivist.allArchiveResults gameMode
 
 Now ask each professor for advice.
