@@ -147,6 +147,7 @@ regions.
 
         zoneTable =
             type : 'table'
+            compact : yes
             rows : [
                 headings : [ 'Region', 'Deaths' ]
             ]

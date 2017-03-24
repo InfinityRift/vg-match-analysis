@@ -6,41 +6,6 @@ as I can by
 [the challenge deadline](https://developer.vainglorygame.com/rules),
 and if I like what I have by then, I'll submit it.
 
-## New professor: Celeste
-
- * Focuses on power spikes
- * Choose a constant C, such as 30 seconds.  It may need to change.
- * Loop through every event in the match.
-    * If it's a `LearnAbility` that maxes out the ability, mark that as a
-      power spike at the nearest start of a C-second interval, for the
-      owning team.
-    * If it's a `BuyItem` that is a tier3 item in WP, CP, or utility, mark
-      that as a power spike as well, for the owning team.
-    * If it's a kill of a hero, mark that as an accomplishment within the
-      C-second interval in which it happened, for the appropriate team.
-    * If it's a kill of an objective, mark that as an accomplishment within
-      the C-second interval in which it happened, for the appropriate team.
- * Output a table with these columns:
-    * Time period (0:00-0:30, 0:30-1:00, etc., every C-second block)
-    * Spikes on your team (names of heroes in that time block that had
-      a spike)
-    * Spikes on enemy team (same)
-    * Your advantage (an integer, number of spikes in your column minus
-      number of spikes in enemy column)
-    * Kills (us/them) (how many each team got in that time slice), and
-      internally count each as +1/-1 for scoring this interval)
-    * Objectives (us/them) (how many each team got in that time slice), and
-      internally count each as +3/-3 for scoring this interval)
-    * Grade
-       * If they had more spikes, score boundaries between FDCBA:
-         -5.5, -3.5, -1.5, +1.5
-       * If no one had any power spikes, score boundaries between FDCBA:
-         -4.5, -2.5, -0.5, +2.5
-       * If we had more spikes, score boundaries between FDCBA:
-         -2.5, -0.5, +2.5, +5.5
-    * Count each FDCBA as 50, 60, 75, 85, 100, respectively, and average
-      for an overall grade from Celeste.
-
 ## New professor: Vox
 
  * Need this new utility:  A function that assesses whether a build was WP,
