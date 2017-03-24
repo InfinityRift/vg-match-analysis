@@ -7,12 +7,12 @@
     "url": "git+https://github.com/nathancarter/vg-match-analysis.git"
   },
   "scripts": {
-    "update-archive": "coffee update-archive.litcoffee",
+    "update-archive": "node_modules/coffeescript/bin/coffee update-archive.litcoffee",
     "clear": "rm -f archive-*.json full-archive.json",
-    "refresh-archive": "rm -f archive-*.json full-archive.json && coffee update-archive.litcoffee",
+    "refresh-archive": "rm -f archive-*.json full-archive.json && node_modules/coffeescript/bin/coffee update-archive.litcoffee",
     "backup-archive": "rm -f backup-archive/* && cp archive-*.json full-archive.json backup-archive/",
     "restore-backup": "rm -f archive-*.json full-archive.json && cp backup-archive/archivs-*.json backup-archive/full-archive.json .",
-    "start": "coffee server.litcoffee"
+    "start": "node_modules/coffeescript/bin/coffee server.litcoffee"
   },
   "keywords": [
     "game",
@@ -26,6 +26,7 @@
   },
   "homepage": "https://github.com/nathancarter/vg-match-analysis#readme",
   "dependencies": {
+    "coffeescript": "^1.12.4",
     "express": "^4.15.2",
     "simple-statistics": "^2.5.0",
     "vainglory": "^0.9.9"
