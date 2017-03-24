@@ -1,5 +1,4 @@
 node_modules/
-my-api-key.*
 archive-*.json
 .DS_Store
 testing.litcoffee

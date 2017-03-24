@@ -4,7 +4,7 @@
 Important globals.
 
     vainglory = require 'vainglory'
-    { key } = require './my-api-key'
+    key = process.env.VG_API_KEY
     vg = new vainglory key
 
 ## Fetch recent matches for player
