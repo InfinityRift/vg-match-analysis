@@ -12,7 +12,7 @@ and if I like what I have by then, I'll submit it.
     * List all positive synergies in your team and counters against enemies
     * List all snyergies on enemy team and their counters to your team
  * New data required, which I just won't have time to get before the
-   challeng ends:
+   challenge ends:
     * A list of which heroes work well or poorly into which other heroes,
       and why
     * A list of which heroes synergize well or poorly with other heroes,

@@ -66,7 +66,9 @@ so that the archive is rebuilt thereafter.
 
     startTime = new Date 2017, 2, 15 # Y M D, with 0=January
     exports.getStartTime = -> startTime
-    exports.setStartTime = ( t ) -> startTime = t
+    exports.setStartTime = ( t ) ->
+        startTime = t
+        exports.setMetaData 'start time', t
 
 The end time of the archive:  Note that setting the archive start time may
 mess up the entire archive, so you may want to call `deleteEntireArchive()`
@@ -74,7 +76,9 @@ so that the archive is rebuilt thereafter.
 
     endTime = new Date # defaults to now
     exports.getEndTime = -> endTime
-    exports.setEndTime = ( t ) -> endTime = t
+    exports.setEndTime = ( t ) ->
+        endTime = t
+        exports.setMetaData 'end time', t
 
 It can be handy to ask for a certain distance into the past.  This function
 makes that easy.
@@ -179,6 +183,12 @@ modes at once.
 
 ## Combining the archive
 
+You can store metadata in the archive.  It will be put in the final
+"full archive" file only, and only when that file is created.
+
+    metadata = { }
+    exports.setMetaData = ( key, value ) -> metadata[key] = value
+
 Execute the joining function on all archived files as follows.
 
     getAllArchiveResults = ->
@@ -188,6 +198,7 @@ Execute the joining function on all archived files as follows.
                 next = JSON.parse fs.readFileSync file
                 for type in matchTypes
                     result[type] = joiningFunction result[type], next[type]
+        result.metadata = metadata
         result
 
 Save them into a cache file as follows.

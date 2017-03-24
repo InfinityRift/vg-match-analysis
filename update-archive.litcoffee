@@ -32,6 +32,7 @@ every use of the `archivist` module; it's just what I want to do here.  So
 I choose this value:
 
     getThisManyMatches = 3000
+    archivist.setMetaData 'number of matches', getThisManyMatches
 
 Now I compute all this stuff to figure out what value to pass to
 `setDuration`, and doing so then completes the archivist setup process.
