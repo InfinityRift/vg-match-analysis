@@ -49,11 +49,10 @@ Return Krul's advice.
         role = utils.estimateRole match, participant
         tier = utils.simpleSkillTier participant
         if include.length > 0
-            short = ''
+            short = '<ul>'
             for own key, value of goods
-                if short isnt '' then short += ' and '
-                short += "#{value} #{key}"
-            short = "A #{short}."
+                short += "<li>#{value} #{key}</li>"
+            short += '</ul>'
         else
             short = 'How impressive...I cannot find a category to
                 complain about!'
@@ -76,8 +75,9 @@ Return Krul's advice.
         quote : 'This is your mistake.'
         topic : 'Let\'s see where you\'re doing badly.'
         short : short
-        long : "I'm comparing you only to other tier-#{tier} players in the
-            #{role} role.  " + [
+        long : "I'm comparing you only to other
+            <strong>tier-#{tier}</strong> players in the
+            <strong>#{role}</strong> role.  " + [
                 'I wish you had more fatal flaws, but alas, it seems you
                  have earned a good grade.'
                 'Having only one fatal flaw, I shall give you a B.  Let that

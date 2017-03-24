@@ -145,14 +145,17 @@ good teamwork.
             return 2 if pct < 75
             return 3 if pct < 90
             4
-        long = "We're going to look at how often you and any nearby allies
-            were targeting your attacks at the same enemy hero.  That's
-            good teamwork.  Bad teamwork is when you're all hitting
-            different enemies.  Don't do that.  Shifting teamwork means you
-            were changing targets, which is fine to do sometimes, but not
-            constantly.  Everything else is neutral teamwork."
-        short = "#{Number( score ).toFixed 0}% of your team fights included
-            good or neutral teamwork."
+        long = "<ul>
+            <li><strong>Good teamwork</strong> is when you and any nearby
+            allies are targeting your attacks at the same enemy hero.</li>
+            <li><strong>Bad teamwork</strong> is when you're all hitting
+            different enemies. Don't do that.</li>
+            <li><strong>Shifting teamwork</strong> means you were changing
+            targets, which is fine to do sometimes, but not constantly.</li>
+            <li><strong>Neutral teamwork</strong> is everything
+            else.</li></ul>"
+        short = "<strong>#{Number( score ).toFixed 0}%</strong> of your
+            team fights included <strong>good or neutral teamwork</strong>."
         role = utils.estimateRole match, participant
         if role is 'captain'
             short += '  You can improve this number as captain by pinging

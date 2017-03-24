@@ -84,8 +84,9 @@ Return Ringo's advice.
         quote : 'Ha!  I don\'t miss.'
         topic : 'Let\'s talk about farming gold.'
         short : short
-        long : "I'm comparing you only to other tier-#{tier} players in the
-            #{role} role.  " + [
+        long : "I'm comparing you only to other
+            <strong>tier-#{tier}</strong> players in the
+            <strong>#{role}</strong> role.  " + [
                 'You\'re, like, below average all the time.  Have you tried
                  drinking?  Just sayin\', it could help.'
                 'You\'re doing about average.  Focus on those last

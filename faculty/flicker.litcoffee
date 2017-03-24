@@ -14,9 +14,13 @@ required to already have its telemetry data embedded.
         quote : 'No one is in this bush, no one at all!'
         topic : 'Did your team have plenty of vision, and make good use of
             it?'
-        short : 'Coming soon'
-        long : 'Doctor Flicker was just here, but now he\'s not.  It\'s an
-            annoying habit of his.  As soon as we find him, we\'ll get him
-            back here to teach you something...'
+        short : 'This faculty member can\'t start his research yet,
+            <strong>because he doesn\'t have the data.</strong>
+            Right now Vainglory matches don\'t
+            report events about vision (placing traps, throwing flares,
+            using contraption, etc.).  When they do, you can be sure that
+            Doctor Flicker will be very interested in that data!'
+        long : 'Besides, Doctor Flicker is rather hard to find.  I could
+            have sworn he was just here...'
         # letter : ''
         # data : [ ]

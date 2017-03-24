@@ -181,12 +181,11 @@ Now, information about how many allies were nearby.
 Lastly, information about other deaths that took place around the same time.
 
         times = ( n ) ->
-            return 'once' if n is 1
-            return 'twice' if n is 2
-            "#{n} times"
+            return '<strong>once</strong>' if n is 1
+            return '<strong>twice</strong>' if n is 2
+            "<strong>#{n} times</strong>"
         Times = ( n ) ->
-            result = times n
-            result[0].toUpperCase() + result[1..]
+            times( n ).replace( 'once', 'Once' ).replace( 'twice', 'Twice' )
         if total is 0
             long = 'Normally I would talk about whether your deaths were a
                 waste or a good trade.  But you didn\'t die.  Well, maybe

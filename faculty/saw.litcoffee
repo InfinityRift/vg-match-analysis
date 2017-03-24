@@ -83,8 +83,9 @@ Return SAW's advice.
         quote : 'Here comes the pain!'
         topic : 'How\'s your damage output, mate?'
         short : short
-        long : "I'm comparing you only to other tier-#{tier} players in the
-            #{role} role.  " + [
+        long : "I'm comparing you only to other
+            <strong>tier-#{tier}</strong> players in the
+            <strong>#{role}</strong> role.  " + [
                 'You seem to need some more red items.  Or more time spent
                  with your finger on the trigger.  You know to get Bonesaw
                  if they build brown, right?'

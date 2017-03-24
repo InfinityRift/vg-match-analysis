@@ -63,7 +63,7 @@ Some utilities.
         sayTime = ( ms ) ->
             secs = ( ms / 1000 ) | 0
             mins = 0
-            if secs > 60
+            if secs >= 60
                 mins = ( secs - secs % 60 ) / 60
                 secs = secs % 60
             secs = "#{secs}"
@@ -86,14 +86,14 @@ Return Ardan's advice.
                 only teach captains, really.  I'll give you advice, but it
                 won't fit your role."
         if thisTime[0] < 0
-            long.push 'You didn\'t buy a Fountain.  Son, captains buy
-                Fountains.  Do it.'
+            long.push 'You didn\'t buy a Fountain.
+                <strong>Son, captains buy Fountains.</strong>  Do it.'
         if thisTime[1] < 0
             long.push 'You only bought one team utility item.  I suggest
                 you get more than one.  Unless you don\'t like your team.'
         long.push "Your overall scores in this match look better than about
-            #{Number( average ).toFixed 0}% of the captains in your skill
-            tier."
+            <strong>#{Number( average ).toFixed 0}%</strong> of the
+            captains in your skill tier."
         if role isnt 'captain' and average > 50
             long[long.length-1] += "  That's pretty sad, since you were
                 playing #{role}, as far as I can tell."
@@ -104,12 +104,12 @@ needed if something goes wrong.
 
         table = type : 'table', rows : [ ]
         table.rows.push
-            icon : 'fountain'
+            icon : 'fountain-of-renewal'
             headings : [
                 'Time to fountain:'
                 'Score:'
                 'Grade:'
-                'Lowest seen:'
+                'Lowest I\'ve seen:'
             ]
             data : [
                 if matchData.earlyfountain >= 0
@@ -129,7 +129,7 @@ needed if something goes wrong.
                 'Second T3 support item:'
                 'Score:'
                 'Grade:'
-                'Lowest seen:'
+                'Lowest I\'ve seen:'
             ]
             data : [
                 if matchData.secondsupport >= 0
@@ -149,7 +149,7 @@ needed if something goes wrong.
                 'Damage taken per spawn:'
                 'Score:'
                 'Grade:'
-                'Highest seen:'
+                'Highest I\'ve seen:'
             ]
             data : [
                 niceNum matchData.dmgperspawn
@@ -163,7 +163,7 @@ needed if something goes wrong.
                 'Damage team took per spawn:'
                 'Score:'
                 'Grade:'
-                'Highest seen:'
+                'Highest I\'ve seen:'
             ]
             data : [
                 niceNum matchData.teamdmgperspawn
@@ -179,6 +179,6 @@ Final result object:
         topic : 'Let\'s see how well you helped your team.'
         short : 'I look at damage you took per spawn because captains should
             draw enemy fire.  And live.'
-        long : long
+        long : long.join '<br>'
         letter : 'FDCBA'[grade average]
         data : [ table ]

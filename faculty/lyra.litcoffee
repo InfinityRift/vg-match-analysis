@@ -14,8 +14,9 @@ required to already have its telemetry data embedded.
         quote : 'You\'ll be safer with me.'
         topic : 'Did your team composition synergize?  Did it work well into
             the enemy team\'s composition?'
-        short : 'Coming soon'
-        long : 'Dr. Lyra is on sabbatical for the 2016-2017 academic year,
-            and will return to teaching duties in the fall.'
+        short : '<strong>Advice from Dr. Lyra may be coming in the
+            future.</strong>'
+        long : 'She is on sabbatical for the 2016-2017 academic year,
+            and will return to teaching duties thereafter.'
         # letter : ''
         # data : [ ]

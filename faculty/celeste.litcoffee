@@ -9,7 +9,7 @@ She looks into whether you capitalized on your power spikes.  She slices the
 match into successive time interval, for simplicity of reporting.  Here is
 the size of each time interval (feel free to change it):
 
-    dt = 30*1000 # 30 seconds
+    dt = 60*1000 # 60 seconds
 
 As with all faculty, he provides one method, `advice`, which takes a match,
 participant, and harvested match data, and creates an object of advice, as
@@ -94,7 +94,7 @@ Form all our results into a table.
         sayTime = ( ms ) ->
             secs = ( ms / 1000 ) | 0
             mins = 0
-            if secs > 60
+            if secs >= 60
                 mins = ( secs - secs % 60 ) / 60
                 secs = secs % 60
             secs = "#{secs}"
@@ -142,10 +142,10 @@ Form all our results into a table.
             table.rows.push data : [
                 wrap "#{sayTime i*dt}-#{sayTime i*dt+dt}"
                 wrap "#{spikes.ally[i]}/#{spikes.enemy[i]}"
-                wrap adv
+                wrap "<strong>#{adv}</strong>"
                 wrap "#{kills.ally[i]}/#{kills.enemy[i]}"
                 wrap "#{objectives.ally[i]}/#{objectives.enemy[i]}"
-                wrap grade
+                wrap "<strong>#{grade}</strong>"
             ]
         overallGrade = stats.mean scores
         if overallGrade < 40 then overallGrade = 'F'
@@ -163,13 +163,18 @@ Report final results.
             down the enemy team\'s power spikes.'
         short : 'The (naturally, beautiful) table below gives a detailed
             grade of how your team did at each point in the match.'
-        long : 'I marked power spikes whenever you or enemies learned new
-            abilities, overdrove your abilities, bought infusions, or bought
-            effective tier 3 items.  I graded you based on what you
-            accomplished at each point.  Bonus points if you keep the enemy
-            from capitalizing on power spikes.  Points off if you have a
-            spike and don\'t use it for anything.  And yes, you\'re right,
-            I am the best instructor at VGU.'
+        long : '<ul>
+            <li>I marked power spikes whenever you or enemies
+            <strong>learned new abilities, overdrove your abilities, bought
+            infusions, or bought effective tier 3 items.</strong></li>
+            <li>I graded you based on what you
+            accomplished at each point.</li>
+            <li>Bonus points if you keep the enemy
+            from capitalizing on power spikes.</li>
+            <li>Points off if you have a
+            spike and don\'t use it for anything.</li>
+            </ul>
+            Why yes, you\'re right, I am the best instructor at VGU.'
         letter : overallGrade
         data : [ table ]
 

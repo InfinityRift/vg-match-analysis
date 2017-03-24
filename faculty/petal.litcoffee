@@ -49,14 +49,14 @@ Return Petal's advice.
         role = utils.estimateRole match, participant
         tier = utils.simpleSkillTier participant
         if include.length > 0
-            short = ''
+            short = '<ul>'
             for own key, value of goods
-                if short isnt '' then short += ' and '
-                short += "#{value} #{key}"
-            short = "A #{short}."
+                short += "<li>#{value} #{key}</li>"
+            short += '</ul>'
         else
-            short = 'How to say this...you didn\'t really excel in any
-                category.  But I\'m sure you\'ll do well in the next match!'
+            short = 'Oh noooo...you didn\'t really excel in any category.
+                But that\'s okay!
+                I\'m sure you\'ll do well in the next match!'
         data = [ ]
         for statName in include
             data.push
@@ -76,8 +76,9 @@ Return Petal's advice.
         quote : 'I\'ll light up your life!'
         topic : 'Let\'s see where you\'re doing well.'
         short : short
-        long : "I'm comparing you only to other tier-#{tier} players in the
-            #{role} role.  " + [
+        long : "I'm comparing you only to other
+            <strong>tier-#{tier}</strong> players in the
+            <strong>#{role}</strong> role.  " + [
                 'I\'d give you a better grade if I had more things to
                  praise -- sorry!'
                 'I found three things you\'re doing well -- keep up the
