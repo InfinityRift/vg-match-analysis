@@ -12,9 +12,10 @@ various heroes in the game, and offer advice fitting to that hero.  (For
 instance, cheery Petal gives encouraging advice, while dark Krul likes to
 focus on your fatal errors.)
 
-This may become an entry for
+This has become an entry for
 [the API Challenge](https://developer.vainglorygame.com/rules),
-or it may not.  Let's see how far I get by the deadline...
+and you can see it live online
+[here](http://vgu.herokuapp.com).
 
 ## Plans
 
