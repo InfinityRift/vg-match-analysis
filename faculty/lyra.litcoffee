@@ -17,6 +17,7 @@ required to already have its telemetry data embedded.
         short : '<strong>Advice from Dr. Lyra may be coming in the
             future.</strong>'
         long : 'She is on sabbatical for the 2016-2017 academic year,
-            and will return to teaching duties thereafter.'
+            writing another (levitating, magical) book.<br>
+            She will return to teaching duties thereafter.'
         # letter : ''
         # data : [ ]
