@@ -288,9 +288,10 @@ gold, which is too confusing and too granular for my needs).
 Create an accumulator key that contains both role and simple skill tier,
 for partitioning gathered data into these categories.
 
+    exports.rawRoleTierKey = ( role, tier, key ) -> "#{role} #{tier} #{key}"
     exports.roleTierKey = ( match, participant, key ) ->
-        "#{exports.estimateRole match, participant}
-         #{exports.simpleSkillTier participant} #{key}"
+        exports.rawRoleTierKey ( exports.estimateRole match, participant ),
+            ( exports.simpleSkillTier participant ), key
     exports.changeKeyRole = ( key, newRole ) ->
         parts = key.split ' '
         parts[0] = newRole

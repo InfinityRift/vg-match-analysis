@@ -11,27 +11,30 @@ various other files in this repository, so that
 that it runs them all.  In fact, we provide a function to do just that.  But
 first, let's load the modules that contain the harvesters we'll use.
 
-    harvesters = ( require "./harvesters/#{name}" for name in [
-        'kills'
-        'deaths'
-        'gold'
-        'objectives'
-        'stealing'
-        'gotstolen'
-        'lonelydeaths'
-        'goldinearlygame'
-        'goldinmidgame'
-        'goldinlategame'
-        'dmgheroes'
-        'dpsheroes'
-        'dpsobjectives'
-        'dmgperspawn'
-        'earlyfountain'
-        'secondsupport'
-        'teamdmgperspawn'
-        'builds'
-        # 'abilitynames' # was for a temporary purpose -- all done
-    ] )
+    harvesterExplanations =
+        kills : 'number of kills'
+        deaths : 'number of deaths'
+        gold : 'CS (creep score)'
+        objectives : 'damage done to objctives'
+        stealing : 'gold earned from enemy jungle'
+        gotstolen : 'gold enemies earned from my jungle'
+        lonelydeaths : 'number of deaths with no allies near'
+        goldinearlygame : 'gold earned before 8 minutes'
+        goldinmidgame : 'gold earned 8-15 minutes'
+        goldinlategame : 'gold earned after 15 minutes'
+        dmgheroes : 'damage done to enemy heroes'
+        dpsheroes : 'max damage per second on enemy heroes'
+        dpsobjectives : 'damage done to objectives'
+        dmgperspawn : 'max damage per second on objectives'
+        earlyfountain : 'time until fountain purchased'
+        secondsupport : 'time until second tier 3 support item'
+        dmgperspawn : 'damage done to me per spawn'
+        teamdmgperspawn : 'damage done to my team per spawn'
+        builds : 'items purchased'
+        # abilitynames # was for a temporary purpose -- all done
+    exports.getHarvesters = -> harvesterExplanations
+    harvesters = ( require "./harvesters/#{name}" \
+        for name in Object.keys harvesterExplanations )
 
 All of theses modules appear in [the harvesters folder](./harvesters/).
 

@@ -1,25 +1,11 @@
 
 # Plans for the future of this project
 
-## Before end of contest goals:
-
- 1. Add a data browsing page
-     * Provide new server queries for:
-        * getting list of harvesters
-        * getting archive metadata
-        * getting role-tier-harvester data for any given set of such triples
-     * Provide a cache for such results
-     * Provide a UI for choosing role (or all together), tier (or all
-       together), and harvester (must be a specific one), all in a left
-       column of controls
-     * Enable that UI to just dump JSON data into the right column
-     * Make the page smart enough to know how to make charts
- 1. Add a link from the other pages to that one for more data details
-
-Here's a list of things I'd like to add to this project.  I'll add as many
-as I can by
+Here's a list of things I'd like to add to this project.  I can't add any
+more before
 [the challenge deadline](https://developer.vainglorygame.com/rules),
-and if I like what I have by then, I'll submit it.
+but this is just thinking ahead in case I play with this project more after
+the deadline.
 
 ## New professor: Lyra
 

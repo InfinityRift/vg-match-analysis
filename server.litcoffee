@@ -1,6 +1,8 @@
 
 # Main module
 
+    queries = require './queries'
+
 This is the server for the main app.
 
 ## Start the server
@@ -26,7 +28,6 @@ match.
 This code answers queries to get match analysis.
 
         if dict.match? and dict.ign?
-            queries = require './queries'
             queries.getAdviceForPlayerInMatch dict.match, dict.ign,
                 ( error, matchObject, result ) ->
                     res.setHeader 'Content-Type', 'application/json'
@@ -40,7 +41,6 @@ This code answers queries to get match analysis.
 This code answers queries to get lists of recent player ranked matches.
 
         else if dict.ign?
-            queries = require './queries'
             queries.recentMatchesForPlayer
                 ign : dict.ign
                 shard : dict.shard?.toLowerCase() ? 'na'
@@ -48,10 +48,29 @@ This code answers queries to get lists of recent player ranked matches.
             , ( error, result ) ->
                 res.setHeader 'Content-Type', 'application/json'
                 if error
-                    res.send error : error
+                    res.send error : error.message
                 else
                     res.send JSON.stringify \
                         ( matchToJSON match for match in result.match )
+
+This code answers queries to browse the data archive.
+
+        else if dict.archive?
+            res.setHeader 'Content-Type', 'application/json'
+            mode = dict.mode ? 'ranked'
+            try
+                res.send JSON.stringify \
+                    queries.getArchiveData mode, JSON.parse \
+                    decodeURIComponent dict.archive
+            catch e
+                res.send error : e.message
+
+This code answers queries about the list of stats in the data archive.
+
+        else if dict.stats?
+            res.setHeader 'Content-Type', 'application/json'
+            res.send JSON.stringify \
+                require( './harvesters' ).getHarvesters()
         else
             res.status( 404 ).send '404 - Not found'
 

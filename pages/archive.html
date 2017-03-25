@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>VGU: Data Archive</title>
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+	<link rel="stylesheet" href="css/font-awesome.min.css">
+	<link rel="stylesheet" href="css/animate.css">
+	<link href="css/prettyPhoto.css" rel="stylesheet">
+	<link href="css/style.css" rel="stylesheet" />
+    <!-- =======================================================
+        Theme Name: Company
+        Theme URL: https://bootstrapmade.com/company-free-html-bootstrap-template/
+        Author: BootstrapMade
+        Author URL: https://bootstrapmade.com
+    ======================================================= -->
+    <style>
+        .aboutus a { text-decoration: underline; }
+    </style>
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
+    <script src="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
+  </head>
+  <body>
+	<header>
+		<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+			<div class="navigation">
+				<div class="container">
+					<div class="navbar-header">
+						<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse.collapse">
+							<span class="sr-only">Toggle navigation</span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+						</button>
+						<div class="navbar-brand">
+							<a href="index.html"><h1><span>VG</span>U</h1></a>
+                            <img src='images/vgu-logo-large.png'
+                                 width='20%'>
+						</div>
+					</div>
+
+					<div class="navbar-collapse collapse">
+						<div class="menu">
+							<ul class="nav nav-tabs" role="tablist">
+								<li role="presentation"><a href="index.html" class="active">Home</a></li>
+								<li role="presentation"><a href="analysis.html">Get Started</a></li>
+								<li role="presentation"><a href="faculty.html">Meet the Faculty</a></li>
+								<li role="presentation"><a href="archive.html">Data Archive</a></li>
+								<li role="presentation"><a href="about.html">About</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</nav>
+	</header>
+
+	<div id="breadcrumb">
+		<div class="container">
+			<div class="breadcrumb">
+				<li><a href="index.html">Home</a></li>
+				<li>Data Archive</li>
+			</div>
+		</div>
+	</div>
+
+	<div class="our-team">
+		<div class="container">
+			<h3>Browse the Data Archive</h3>
+			<div class="text-center">
+				<div class="col-md-4 wow fadeInDown" data-wow-duration="1000ms" data-wow-delay="300ms">
+                    <div>
+                        <p>Role
+                        <select class="form-control"
+                                id="input_role" name="role">
+                            <option>captain</option>
+                            <option>jungler</option>
+                            <option>carry</option>
+                            <option>all roles combined</option>
+                        </select>
+                        </p>
+                    </div>
+                    <div>
+                        <p>Skill tier
+                        <select class="form-control"
+                                id="input_tier" name="tier">
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option>
+                            <option>6</option>
+                            <option>7</option>
+                            <option>8</option>
+                            <option>9</option>
+                            <option>10</option>
+                            <option>all tiers combined</option>
+                        </select>
+                        </p>
+                    </div>
+                    <div>
+                        <p>Statistic:
+                        <select class="form-control"
+                                id="input_stat" name="stat">
+                            <option>Loading...</option>
+                        </select>
+                        </p>
+                    </div>
+				</div>
+				<div class="col-md-8 wow fadeInDown" data-wow-duration="1000ms" data-wow-delay="600ms">
+					<div id='data-output'>
+                        <p style="margin-top: 3em;"
+                        >Make a choice to the left.<br>
+                        Data will be displayed here</p>
+                    </div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<footer>
+		<div class="footer">
+			<div class="container">
+				<div class="social-icon">
+					<div class="col-md-4">
+						<ul class="social-network">
+                            <li><a href="https://github.com/nathancarter/vg-match-analysis"><svg viewBox="0 0 16 16" width="20px" height="20px"><path fill="#cccccc" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/></svg></li>
+                            <!--
+							<li><a href="#" class="fb tool-tip" title="Facebook"><i class="fa fa-facebook"></i></a></li>
+                            -->
+							<li><a href="https://twitter.com/NorthThornVG" class="twitter tool-tip" title="Twitter"><i class="fa fa-twitter"></i></a></li>
+                            <!--
+							<li><a href="#" class="gplus tool-tip" title="Google Plus"><i class="fa fa-google-plus"></i></a></li>
+							<li><a href="#" class="linkedin tool-tip" title="Linkedin"><i class="fa fa-linkedin"></i></a></li>
+                            -->
+							<li><a href="https://www.youtube.com/channel/UCbgosf7UWyBmnqP3-luQymw" class="ytube tool-tip" title="You Tube"><i class="fa fa-youtube-play"></i></a></li>
+						</ul>
+					</div>
+				</div>
+
+				<div class="col-md-4 col-md-offset-4">
+					<div class="copyright">
+						&copy; Company Theme. All Rights Reserved.
+                        <div class="credits">
+                            <!--
+                                All the links in the footer should remain intact.
+                                You can delete the links only if you purchased the pro version.
+                                Licensing information: https://bootstrapmade.com/license/
+                                Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/buy/?theme=Company
+                            -->
+                            <a href="https://bootstrapmade.com/free-business-bootstrap-themes-website-templates/">Business Bootstrap Themes</a> by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+                        </div>
+					</div>
+				</div>
+			</div>
+			<div class="pull-right">
+				<a href="#home" class="scrollup"><i class="fa fa-angle-up fa-3x"></i></a>
+			</div>
+		</div>
+	</footer>
+
+   <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+	<script src="js/jquery-2.1.1.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+	<script src="js/jquery.prettyPhoto.js"></script>
+    <script src="js/jquery.isotope.min.js"></script>
+	<script src="js/wow.min.js"></script>
+	<script src="js/functions.js"></script>
+    <script>
+        var loadingTimeout = 5000;
+        function sayLoading () {
+            document.getElementById( 'data-output' )
+                    .innerHTML = '<h2>Fetching data...</h2>';
+        }
+        var cache = { };
+        function toKey ( triple ) { return triple.join( ' ' ); }
+        function getData ( triple ) { return cache[toKey( triple )]; }
+        function addToCache ( triples, result ) {
+            for ( var i = 0 ; i < triples.length ; i++ )
+                cache[toKey( triples[i] )] = result[i];
+        }
+        function queryDataArchive ( triples, callback ) {
+            var result = { };
+            var toQuery = [ ];
+            for ( var i = 0 ; i < triples.length ; i++ )
+                if ( !cache.hasOwnProperty( toKey( triples[i] ) ) )
+                    toQuery.push( triples[i] );
+            if ( toQuery.length == 0 ) return callback( null, null );
+            var query = encodeURIComponent( JSON.stringify( toQuery ) );
+            var whenStarted = new Date();
+            $.ajax( {
+                url: '/query?archive=' + query,
+                timeout: loadingTimeout
+            } ).done( function( data ) {
+                if ( data.error ) return callback( null, data.error );
+                addToCache( toQuery, data );
+                var now = new Date();
+                console.log( 'query took', now-whenStarted, 'ms' );
+                callback( null, null );
+            } ).fail( function ( xhr, status, error ) {
+                callback( status, error );
+            } );
+        }
+        var statWords = null;
+        $.ajax( {
+            url : '/query?stats=yes',
+            timeout: loadingTimeout
+        } ).done( function ( data ) {
+            document.getElementById( 'input_stat' ).innerHTML = '';
+            for ( var key in statWords = data ) {
+                if ( data.hasOwnProperty( key ) ) {
+                    if ( key == 'builds' ) continue;
+                    var elt = document.createElement( 'option' );
+                    elt.setAttribute( 'value', key );
+                    elt.innerHTML = data[key];
+                    document.getElementById( 'input_stat' )
+                            .appendChild( elt );
+                }
+            }
+            controlsChanged();
+        } ).fail( function ( xhr, status, error ) {
+            // nothing much to do here
+        } );
+        function controlsToQuery () {
+            var role = document.getElementById( 'input_role' ).value;
+            var tier = document.getElementById( 'input_tier' ).value;
+            var stat = document.getElementById( 'input_stat' ).value;
+            var phase1 = [ [ role, tier, stat ] ];
+            // expand roles, if they selected all
+            var phase2 = [ ];
+            for ( var i = 0 ; i < phase1.length ; i++ ) {
+                if ( /^all /.test( phase1[i][0] ) ) {
+                    phase2.push(
+                        [ 'captain', phase1[i][1], phase1[i][2] ] );
+                    phase2.push(
+                        [ 'jungler', phase1[i][1], phase1[i][2] ] );
+                    phase2.push(
+                        [ 'carry', phase1[i][1], phase1[i][2] ] );
+                } else {
+                    phase2.push( phase1[i] );
+                }
+            }
+            // expand tiers, if they selected all
+            var phase3 = [ ];
+            for ( var i = 0 ; i < phase2.length ; i++ ) {
+                if ( /^all /.test( phase2[i][1] ) ) {
+                    for ( var j = 1 ; j <= 10 ; j++ )
+                        phase3.push( [ phase2[i][0], j, phase2[i][2] ] );
+                } else {
+                    phase3.push( phase2[i] );
+                }
+            }
+            // done
+            return phase3;
+        }
+        function controlsChanged () {
+            var triples = controlsToQuery();
+            queryDataArchive( triples, function ( result ) {
+                var name = statWords[triples[0][2]];
+                if ( triples.length == 1 )
+                    name += '<br>by a ' + triples[0][0]
+                          + ' in tier ' + triples[0][1];
+                else if ( triples.length == 3 )
+                    name += '<br>by all roles in tier ' + triples[0][1];
+                else if ( triples.length == 10 )
+                    name += '<br>by a ' + triples[0][0] + ' in all tiers';
+                else
+                    name += '<br>by all roles in all tiers';
+                var data = [ ];
+                for ( var i = 0 ; i < triples.length ; i++ )
+                    data = data.concat( getData( triples[i] ) );
+                showHistogram( data, name );
+            } );
+        }
+        function showHistogram ( data, name ) {
+            var min = data[0];
+            var max = data[0];
+            for ( var i = 1 ; i < data.length ; i++ ) {
+                min = Math.min( data[i], min );
+                max = Math.max( data[i], max );
+            }
+            var diameter = max - min ? max - min : 1;
+            var numBins = null;
+            if ( diameter == ( diameter | 0 ) ) {
+                for ( var d = 1 ; !numBins && d < diameter ; d++ ) {
+                    for ( var dd = diameter ;
+                          !numBins && dd < diameter + 4 ; dd++ ) {
+                        if ( dd % d > 0 ) continue;
+                        var maybe = dd / d;
+                        if ( ( maybe > 5 ) && ( maybe < 25 ) ) {
+                            diameter = dd;
+                            numBins = maybe;
+                        }
+                    }
+                }
+                if ( !numBins ) numBins = 10;
+            } else {
+                numBins = 10;
+            }
+            var bins = [ ];
+            for ( var i = 0 ; i < numBins ; i++ ) bins.push( 0 );
+            var binLabels = [ ];
+            function nice ( num ) {
+                return ( num == ( num | 0 ) ) ? num
+                    : Number( num ).toFixed( 2 );
+            }
+            for ( var i = 0 ; i < numBins ; i++ ) {
+                var left = min + i*diameter/numBins;
+                var right = min + (i+1)*diameter/numBins;
+                if ( left + 1 == right )
+                    binLabels.push( nice( left ) );
+                else
+                    binLabels.push( nice( left ) + '-' + nice( right ) );
+            }
+            for ( var i = 0 ; i < data.length ; i++ ) {
+                var proportion = ( data[i] - min ) / diameter;
+                var binIndex = ( proportion * numBins ) | 0;
+                bins[binIndex]++;
+            }
+            document.getElementById( 'data-output' ).innerHTML =
+                '<h2>' + name + '</h2>'
+              + '<div class="histogram ct-perfect-fourth"></div>';
+            new Chartist.Line( '.histogram', {
+                labels: binLabels,
+                series: [ bins ]
+            }, {
+                low: 0,
+                showArea: true
+            } );
+        }
+        $( '#input_role' ).change( controlsChanged );
+        $( '#input_tier' ).change( controlsChanged );
+        $( '#input_stat' ).change( controlsChanged );
+    </script>
+
+</body>
+</html>

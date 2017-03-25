@@ -184,10 +184,12 @@ modes at once.
 ## Combining the archive
 
 You can store metadata in the archive.  It will be put in the final
-"full archive" file only, and only when that file is created.
+"full archive" file only, and only when that file is created.  You can read
+it, too.
 
     metadata = { }
     exports.setMetaData = ( key, value ) -> metadata[key] = value
+    exports.getMetaData = -> exports.allArchiveResults().metadata
 
 Execute the joining function on all archived files as follows.
 
@@ -198,7 +200,9 @@ Execute the joining function on all archived files as follows.
                 next = JSON.parse fs.readFileSync file
                 for type in matchTypes
                     result[type] = joiningFunction result[type], next[type]
-        result.metadata = metadata
+        result.metadata ?= { }
+        for own key, value of metadata
+            result.metadata[key] = value
         result
 
 Save them into a cache file as follows.

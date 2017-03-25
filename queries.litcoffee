@@ -6,6 +6,7 @@ Important globals.
     vainglory = require 'vainglory'
     key = process.env.VG_API_KEY
     vg = new vainglory key
+    utils = require './harvesters/utils'
 
 ## Fetch recent matches for player
 
@@ -74,3 +75,18 @@ the callback.
                         callback e, null, null
         .catch ( err ) ->
             callback err, null, null
+
+## Get archive data
+
+The input is a list of role-tier-harvester triples, such as
+`[ [ 'captain', 7, 'deaths' ], [ 'captain', 10, 'kills' ] ]`.
+The result will be a list in the same order, each entry being the data from
+the archive corresponding to the triple in the input.  You cannot pass a
+single triple outside of a list; enclose even one triple in a list, and get
+back a list of length one.
+
+    exports.getArchiveData = ( mode, triples ) ->
+        everything = require( './archivist' ).allArchiveResults()
+        result = ( everything[mode][utils.rawRoleTierKey triple...] \
+            for triple in triples )
+        result
