@@ -20,8 +20,8 @@ the professors we'll use.
         'krul'
         'baron'
         'vox'
-        'ardan'
         'celeste'
+        'ardan'
         'lyra'
         'flicker'
     ]
