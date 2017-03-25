@@ -117,6 +117,7 @@
              style="margin-top: 1em; margin-bottom: 1em;">
             <div class="center row" id="choose-a-match-inside">
                 <h2 class="text-center">Loading matches...</h2>
+                <h3 class="text-center" id="choose-a-match-silly"></h3>
             </div>
         </div><!--/.container-->
     </section><!--/#contact-page-->
@@ -126,6 +127,7 @@
              style="margin-top: 1em; margin-bottom: 1em;">
             <div class="center" row>
                 <h2 class="text-center">Loading match analysis...</h2>
+                <h3 class="text-center" id="report-results-silly"></h3>
             </div>
         </div><!--/.container-->
     </section><!--/#contact-page-->
@@ -180,6 +182,64 @@
 	<script src="js/wow.min.js"></script>
 	<script src="js/functions.js"></script>
     <script>
+        var loadingTimeout = 10000; // 10 seconds
+        // silliness
+        var sayings = [
+            'Reattaching minion ears...',
+            'Sobering up Prof. Ringo...',
+            'Placating Kraken...',
+            'Busting frat parties...',
+            'Face-checking bush...',
+            'Publishing Lyra\'s book...',
+            'Shouting at Vox...<br>("What?  I can\'t hear you.")',
+            'Loading turrets...',
+            'Grooming mustache bush...',
+            'Restocking jungle shop...',
+            'Regrowing eyebrows...',
+            'Polishing Baron\'s mech...',
+            'Sweeping up candy wrappers...',
+            'Loading explosive shells...',
+            'Brewing Halcyon potions...',
+            'Breaking myths...',
+            'Cocking tension bow...',
+            'Double infusing...oops...',
+            'Testing rocket axe...ow...',
+            'Pressing giggle button...',
+            'Missing skill shots...',
+            'Feeding Grumpjaw...<br>Feeding Grumpjaw...'
+                + '<br>Feeding Grumpjaw...<br>Sheesh...',
+            'Cooling down ultimate...',
+            'Exploiting weaknesses...',
+            'Not surrendering...ever...',
+            'Spending opals...',
+            'Crafting legendary skins...',
+            'Blowing ice...',
+            'Using all activatable items...'
+        ];
+        var currentSillyElement = null;
+        var sillyInterval = null;
+        function randBetween ( a, b ) { // inclusive
+            return ( a + Math.random() * ( b - a + 1 ) ) | 0;
+        }
+        var somePrimes = [ 2, 3, 5, 7, 11 ];
+        var lastSillyIndex = randBetween( 0, sayings.length - 1 );
+        var randPrime = somePrimes[randBetween(
+            0 , somePrimes.length - 1 )];
+        console.log( sayings, somePrimes, lastSillyIndex, randPrime );
+        function changeSilliness () {
+            currentSillyElement.innerHTML = sayings[lastSillyIndex];
+            lastSillyIndex =
+                ( lastSillyIndex + randPrime ) % sillies.length;
+        }
+        function startSilliness ( element ) {
+            currentSillyElement = element;
+            changeSilliness();
+            sillyInterval = setInterval( changeSilliness,
+                                         loadingTimeout / 3 + 100 );
+        }
+        function stopSilliness () {
+            clearInterval( sillyInterval );
+        }
         // get the 3 sections in this page
         var sections = [
             document.getElementById( 'login-form' ),
@@ -190,6 +250,11 @@
             document.getElementById( 'login-form-inside' ),
             document.getElementById( 'choose-a-match-inside' ),
             document.getElementById( 'report-results-inside' )
+        ];
+        var sillies = [
+            null,
+            document.getElementById( 'choose-a-match-silly' ),
+            document.getElementById( 'report-results-silly' )
         ];
         // do we have a query string?
         var queryStart = window.location.href.indexOf( '?' );
@@ -205,30 +270,42 @@
             if ( window.queryDict.ign ) {
                 // if he or she has not chosen a match:
                 if ( !window.queryDict.match ) {
+                    startSilliness( sillies[1] );
                     sections[1].style.display = 'block';
                     $.ajax( {
                         url: '/query?ign=' + window.queryDict.ign
-                           + '&shard=' + window.queryDict.shard
+                           + '&shard=' + window.queryDict.shard,
+                        timeout: loadingTimeout
                     } ).done( function( data ) {
+                        stopSilliness();
                         insides[1].innerHTML = renderMatchList( data );
                         $( document ).ready( function () {
                             $( '[data-toggle="tooltip"]' ).tooltip();
                         } );
                     } ).fail( function ( xhr, status, error ) {
+                        stopSilliness();
                         insides[1].innerHTML =
+                            ( status == 'timeout' ) ?
+                            renderTimeoutError() :
                             renderMatchListError( error );
                     } );
                 } else { // or if he or she has chosen a match:
+                    startSilliness( sillies[2] );
                     sections[2].style.display = 'block';
                     $.ajax( {
                         url: '/query?ign=' + window.queryDict.ign
                            + '&shard=' + window.queryDict.shard
-                           + '&match=' + window.queryDict.match
+                           + '&match=' + window.queryDict.match,
+                        timeout: loadingTimeout
                     } ).done( function( data ) {
+                        stopSilliness();
                         insides[2].innerHTML =
                             renderMatchAnalysis( data );
                     } ).fail( function ( xhr, status, error ) {
+                        stopSilliness();
                         insides[2].innerHTML =
+                            ( status == 'timeout' ) ?
+                            renderTimeoutError() :
                             renderMatchAnalysisError( error );
                     } );
                 }
@@ -310,6 +387,18 @@
                 result += renderMatch( data[i], true );
             return result;
         }
+        function renderTimeoutError () {
+            return '<h2>Slow...  Website...</h2>'
+                 + '<p>This is a hobby project, and thus is not very fast. '
+                 + 'If some requests (such as this one) time out, it may be'
+                 + ' because the server doesn\'t have enough resources to '
+                 + 'handle the requests it\'s getting at the moment.  '
+                 + 'Please try again at another time.</p>';
+                 + '<h2><a href="analysis.html">'
+                 + '<i class="fa fa-backward"></i>'
+                 + ' Back to login page '
+                 + '<i class="fa fa-backward"></i></a></h2>';
+        }
         function renderMatchListError ( error ) {
             return '<h2>Could not find your matches</h2>'
                  + '<p>Did you type your IGN correctly?</p>'
@@ -321,10 +410,10 @@
                  + '<h2><a href="analysis.html">'
                  + '<i class="fa fa-backward"></i>'
                  + ' Back to login page '
-                 + '<i class="fa fa-backward"></i></a></h2>'
-                 + ( error ?
-                     '<pre>' + JSON.stringify( error, null, 4 ) + '</pre>'
-                     : '' );
+                 + '<i class="fa fa-backward"></i></a></h2>';
+                //  + ( error ?
+                //      '<pre>' + JSON.stringify( error, null, 4 ) + '</pre>'
+                //      : '' );
         }
         var nextChartNumber = 0;
         function renderData ( data ) {
@@ -445,7 +534,6 @@
                             + '  </div>'
                             + '</div>'
                             + '</div></div>'
-                    console.log( row );
                     result += row;
                 }
                 return result + '</div>';
@@ -539,14 +627,13 @@
                      + ' Pick a different match '
                      + '<i class="fa fa-backward"></i></a></h2>';
             } else {
-                return '<h2>Internal error</h2>'
-                     + '<p>How embarrassing.  I wish this website were '
+                return '<h2>Empty and Sad</h2>'
+                     + '<h3>Oops.  I wish this website were '
                      + 'perfect, but it turns out we\'ve hit an error.'
                      + ' Feel free to report it using the GitHub link'
-                     + ' at the bottom of the page.</p>'
-                     + '<pre>'
-                     + JSON.stringify( error.error, null, 4 )
-                     + '</pre>';
+                     + ' at the bottom of the page.</h3>'
+                     + '<p>You can try to refresh, or go back and make a '
+                     + 'different selection.</p>';
             }
         }
     </script>

@@ -3,15 +3,6 @@
 
 ## Before end of contest goals:
 
- 1. Improve error handling
-     a. Improve the Internal Error reporter to not show error messages
-        themselves, but just apologize and suggest refreshing or trying a
-        different match.
-     a. Look up how to handle timeout AJAX requests in jQuery and do that
-        for each time the analysis page sends one, giving an appropriate
-        error page each time.
-     a. Change the npm start command to dump console stuff to a log file
-        with `tee`.
  1. Add a data browsing page
      * Provide new server queries for:
         * getting list of harvesters
