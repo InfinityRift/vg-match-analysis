@@ -25,10 +25,9 @@ first, let's load the modules that contain the harvesters we'll use.
         dmgheroes : 'damage done to enemy heroes'
         dpsheroes : 'max damage per second on enemy heroes'
         dpsobjectives : 'damage done to objectives'
-        dmgperspawn : 'max damage per second on objectives'
+        dmgperspawn : 'damage done to me per spawn'
         earlyfountain : 'time until fountain purchased'
         secondsupport : 'time until second tier 3 support item'
-        dmgperspawn : 'damage done to me per spawn'
         teamdmgperspawn : 'damage done to my team per spawn'
         builds : 'items purchased'
         # abilitynames # was for a temporary purpose -- all done
