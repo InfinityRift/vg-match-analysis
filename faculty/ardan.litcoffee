@@ -81,10 +81,6 @@ Return Ardan's advice.
         role = utils.estimateRole match, participant
         tier = utils.simpleSkillTier participant
         long = [ ]
-        if role isnt 'captain'
-            long.push "It looks like you played #{role} in this match.  I
-                only teach captains, really.  I'll give you advice, but it
-                won't fit your role."
         if thisTime[0] < 0
             long.push 'You didn\'t buy a Fountain.
                 <strong>Son, captains buy Fountains.</strong>  Do it.'
@@ -97,6 +93,12 @@ Return Ardan's advice.
         if role isnt 'captain' and average > 50
             long[long.length-1] += "  That's pretty sad, since you were
                 playing #{role}, as far as I can tell."
+        short = '<p>I look at damage you took per spawn because captains
+            should draw enemy fire.  And live.</p>'
+        if role isnt 'captain'
+            short = "<p><strong>It looks like you played #{role} in this
+                match.<br>I only teach captains, really.<br>I'll give you
+                advice, but it won't fit your role.</strong></p>" + short
 
 Build a table one step at a time.  We could do this as one giant object
 literal, but this is nice so that we can insert debugging statement if
@@ -177,8 +179,7 @@ Final result object:
         prof : 'Master Ardan'
         quote : 'I go where I\'m needed.'
         topic : 'Let\'s see how well you helped your team.'
-        short : 'I look at damage you took per spawn because captains should
-            draw enemy fire.  And live.'
+        short : short
         long : long.join '<br>'
         letter : "#{'FDCBA'[grade average]} in support"
         data : [ table ]
