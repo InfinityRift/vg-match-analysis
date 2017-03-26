@@ -46,12 +46,12 @@ Return Ringo's advice.
         tier = utils.simpleSkillTier participant
         ordered = percentiles[..]
         ordered.sort ( a, b ) -> a - b
-        if percentiles[0] is ordered[2] then best = 2
+        if percentiles[0] is ordered[2] then best = 0
         else if percentiles[1] is ordered[2] then best = 1
-        else best = 0
-        if percentiles[0] is ordered[0] then worst = 2
+        else best = 2
+        if percentiles[0] is ordered[0] then worst = 0
         else if percentiles[1] is ordered[0] then worst = 1
-        else worst = 0
+        else worst = 2
         times = [ 'early', 'mid', 'late' ]
         if letterIndex is 4
             short = "I got no advice for you, man.  You're acing this."

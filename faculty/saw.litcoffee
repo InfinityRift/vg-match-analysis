@@ -50,21 +50,22 @@ Return SAW's advice.
 
         role = utils.estimateRole match, participant
         tier = utils.simpleSkillTier participant
-        short = ''
+        short = [ ]
         if percentiles[0] + percentiles[1] < 100
-            short += 'You\'re not hitting the enemies hard, mate.  Gotta
+            short.push 'You\'re not hitting the enemies hard, mate.  Gotta
                 make \'em bleed.'
         if percentiles[0] + percentiles[1] > 150
-            short += 'You\'re really punishing the enemies.  Keep it up.
+            short.push 'You\'re really punishing the enemies.  Keep it up.
                 Don\'t slack on the push-ups, either.'
         if percentiles[1] + percentiles[2] < 100
-            short += 'Your job is to push turrets.  You\'re slackin\'!'
+            short.push 'Your job is to push turrets.  You\'re slackin\'!'
         if percentiles[1] + percentiles[2] > 150
-            short += 'I love your persistence in lane.  A turret is no match
-                for a mad cannon, is it?'
-        if short is ''
-            short = 'You\'re not doing bad, but not really lighting \'em up
-                either.  Have you tried three sorrowblades at once yet?'
+            short.push 'I love your persistence in lane.  A turret is no
+                match for a mad cannon, is it?'
+        if short.length is 0
+            short.push 'You\'re not doing bad, but not really lighting \'em
+                up either.  Have you tried three sorrowblades at once yet?'
+        short = short.join '<br>'
         data = [ ]
         for i in [0...n]
             data.push
