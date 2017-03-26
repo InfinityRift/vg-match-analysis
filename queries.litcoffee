@@ -41,7 +41,7 @@ Right now, only ranked mode is used on this server.
             page :
                 offset : options.offset
                 limit : options.pageSize
-            sort : '-createdAt'
+            sort : '-createdAt' # doesn't seem to be working...see below
             filter :
                 'createdAt-start': before.toISOString()
                 'createdAt-end': now.toISOString()
@@ -51,6 +51,9 @@ Right now, only ranked mode is used on this server.
             if data.errors
                 callback message : data.messages
             else
+                matchTime = ( m ) -> new Date m.data.attributes.createdAt
+                data.match.sort ( a, b ) ->
+                    ( matchTime b ) - ( matchTime a )
                 callback null, data
         .catch ( err ) -> callback err, null
 
