@@ -28,6 +28,7 @@ Right now, only ranked mode is used on this server.
 
     exports.recentMatchesForPlayer = ( options, callback ) ->
         options.region ?= 'na'
+        if options.region is 'sea' then options.region = 'sg'
         options.howRecent ?= 24*60*60*1000
         options.offset ?= 0
         options.pageSize ?= 50
@@ -46,7 +47,11 @@ Right now, only ranked mode is used on this server.
                 'createdAt-end': now.toISOString()
                 'playerNames' : [ options.ign ]
                 'gameMode' : [ 'ranked' ]
-        .then ( data ) -> callback null, data
+        .then ( data ) ->
+            if data.errors
+                callback message : data.messages
+            else
+                callback null, data
         .catch ( err ) -> callback err, null
 
 ## Compute advice for a player in a match

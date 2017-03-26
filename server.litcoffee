@@ -43,7 +43,7 @@ This code answers queries to get lists of recent player ranked matches.
         else if dict.ign?
             queries.recentMatchesForPlayer
                 ign : dict.ign
-                shard : dict.shard?.toLowerCase() ? 'na'
+                region : dict.shard?.toLowerCase() ? 'na'
                 howRecent : 30*24*60*60*1000
             , ( error, result ) ->
                 res.setHeader 'Content-Type', 'application/json'
