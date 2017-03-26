@@ -383,7 +383,9 @@
             if ( ( data.length == 0 ) || data.error )
                 return renderMatchListError();
             var result = '<h2>Which match should the professors'
-                       + ' analyze?</h2>';
+                       + ' analyze?</h2>'
+                       + '<p>(Only ranked matches are shown here. '
+                       + 'The faculty only analyze your ranked play.)</p>';
             for ( var i = 0 ; i < data.length ; i++ )
                 result += renderMatch( data[i], true );
             return result;
@@ -402,6 +404,10 @@
         }
         function renderMatchListError ( error ) {
             return '<h2>Could not find your matches</h2>'
+                 + '<h3 align=center>This tool only analyzes ranked '
+                 + 'matches in the past month.</h3>'
+                 + '<p>If you haven\'t played ranked recently, '
+                 + 'it won\'t have any matches for you.</p>'
                  + '<p>Did you type your IGN correctly?</p>'
                  + '<p>Did you select the correct region?</p>'
                  + '<p>If so, then perhaps there is something '
