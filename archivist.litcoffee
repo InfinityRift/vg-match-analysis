@@ -2,6 +2,7 @@
 # The Archivist
 
     fs = require 'fs'
+    utils = require './harvesters/utils'
 
 This file maintains an archive of data sucked from old Vainglory matches. It
 can be configured with a start time (call it S), a time duration (call it
@@ -127,7 +128,7 @@ You must also provide a valid `Vainglory` object, initialized with your API
 Key, for this module to use when running queries.
 
     vg = null
-    exports.setQueryObject = ( v ) -> vg = v
+    exports.setQueryObject = ( v ) -> utils.setVGAPIObject vg = v
 
 If you would like to archive a maximum number of games from each time frame,
 then call the `setMaxima` function defined below.  It takes as a parameter
@@ -181,6 +182,33 @@ modes at once.
     exports.getJoiningFunction = -> joiningFunction
     exports.setJoiningFunction = ( f ) -> joiningFunction = f
 
+Finally, do we want the archiving utility to keep copies of all downloaded
+match data?  If so, in what folder should we put them?  If no folder is
+specified, we do not archive them.
+
+    matchArchiveFolder = null
+    exports.getMatchArchiveFolder = -> matchArchiveFolder
+    exports.setMatchArchiveFolder = ( f ) -> matchArchiveFolder = f
+
+The Vainglory JS client keeps the original JSON data for a match in the
+`.data` member of a `Match` object, so we can just read it from there, and
+reconstruct it by passing that same object to the `Match` constructor.
+
+    exports.archiveOneMatch = ( match ) ->
+        if matchArchiveFolder?
+            serialized = JSON.stringify utils.vgObjectToJSON match
+            fs.writeFileSync "#{matchArchiveFolder}/#{match.data.id}.json",
+                serialized
+    exports.getMatchFromArchive = ( id ) ->
+        utils.vgObjectFromJSON String fs.readFileSync \
+            "#{matchArchiveFolder}/#{id}.json"
+    exports.allMatchIdsInArchive = ->
+        results = [ ]
+        for file in fs.readdirSync matchArchiveFolder
+            if m = /^([0-9a-fA-F-]*)\.json$/.exec file
+                results.push m[1]
+        results
+
 ## Combining the archive
 
 You can store metadata in the archive.  It will be put in the final
@@ -207,10 +235,15 @@ Execute the joining function on all archived files as follows.
 
 Save them into a cache file as follows.
 
-    saveArchiveResults = ->
-        results = getAllArchiveResults()
-        fs.writeFileSync 'full-archive.json', JSON.stringify results
-        results
+    saveArchiveResults = ( result ) ->
+        result ?= getAllArchiveResults()
+        # in case they passed us an incomplete object, add metadata...
+        # though it's not necessary if we built it with getAllArchiveResults
+        result.metadata ?= { }
+        for own key, value of metadata
+            result.metadata[key] = value
+        fs.writeFileSync 'full-archive.json', JSON.stringify result
+        result
 
 Read them from the cache (or cause the cache to be created) as follows.  The
 `gameMode` parameter is optional; without it, you get the full cache, but
@@ -379,8 +412,9 @@ yet again, recursively traversing the whole current page of results.
                 #{runningQuery.nextMatchToProcess} of
                 #{fetched.data.length} - type #{type}"
             runningQuery.accumulated.found[type]++
-            return archiveFunction match, runningQuery.accumulated[type],
-                nextArchiveStep
+            return do ( match ) ->
+                archiveFunction match, runningQuery.accumulated[type],
+                    -> archiveOneMatch match ; nextArchiveStep()
 
 The only other possible outcome is that we have processed the entire page of
 results, so we delete the processed page of data.  This will force the next
@@ -392,6 +426,46 @@ fetch another page of data.
         runningQuery.options.page.offset += fetched.match.length
         runningQuery.nextMatchToProcess = 0
         delete runningQuery.lastFetched
+
+## Rebuilding the archive
+
+If the data was harvested and archived in the past, with a match archive
+folder enabled, then there is no sense in re-fetching all match data from
+the internet just to harvest new stats from it.  That's where this function
+comes in.  You can run this function to re-read all match archives from the
+match archive folder (if you created one when fetching the matches in the
+first place) and it will re-compute all stats from those matches (with
+their telemetry data, which was saved with them), without hitting the web
+at all.
+
+    exports.rebuildArchive = ->
+        clearArchiveResultsCache()
+        ids = allMatchIdsInArchive()
+        console.log "Found #{ids.length} matches in match archive."
+        start = new Date
+        next = 0
+        pop = ->
+            if next % 10 is 0
+                pctDone = 100 * next / ids.length
+                if next > 0
+                    elapsed = ( new Date ) - start
+                    ratio = ( 100 - pctDone ) / pctDone
+                    remaining = elapsed * ratio / 60000
+                    report = "#{Number( remaining ).toFixed 1} minutes"
+                else
+                    report = "(no estimate available yet)"
+                console.log "Processed #{next}/#{ids.length} matches
+                    (#{Number( pctDone ).toFixed 1}%) --
+                    time remaining: #{report}"
+            if next >= ids.length then return
+            match = getMatchFromArchive ids[next++]
+            type = exports.simplifyType match.gameMode
+            archiveFunction match, accumulated[type], pop
+        accumulated = emptyAccumulator no
+        pop()
+        console.log 'Completed all; saving accumulated data...'
+        saveArchiveResults accumulated
+        console.log 'Done.'
 
 ## Archive files
 

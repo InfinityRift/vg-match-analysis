@@ -29,6 +29,7 @@ the `telemetry` member of the match object itself.
     exports.hasTelemetryData = ( match ) ->
         exports.getTelemetryAsset( match )?
     exports.fetchTelemetryData = ( match, callback ) ->
+        if match.telemetry? then return callback match.telemetry
         telemetryAsset = exports.getTelemetryAsset match
         return callback null unless telemetryAsset?
         fetchedData = ''
@@ -412,3 +413,45 @@ Distance between two positions, Euclidean.
     exports.positionDifference = ( position1, position2 ) ->
         ds = ( position1[i] - position2[i] for i in [0,1,2] )
         Math.sqrt ds[0]*ds[0] + ds[1]*ds[1] + ds[2]*ds[2]
+
+## Serialization
+
+We can convert the Vainglory JS API objects to and from JSON with the
+following two functions.  This is handy for archiving matches as JSON for
+later study offline.  This may be unnecessary in the future if
+[this GitHub issue](https://github.com/seripap/vainglory/issues/10) is
+solved.
+
+    vg = null
+    exports.setVGAPIObject = ( obj ) -> vg = obj
+    exports.vgObjectToJSON = ( object ) ->
+        result = data : object.data
+        for own name, ctor of vg.models
+            if name isnt 'Base' and object instanceof ctor
+                result.ctor = name
+        for relationship in object.relationships ? [ ]
+            type = relationship.type
+            subobj = object[type]
+            if subobj instanceof Array
+                result[type] = ( exports.vgObjectToJSON s for s in subobj )
+            else
+                result[type] = exports.vgObjectToJSON subobj
+        result.telemetry = object.telemetry
+        result
+    exports.vgObjectFromJSON = ( json ) ->
+        if typeof json is 'string' then json = JSON.parse json
+        ctor = vg.models[json.ctor]
+        delete json.ctor
+        telemetry = json.telemetry
+        delete json.telemetry
+        result = new ctor json.data
+        for relationship in result.relationships ? [ ]
+            type = relationship.type
+            subobj = json[type]
+            if subobj instanceof Array
+                result[type] =
+                    ( exports.vgObjectFromJSON s for s in subobj )
+            else
+                result[type] = exports.vgObjectFromJSON subobj
+        result.telemetry = telemetry
+        result

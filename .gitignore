@@ -1,3 +1,4 @@
+archive/
 node_modules/
 archive-*.json
 .DS_Store
@@ -6,4 +7,4 @@ backup-archive/
 professor-images*.*
 voronoi/
 scraper.litcoffee
-all-ability-names.txt
+example-data/

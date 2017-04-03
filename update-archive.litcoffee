@@ -15,11 +15,12 @@ Import the Archivist module and set some parameters.  Hand it the
 `vainglory` object just created, so it can make queries using my API key.
 
     archivist = require './archivist'
-    archivist.setStartTime new Date 2017, 2, 16
-    archivist.setEndTime new Date 2017, 2, 21
+    archivist.setStartTime new Date 2017, 2, 29, 16
+    archivist.setEndTime new Date 2017, 3, 1, 12
     archivist.setMaxima ranked : 5 # everything else zero
     archivist.setQueryFrequency 7*archivist.seconds
     archivist.setQueryObject new vainglory key
+    archivist.setMatchArchiveFolder 'archive'
     require './harvesters'
     .installInto archivist
 
