@@ -7,6 +7,15 @@ more before
 but this is just thinking ahead in case I play with this project more after
 the deadline.
 
+## Quality of Life/UX Improvements
+
+ * Create a new university on [Rate My
+   Professors](http://www.ratemyprofessors.com/) and add all the faculty.
+   Then add links from each of their output to go complain/brag about grades
+   you got from them.
+ * Add a link from the grading screen to ask for the faculty to grade your
+   teammates and/or enemies in the same match.
+
 ## New professor: Lyra
 
  * Topic: Team composition and drafting
