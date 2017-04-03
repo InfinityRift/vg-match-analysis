@@ -3,6 +3,7 @@
 
     utils = require '../harvesters/utils'
     harvester = require '../harvesters/builds'
+    stats = require 'simple-statistics'
 
 This is the robot brain of Doctor Vox, one of the professors at VGU.
 He looks into your build.
@@ -25,38 +26,42 @@ skill tier and role.
         fullKey = utils.changeKeyTier fullKey, next
         otherBuilds = archive[fullKey] ? [ ]
 
-Narrow that big list down to just those that seem to have the same build
-type as mine (WP, CP, or other).
+If the player had a nonempty build:  Narrow the big list down to just those
+that seem to have the same build type as mine (WP, CP, or other). Compute
+the number of times each tracked item was seen in the archive, then convert
+each of those counts into a frequency. Now look for really commonly
+purchased things that they did not purchase, so we can give those as
+suggestions.
 
-        myBuildType = typeOfBuild myBuild
-        peers = ( b for b in otherBuilds when myBuildType is typeOfBuild b )
+        if myBuild.length > 0
+            myBuildType = typeOfBuild myBuild
+            peers = ( b for b in otherBuilds \
+                when myBuildType is typeOfBuild b )
+            numberInTheWild = ( 0 for index in itemList )
+            for otherBuild in peers
+                numberInTheWild[index]++ for index in otherBuild
+            frequencies =
+                ( 100 * x / peers.length for x in numberInTheWild )
+            myMinFreq = stats.min ( frequencies[i] for i in myBuild )
+            whatIDidntBuy = ( index for index in [0...itemList.length] \
+                when index not in myBuild \
+                and frequencies[index] > myMinFreq )
+            whatIDidntBuy.sort ( a, b ) -> frequencies[b] - frequencies[a]
 
-Compute the number of times each tracked item was seen in the archive,
-then convert each of those counts into a frequency.
+If the player had an empty build:  Just rank all items by most commonly
+purchased in the same role and tier.
 
-        numberInTheWild = ( 0 for index in itemList )
-        for otherBuild in peers
-            numberInTheWild[index]++ for index in otherBuild
-        frequencies = ( 100 * x / peers.length for x in numberInTheWild )
+        else
+            numberInTheWild = ( 0 for index in itemList )
+            for otherBuild in otherBuilds
+                numberInTheWild[index]++ for index in otherBuild
+            frequencies = ( 100 * x / otherBuilds.length \
+                for x in numberInTheWild )
+            whatIDidntBuy = [0...itemList.length]
+            whatIDidntBuy.sort ( a, b ) -> frequencies[b] - frequencies[a]
 
-Dr. Vox grades you based on how common your build was.  Don't buy weird
-stuff.
+Now generate some build advice from the `whatIDidntBut` list.
 
-        stats = require 'simple-statistics'
-        freq = stats.mean ( frequencies[i] for i in myBuild )
-        if freq < 15 then grade = 'F'
-        else if freq < 30 then grade = 'D'
-        else if freq < 45 then grade = 'C'
-        else if freq < 60 then grade = 'B'
-        else grade = 'A'
-
-Now look for really commonly purchased things that they did not purchase,
-so we can give those as suggestions.
-
-        myMinFreq = stats.min ( frequencies[i] for i in myBuild )
-        whatIDidntBuy = ( index for index in [0...itemList.length] \
-            when index not in myBuild and frequencies[index] > myMinFreq )
-        whatIDidntBuy.sort ( a, b ) -> frequencies[b] - frequencies[a]
         if whatIDidntBuy.length >= 2
             long = "There are some items you might try,
                 because they're favored by #{role} players in tier #{next}.
@@ -80,28 +85,61 @@ so we can give those as suggestions.
                 bought instead.  But man, you're buying right what's in the
                 meta for #{role} heroes in tier #{tier}.  Rock on."
 
+Dr. Vox grades you based on how common your build was.  Don't buy weird
+stuff.
+
+        if myBuild.length is 0
+            grade = 'F'
+        else
+            freq = stats.mean ( frequencies[i] for i in myBuild )
+            if freq < 15 then grade = 'F'
+            else if freq < 30 then grade = 'D'
+            else if freq < 45 then grade = 'C'
+            else if freq < 60 then grade = 'B'
+            else grade = 'A'
+
 Create the advice texts.
 
+        if myBuild.length is 0
+            topic = 'Dude, what did you buy?  I see absolutely no tier 3
+                items here at all.  That\'s...a fail, in my class.'
+            short = if tier < 10
+                "I'll suggest some tier 3 items you could have bought, from
+                what's most popular among <strong>#{role} players in the
+                tier <i>above</i> yours.</strong>
+                <br>Wait...you didn't do that troll move where you sell
+                your build back at the end of the match, did you?
+                That is sooooo kindergarten.  At VGU, that earns an F."
+            else
+                "Normally I compare your builds with those in the next tier
+                up, to help players improve.  But you're Vainglorious, man,
+                so like, that's awesome, except that why didn't you buy any
+                items!?  Were you trolling?  Yeah, that was mature.
+                Whatever.  I'll just list some popular items bought
+                by Vainglorious players in the #{role} role."
+        else
+            topic = 'Dude, what did you buy?  You gotta know what
+                everybody\'s doing, man, and go with it.'
+            short = if tier < 10
+                "To help you improve, I'm comparing your build to those of
+                <strong>#{role} players in the tier <i>above</i>
+                yours.</strong>  Overall, you built in line with about
+                #{Number( freq ).toFixed 0}% of those players.
+                See the crazy bars to the right."
+            else
+                "Normally I compare your builds with those in the next tier
+                up, to help players improve.  But you're Vainglorious, man,
+                so like, that's awesome.  I'll just compare you to other
+                Vainglorious players in the #{role} role.  You built in line
+                with about #{Number( freq ).toFixed 0}% of them.
+                See the crazy bars to the right."
         prof : 'Dr. Vox'
         quote : 'These guys are waaay too into these crystal things.'
-        topic : 'Dude, what did you buy?  You gotta know what everybody\'s
-            doing, man, and go with it.'
-        short : if tier < 10
-            "To help you improve, I'm comparing your build to those of
-            <strong>#{role} players in the tier <i>above</i>
-            yours.</strong>  Overall, you built in line with about
-            #{Number( freq ).toFixed 0}% of those players.
-            See the crazy bars to the right."
-        else
-            "Normally I compare your builds with those in the next tier up,
-            to help players improve.  But you're Vainglorious, man, so
-            like, that's awesome.  I'll just compare you to other
-            Vainglorious players in the #{role} role.  You built in line
-            with about #{Number( freq ).toFixed 0}% of them.
-            See the crazy bars to the right."
+        topic : topic
+        short : short
         long : long
         letter : "#{grade} on your build"
-        data : [
+        data : if myBuild.length > 0 then [
             type : 'bars'
             bars : for index in myBuild
                 icon : nameToIcon itemList[index]
@@ -112,7 +150,7 @@ Create the advice texts.
                 value : frequencies[index]
                 percent : frequencies[index]
                 label : "#{Number( frequencies[index] ).toFixed 0}%"
-        ]
+        ] else null
 
 A dictionary mapping all the items we track with
 [the builds harvester](../harvesters/builds.litcoffee) to a classification
