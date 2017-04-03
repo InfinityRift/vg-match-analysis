@@ -48,7 +48,7 @@ a:hover {
 
 .btn-primary {
   padding: 8px 20px;
-  background: #1BBD36;
+  background: #3C9E82;
   color: #fff;
   border-radius: 4px;
   border:none;
@@ -75,13 +75,13 @@ a:hover {
 }
 
 #breadcrumb {
-	background-color: #1BBD36;
+	background-color: #3C9E82;
 	margin-top: -20px;
 }
 
 .breadcrumb {
   list-style: none;
-  background-color: #1BBD36;
+  background-color: #3C9E82;
   border-radius: 0px;
   padding:3px 10px;
 }
@@ -110,7 +110,7 @@ a:hover {
 	font-weight:900;
 }
 .navbar-brand h1 span {
-	color: #1BBD36;
+	color: #3C9E82;
 }
 
 .menu {
@@ -138,7 +138,7 @@ a:hover {
 }
 
 .nav-tabs > li > a:hover {
-	color: #1BBD36;
+	color: #3C9E82;
 	border-color: #fff #fff #fff;
 	border-radius:0;
 	background-color:#fff;
@@ -148,7 +148,7 @@ a:hover {
 	-o-transition: all 0.3s ease-in-out;
 }
 .nav-tabs > li > a.active {
-	color: #1BBD36;
+	color: #3C9E82;
 	border-radius:0;
 	transition: all 0.3s ease-in-out;
 	-moz-transition: all 0.3s ease-in-out;
@@ -189,7 +189,7 @@ a:hover {
 }
 
 #main-slider .carousel h2 span {
-  color: #1BBD36;
+  color: #3C9E82;
 }
 
 #main-slider .carousel h2 span spani {
@@ -203,7 +203,7 @@ a:hover {
 
 #main-slider .carousel .btn-slide {
   padding: 8px 20px;
-  background: #1BBD36;
+  background: #3C9E82;
   color: #fff;
   border-radius: 4px;
   margin-top: 25px;
@@ -289,7 +289,7 @@ a:hover {
 	margin-bottom:30px;
 	color:#fff;
 	padding:50px;
-	background:#1BBD36;
+	background:#3C9E82;
 	border-radius:50%;
 }
 
@@ -298,12 +298,12 @@ a:hover {
 	margin-bottom:20px;
 	text-transform:uppercase;
 	font-size:18px;
-	color: #1BBD36;
+	color: #3C9E82;
 }
 
 .hi-icon-effect i.fa:hover {
 	background:#fff;
-	color: #1BBD36;
+	color: #3C9E82;
 	-webkit-transition: color 300ms, background-color 300ms;
   -moz-transition: color 300ms, background-color 300ms;
   -o-transition:  color 300ms, background-color 300ms;
@@ -539,7 +539,7 @@ a:hover {
 
 /* --- footer --- */
 .footer {
-	background:#1BBD36;
+	background:#3C9E82;
 	padding:15px 22px;
 }
 
@@ -641,14 +641,14 @@ ul.social-network li a {
 }
 
 .media i {
-	color:#1BBD36;
+	color:#3C9E82;
 	font-size:50px;
 }
 
 .media h4 {
 	font-size:20px;
 	font-weight:600;
-	color:#1BBD36;
+	color:#3C9E82;
 }
 
 /* --- portfolio --- */
@@ -688,8 +688,8 @@ ul.social-network li a {
 .portfolio-filter > li a:hover,
 .portfolio-filter > li a.active{
   color:#fff;
-  background: #1BBD36;
-  border: 1px solid #1BBD36;
+  background: #3C9E82;
+  border: 1px solid #3C9E82;
   box-shadow: none;
   -webkit-box-shadow: none;
 }
@@ -712,7 +712,7 @@ ul.social-network li a {
 }
 
 .overlay a:hover {
-	color: #1BBD36;
+	color: #3C9E82;
 }
 
 /* Start: Recommended Isotope styles */
@@ -795,7 +795,7 @@ ul.social-network li a {
 
 a.btn-primary:hover {
 	background-color:#ddd;
-	color:#1BBD36;
+	color:#3C9E82;
 }
 
 .widget {
@@ -824,7 +824,7 @@ a.btn-primary:hover {
 }
 
 .widget .entry-meta span a:hover {
-	color:#1BBD36;
+	color:#3C9E82;
 }
 
 .widget h3 {
@@ -853,12 +853,12 @@ a.btn-primary:hover {
 }
 
 .blog_category li a:hover{
-  background:#1BBD36;
+  background:#3C9E82;
   color: #fff;
 }
 
  .badge:before {
-  border-color: transparent transparent transparent #1BBD36;
+  border-color: transparent transparent transparent #3C9E82;
   border-style: solid;
   border-width: 10px;
   bottom: -8px;
@@ -870,7 +870,7 @@ a.btn-primary:hover {
 }
 
 .badge {
-  background-color: #1BBD36;
+  background-color: #3C9E82;
   border-radius: 5px;
   color: #fff;
   padding: 8px;
@@ -892,7 +892,7 @@ a.btn-primary:hover {
 }
 
 ul.blog_archieve li a:hover{
-	color:#1BBD36;
+	color:#3C9E82;
 }
 
 .blog_archieve li:first-child {
@@ -1013,7 +1013,7 @@ ul.faq li > div h3 {
 }
 
 #publish_date {
-  background: #1BBD36;
+  background: #3C9E82;
   border-bottom: 5px solid #4e4e4e;
   color: #fff;
   padding: 5px 0;
@@ -1037,7 +1037,7 @@ ul.pagination > li > a {
   border-radius: 5px;
   font-size: 16px;
   padding: 5px 14px;
-  color:#1BBD36;
+  color:#3C9E82;
 }
 
 ul.pagination > li > a i{
@@ -1047,8 +1047,8 @@ ul.pagination > li > a i{
 
 ul.pagination > li.active > a,
 ul.pagination > li:hover > a {
-  background-color: #1BBD36 !important;
-  border-color: #1BBD36 !important;
+  background-color: #3C9E82 !important;
+  border-color: #3C9E82 !important;
   color: #fff;
 }
 
@@ -1087,7 +1087,7 @@ ul.sidebar-gallery {
 }
 
 .tag-cloud li a:hover{
-  background:#1BBD36;
+  background:#3C9E82;
   color: #fff;
 }
 
@@ -1169,7 +1169,7 @@ ul.sidebar-gallery {
 }
 
 .btn-lg:hover {
-	color:#1BBD36;
+	color:#3C9E82;
 	background:#ddd;
 }
 
@@ -1191,5 +1191,5 @@ a.scrollup{
 a.scrollup:hover{
 	opacity:1;
 	background-color:#ddd;
-	color:#1BBD36;
+	color:#3C9E82;
 }
