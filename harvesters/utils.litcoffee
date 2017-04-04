@@ -28,7 +28,7 @@ the `telemetry` member of the match object itself.
         null
     exports.hasTelemetryData = ( match ) ->
         exports.getTelemetryAsset( match )?
-    exports.fetchTelemetryData = ( match, callback ) ->
+    exports.fetchTelemetryData = ( match, callback = -> ) ->
         if match.telemetry? then return callback match.telemetry
         telemetryAsset = exports.getTelemetryAsset match
         return callback null unless telemetryAsset?

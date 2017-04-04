@@ -440,29 +440,27 @@ at all.
 
     exports.rebuildArchive = ->
         clearArchiveResultsCache()
-        ids = allMatchIdsInArchive()
+        console.log "Loading match list..."
+        ids = exports.allMatchIdsInArchive()
         console.log "Found #{ids.length} matches in match archive."
         start = new Date
-        next = 0
-        pop = ->
-            if next % 10 is 0
-                pctDone = 100 * next / ids.length
-                if next > 0
+        accumulated = emptyAccumulator no
+        for id, index in ids
+            if index % 10 is 0
+                pctDone = 100 * index / ids.length
+                if index > 0
                     elapsed = ( new Date ) - start
                     ratio = ( 100 - pctDone ) / pctDone
                     remaining = elapsed * ratio / 60000
                     report = "#{Number( remaining ).toFixed 1} minutes"
                 else
                     report = "(no estimate available yet)"
-                console.log "Processed #{next}/#{ids.length} matches
+                console.log "Processed #{index}/#{ids.length} matches
                     (#{Number( pctDone ).toFixed 1}%) --
                     time remaining: #{report}"
-            if next >= ids.length then return
-            match = getMatchFromArchive ids[next++]
+            match = exports.getMatchFromArchive id
             type = exports.simplifyType match.gameMode
-            archiveFunction match, accumulated[type], pop
-        accumulated = emptyAccumulator no
-        pop()
+            archiveFunction match, accumulated[type]
         console.log 'Completed all; saving accumulated data...'
         saveArchiveResults accumulated
         console.log 'Done.'

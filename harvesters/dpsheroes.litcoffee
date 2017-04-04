@@ -38,7 +38,7 @@ If this is the start of an interval, just save it as such.
 Or if it is the continuation of an earlier interval, then accumulate and
 update.
 
-                else if now > new Date lastHitTime + deltaT
+                else if now < new Date lastHitTime.valueOf() + deltaT
                     lastHitTime = now
                     totalDmgInInterval += parseInt event.payload.Delt
 
@@ -46,7 +46,7 @@ Otherwise, the interval has ended.  Log its DPS and clear out the interval's
 data.
 
                 else
-                    duration = lastHitTime - startOfInterval
+                    duration = ( lastHitTime - startOfInterval ) / 1000
                     if duration > 0
                         thisDPS = totalDmgInInterval / duration
                         maxDPS = Math.max thisDPS, maxDPS

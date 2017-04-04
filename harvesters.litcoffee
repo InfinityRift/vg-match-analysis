@@ -43,7 +43,7 @@ This function can be used to replace the default `archiveFunction` defined
 in [the Archivist module](archivist.litcoffee) with one that runs all the
 data scraping tools defined in other modules
 
-    exports.archiveFunction = ( match, accumulated, callback ) ->
+    exports.archiveFunction = ( match, accumulated, callback = -> ) ->
         utils.fetchTelemetryData match, ( result ) ->
             if result
                 for harvester, index in harvesters
