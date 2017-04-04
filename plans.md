@@ -16,6 +16,12 @@ the deadline.
  * Add a link from the grading screen to ask for the faculty to grade your
    teammates and/or enemies in the same match.
 
+## Quality of code improvements
+
+ * Factor all the JS out of the HTML pages into sensible modules.
+ * Consider rewriting it as CS code, and adding a build process that
+   compiles it, so the whole codebase is documented and readable on GitHub.
+
 ## New professor: Lyra
 
  * Topic: Team composition and drafting
