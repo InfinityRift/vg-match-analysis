@@ -10,6 +10,7 @@
     "update-archive": "node_modules/coffeescript/bin/coffee update-archive.litcoffee",
     "clear": "rm -f archive-*.json full-archive.json",
     "refresh-archive": "rm -f archive-*.json full-archive.json && node_modules/coffeescript/bin/coffee update-archive.litcoffee",
+    "rebuild-archive": "node_modules/coffeescript/bin/coffee rebuild-archive.litcoffee",
     "backup-archive": "rm -f backup-archive/* && cp archive-*.json full-archive.json backup-archive/",
     "restore-backup": "rm -f archive-*.json full-archive.json && cp backup-archive/archive-*.json backup-archive/full-archive.json .",
     "start": "node_modules/coffeescript/bin/coffee server.litcoffee",
