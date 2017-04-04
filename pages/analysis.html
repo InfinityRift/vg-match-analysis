@@ -331,31 +331,53 @@
                  + '/' + participant.deaths
                  + '/' + participant.assists;
         }
-        function renderTeam ( team ) {
+        function makeGradeLink ( text, ign ) {
+            var newQueryString = '';
+            for ( var key in window.queryDict ) {
+                if ( window.queryDict.hasOwnProperty( key ) ) {
+                    var value = ( key == 'ign' ) ? ign :
+                        window.queryDict[key];
+                    newQueryString += ( newQueryString.length > 0 ) ?
+                        '&' : '?';
+                    newQueryString += encodeURIComponent( key ) + '='
+                                    + encodeURIComponent( value );
+                }
+            }
+            var url = window.location.href.split( '?' )[0] + newQueryString;
+            var result = '<a href="' + url + '">' + text + '</a>';
+            return result;
+        }
+        function renderTeam ( team, makeLink ) {
             var result = '<table border=0><tr>';
-            for ( var i = 0 ; i < team.length ; i++ )
-                result += '<td align=center>' + renderHero( team[i].hero )
-                        + '</td>';
+            for ( var i = 0 ; i < team.length ; i++ ) {
+                var heroText = renderHero( team[i].hero );
+                if ( makeLink )
+                    heroText = makeGradeLink( heroText, team[i].ign );
+                result += '<td align=center>' + heroText + '</td>';
+            }
             result += '</tr><tr>'
-            for ( var i = 0 ; i < team.length ; i++ )
-                result += '<td align=center><p>'
-                       + renderIGN( team[i].ign ) + '<br>'
+            for ( var i = 0 ; i < team.length ; i++ ) {
+                var ignText = renderIGN( team[i].ign );
+                if ( makeLink )
+                    ignText = makeGradeLink( ignText, team[i].ign );
+                result += '<td align=center><p>' + ignText + '<br>'
                        + renderStats( team[i] ) + '</p></td>';
+            }
             result += '</tr></table>'
             return result;
         }
-        function renderMatch ( match, withButton ) {
+        function renderMatch ( match, inList ) {
             var result = '<hr>';
             result += '<table align=center border=0>';
             result += '<tr><td colspan=3 align=center><h4>'
                     + new Date( match.time ) + '</h4></td></tr>';
             result += '<tr><td align=center>';
-            result += renderTeam( match.left );
+            result += renderTeam( match.left, !inList );
             result += '</td><td align=center><h2>vs.</h2></td>'
                     + '<td align=center>';
-            result += renderTeam( match.right );
+            result += renderTeam( match.right, !inList );
             result += '</td>';
-            if ( withButton ) {
+            if ( inList ) {
                 if ( match.telemetry ) {
                     result += '<td>'
                             + '<a role="button" name="analyze-'
@@ -377,7 +399,14 @@
                             + '</td>';
                 }
             }
-            result += '</tr></table>';
+            result += '</tr>'
+            if ( !inList ) {
+                result += '<tr><td colspan=3 align=center><p>'
+                        + '(To have the faculty grade a teammate '
+                        + 'or enemy, click that player.)'
+                        + '</p></td></tr>';
+            }
+            result += '</table>';
             return result;
         }
         function renderMatchList ( data ) {
