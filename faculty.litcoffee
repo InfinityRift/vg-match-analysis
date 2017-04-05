@@ -22,8 +22,8 @@ the professors we'll use.
         'vox'
         'celeste'
         'ardan'
-        'lyra'
         'flicker'
+        'lyra'
     ]
     faculty = { }
     for name in facultyNames

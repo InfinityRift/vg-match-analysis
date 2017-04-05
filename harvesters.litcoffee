@@ -30,6 +30,8 @@ first, let's load the modules that contain the harvesters we'll use.
         secondsupport : 'time until second tier 3 support item'
         teamdmgperspawn : 'damage done to my team per spawn'
         builds : 'items purchased'
+        hasflares : 'percent of time carrying flares/flaregun/contraption'
+        hastraps : 'percent of time carrying scout traps/contraption'
         # abilitynames # was for a temporary purpose -- all done
     exports.getHarvesters = -> harvesterExplanations
     harvesters = ( require "./harvesters/#{name}" \
