@@ -71,7 +71,7 @@ Return SAW's advice.
             data.push
                 type : 'positionInData'
                 name : statDescriptions[statNames[i]]
-                value : thisTime[i]
+                value : Number( thisTime[i] ).toFixed 0
                 data : standards[i]
                 quartiles : [
                     stats.min standards[i]
