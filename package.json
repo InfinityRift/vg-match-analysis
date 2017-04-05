@@ -14,7 +14,8 @@
     "backup-archive": "rm -f backup-archive/* && cp archive-*.json full-archive.json backup-archive/",
     "restore-backup": "rm -f archive-*.json full-archive.json && cp backup-archive/archive-*.json backup-archive/full-archive.json .",
     "start": "node_modules/coffeescript/bin/coffee server.litcoffee",
-    "matches": "node_modules/coffeescript/bin/coffee match-fetch.litcoffee"
+    "matches": "node_modules/coffeescript/bin/coffee match-fetch.litcoffee",
+    "publish" : "git push origin master && git push heroku master"
   },
   "keywords": [
     "game",
