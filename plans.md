@@ -52,16 +52,13 @@ the deadline.
  * Petal can praise you for high % of siezing rotation opportunities
  * Krul can criticize you for a low % of them
 
-## New professor: Flicker
+## Extend professor Flicker
 
- * Topic: vision
  * Unfortunately, many of these are not yet possible with the telemetry data
    we have now, so Flicker is on indefinite hold.  When the data is
    available, I'd like to do this with it:
  * Average number of traps on map at once (all these are compared across
    all teams at your skill tier)
- * Percent of the time someone on your team possessed flares, gun, or
-   contraption
  * Average number of traps in the enemy's side of the map at once
  * Number of flares fired
  * Number of flares that revealed enemies or traps
