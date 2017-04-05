@@ -112,6 +112,17 @@
                     <img src='images/vgu-logo-large.png'>
                 </div>
             </div><!--/.row-->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="center">
+                        <h3 align=center>Or pose as one of your favorite
+                            pros:</h3>
+                        <p>(Click any name to log in as that player.)</p>
+                    </div>
+                </div>
+                <div class="col-md-12" id="proList">
+                </div>
+            </div>
         </div><!--/.container-->
     </section><!--/#contact-page-->
 
@@ -673,6 +684,167 @@
                      + 'different selection.</p>';
             }
         }
+        // create the list of pro players
+        var proPlayersHTML = '<table align=center border=0>';
+        var proPlayers = {
+            na : {
+                'Team SoloMid' : [
+                    'BestChuckNa', 'FlashX', 'VONC'
+                ],
+                'Cloud9' : [
+                    'gabevizzle', 'iLoveJoseph', 'Oldskool'
+                ],
+                'Immortals' : [
+                    'Aloh4', 'Vains', 'DNZio', 'SuiJeneris'
+                ],
+                'Echo Fox' : [
+                    'MICSHE', 'CullTheMeek', 'LoneDelphi', 'FooJee'
+                ],
+                'Rogue' : [
+                    'Sibs', 'Hami', 'eVoL'
+                ],
+                'Hammers' : [
+                    'StartingAllOver', 'ttigers', 'Chicken123'
+                ],
+                'GankStars' : [
+                    'IraqiZorro', 'R3cKeD', 'Xelciar', 'XenoTek'
+                ],
+                'Misfits' : [
+                    'Eeko', 'IllesT', 'King'
+                ],
+                'NRG' : [
+                    'Hardek', 'Gaspy', 'chombo305'
+                ]
+            },
+            eu : {
+                'Cyclone' : [
+                    'WalDeMar', 'red-ABTION', 'PTLam', 'Melyssandre',
+                    'radha'
+                ],
+                'SK Gaming' : [
+                    'jetpacks', 'KValafar', 'Tyruzz', 'Raph'
+                ],
+                'Rising Lotus' : [
+                    'Agony', 'Flobby', 'romgemsword'
+                ],
+                'G2 Esports' : [
+                    'Hundor', 'DarkPotato', 'KeanuNakoa', 'Reddix', 'D1ngo'
+                ],
+                'FNATIC' : [
+                    'TetnoJJ', 'Palmatoro', 'nettetoilette', 'kaerl'
+                ],
+                'mousesports' : [
+                    'GreatkhALI', 'Asater', 'Emirking', 'SkorpiBro', 'IroNs'
+                ],
+                'Team Secret' : [
+                    'Mowglie', 'L3oN', 'Tr1cKy', 'justman00'
+                ],
+                'Beyond HorizoN' : [
+                    'ArtemisGrace', 'Bashn', 'ImtheDoom'
+                ]
+            },
+            ea : {
+                'DetonatioN Gaming' : [
+                    'ViViQIZ', 'ViViRoyaL', 'tatuki217'
+                ],
+                'GG NEWtype 2nd' : [
+                    'mukuEA', 'LyRiz', 'Supercell7'
+                ],
+                'Invincible Armada' : [
+                    'druid', 'MANGOxJAMONG', 'Willy'
+                ],
+                'ACE Gaming' : [
+                    'ACEImPaLe', 'ACET4SA', 'ACEMojo'
+                ],
+                'Team pQq' : [
+                    'StriVE', 'TenaciTy', 'pQq'
+                ],
+                'Hack' : [
+                    '-DaDa-', 'Yup', 'ILoveYoungJoo'
+                ],
+                'Black Cat Knights' : [
+                    'ZouBH', 'beyou115', 'LeblaNc', 'TrendyWorld'
+                ],
+                'Team QUAD' : [
+                    'YakumoIRan', 'i4N', 'SpaceLok', 'TinoChung'
+                ]
+            },
+            'sea' : {
+                'Artisan' : [
+                    'Truffless', 'Chingy', 'HARKONS', 'Delfyre'
+                ],
+                'Elite 8' : [
+                    'AnimeSaveMe', 'HundJaegers', 'officialhein', 'iLoC'
+                ],
+                'Exorcists' : [
+                    '-Kalua-', 'IIBaby', 'Iangryyoudie', 'k0sh',
+                    'RubberMonkey'
+                ],
+                'Impunity' : [
+                    'INKED', 'deftQ', '-spaghetti-', 'Quatervois'
+                ],
+                'J3X Inferno' : [
+                    'Bxrealis', 'Cyduck', 'DeityStarZ', 'METEORITE'
+                ],
+                'PH Alliance' : [
+                    'Wharlly', 'SynC1', 'WheyaM', 'tomiya', 'Init1alize'
+                ],
+                'Silver' : [
+                    'VETRUZ', 'WwkilozinwW', 'laykieng', 'DepressioN',
+                    'RaCcooN', 'RasenShuriKen'
+                ],
+                'Infamous' : [
+                    'uNi', 'QuiXotic', 'PerfectBladeX', 'SnkEA', 'shak2713'
+                ]
+            },
+            'sa' : {
+                'Red Canids' : [
+                    'UrameshiYusuke', 'Mirotic', 'SrMusTer'
+                ],
+                'Zonic Esports' : [
+                    'FalconDorian', 'Mestreijo', 'GwM'
+                ]
+            }
+        };
+        function playerLink ( region, player ) {
+            var url = window.location.href.split( '?' )[0]
+                    + '?ign=' + player
+                    + '&shard=' + region.toUpperCase();
+            return '<a href="' + url + '">' + player + '</a>';
+        }
+        var regionChooser = document.getElementById( 'shard' );
+        var count = 0;
+        for ( var i = 0 ; i < regionChooser.childNodes.length ; i++ ) {
+            if ( regionChooser.childNodes[i].tagName == 'OPTION' ) {
+                var region = regionChooser.childNodes[i]
+                                          .textContent.toLowerCase();
+                if ( !proPlayers.hasOwnProperty( region ) ) continue;
+                if ( count++ % 2 == 0 ) proPlayersHTML += '<tr>';
+                proPlayersHTML += '<td valign=top><p><strong>'
+                                + region.toUpperCase()
+                                + ' &nbsp; - &nbsp;</strong></p></td>'
+                                + '<td valign=top><p>';
+                var teams = Object.keys( proPlayers[region] );
+                teams.sort();
+                for ( var j = 0 ; j < teams.length ; j++ ) {
+                    var team = teams[j];
+                    proPlayersHTML += team + ' &nbsp; - &nbsp; ';
+                    var players = proPlayers[region][team];
+                    for ( var k = 0 ; k < players.length ; k++ ) {
+                        var player = players[k];
+                        if ( k > 0 ) proPlayersHTML += ' / ';
+                        proPlayersHTML += playerLink( region, player );
+                    }
+                    proPlayersHTML += '<br>';
+                }
+                proPlayersHTML += '</p></td>';
+                if ( count % 2 == 0 ) proPlayersHTML += '</tr>';
+            }
+        }
+        if ( count % 2 == 1 ) proPlayersHTML += '</tr>';
+        proPlayersHTML += '</table>';
+        console.log( proPlayersHTML );
+        document.getElementById( 'proList' ).innerHTML = proPlayersHTML;
     </script>
 </body>
 </html>
