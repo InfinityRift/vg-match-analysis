@@ -278,10 +278,10 @@
                 var data = [ ];
                 for ( var i = 0 ; i < triples.length ; i++ )
                     data = data.concat( getData( triples[i] ) );
-                showHistogram( data, name );
+                showHistogram( data, name, statWords[triples[0][2]] );
             } );
         }
-        function showHistogram ( data, name ) {
+        function showHistogram ( data, name, short ) {
             var min = data[0];
             var max = data[0];
             for ( var i = 1 ; i < data.length ; i++ ) {
@@ -328,7 +328,10 @@
             }
             document.getElementById( 'data-output' ).innerHTML =
                 '<h2>' + name + '</h2>'
-              + '<div class="histogram ct-perfect-fourth"></div>';
+              + '<div class="histogram ct-perfect-fourth"></div>'
+              + '<p>Horizontal axis: ' + short + '<br>'
+              + 'Vertical axis: Frequency of that value '
+              + 'in the data archive</p>';
             new Chartist.Line( '.histogram', {
                 labels: binLabels,
                 series: [ bins ]
