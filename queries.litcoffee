@@ -85,9 +85,8 @@ the callback.
                             callback null, matchObject,
                                 faculty.getAllAdvice matchObject,
                                     participant
-                        catch e
-                            console.log e
-                            callback e, null, null
+                        catch err
+                            callback err.stack, null, null
             .catch ( err ) ->
                 callback err, null, null
         catch err
