@@ -75,11 +75,16 @@ API.  Then fetch the telemetry data attached to the match.  Pass that to
 [the faculty module](faculty.litcoffee) for analysis, and send the result to
 the callback.
 
-    exports.getAdviceForPlayerInMatch = ( matchId, ign, callback ) ->
+    exports.getAdviceForPlayerInMatch =
+    ( matchId, region, ign, callback ) ->
         try
-            console.log 'fetching advice for', ign, 'in', matchId
+            console.log 'fetching advice for', ign, 'in', matchId, 'in',
+                region
             faculty = require './faculty'
             utils = require './harvesters/utils'
+            region ?= 'na'
+            if region is 'sea' then region = 'sg'
+            vg.setRegion region
             vg.matches.single matchId
             .then ( matchObject ) ->
                 participant = utils.getParticipantFromIGN matchObject, ign

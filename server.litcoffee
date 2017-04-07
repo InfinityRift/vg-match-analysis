@@ -28,7 +28,9 @@ match.
 This code answers queries to get match analysis.
 
         if dict.match? and dict.ign?
-            queries.getAdviceForPlayerInMatch dict.match, dict.ign,
+            queries.getAdviceForPlayerInMatch dict.match,
+                dict.shard?.toLowerCase() ? 'na',
+                dict.ign,
                 ( error, matchObject, result ) ->
                     res.setHeader 'Content-Type', 'application/json'
                     if error
