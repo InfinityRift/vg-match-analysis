@@ -57,9 +57,16 @@ Right now, only ranked mode is used on this server.
                     data.match.sort ( a, b ) ->
                         ( matchTime b ) - ( matchTime a )
                     callback null, data
-            .catch ( err ) -> callback err, null
+            .catch ( err ) ->
+                callback {
+                    type : 'Matches Fetching Error'
+                    stack : err.stack
+                }, null
         catch err
-            callback err.stack, null
+            callback {
+                type : 'Matches Preparation Error'
+                stack : err.stack
+            }, null
 
 ## Compute advice for a player in a match
 
@@ -86,11 +93,20 @@ the callback.
                                 faculty.getAllAdvice matchObject,
                                     participant
                         catch err
-                            callback err.stack, null, null
+                            callback {
+                                type : 'Advice Algorithms Error'
+                                stack : err.stack
+                            }, null, null
             .catch ( err ) ->
-                callback err, null, null
+                callback {
+                    type : 'Match Fetching Error'
+                    stack : err.stack
+                }, null, null
         catch err
-            callback err.stack, null, null
+            callback {
+                type : 'Advice Preparation Error'
+                stack : err.stack
+            }, null, null
 
 ## Get archive data
 
