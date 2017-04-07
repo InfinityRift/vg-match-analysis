@@ -27,35 +27,39 @@ Right now, only ranked mode is used on this server.
 
 
     exports.recentMatchesForPlayer = ( options, callback ) ->
-        options.region ?= 'na'
-        if options.region is 'sea' then options.region = 'sg'
-        options.howRecent ?= 24*60*60*1000
-        options.offset ?= 0
-        options.pageSize ?= 50
-        console.log 'fetching recent matches for',
-            options.ign, 'in', options.region
-        now = new Date
-        before = new Date now.valueOf() - options.howRecent
-        vg.setRegion options.region
-        vg.matches.collection
-            page :
-                offset : options.offset
-                limit : options.pageSize
-            sort : '-createdAt' # doesn't seem to be working...see below
-            filter :
-                'createdAt-start': before.toISOString()
-                'createdAt-end': now.toISOString()
-                'playerNames' : [ options.ign ]
-                'gameMode' : [ 'ranked' ]
-        .then ( data ) ->
-            if data.errors
-                callback message : data.messages
-            else
-                matchTime = ( m ) -> new Date m.data.attributes.createdAt
-                data.match.sort ( a, b ) ->
-                    ( matchTime b ) - ( matchTime a )
-                callback null, data
-        .catch ( err ) -> callback err, null
+        try
+            options.region ?= 'na'
+            if options.region is 'sea' then options.region = 'sg'
+            options.howRecent ?= 24*60*60*1000
+            options.offset ?= 0
+            options.pageSize ?= 50
+            console.log 'fetching recent matches for',
+                options.ign, 'in', options.region
+            now = new Date
+            before = new Date now.valueOf() - options.howRecent
+            vg.setRegion options.region
+            vg.matches.collection
+                page :
+                    offset : options.offset
+                    limit : options.pageSize
+                sort : '-createdAt' # doesn't seem to be working...see below
+                filter :
+                    'createdAt-start': before.toISOString()
+                    'createdAt-end': now.toISOString()
+                    'playerNames' : [ options.ign ]
+                    'gameMode' : [ 'ranked' ]
+            .then ( data ) ->
+                if data.errors
+                    callback message : data.messages
+                else
+                    matchTime = ( m ) ->
+                        new Date m.data.attributes.createdAt
+                    data.match.sort ( a, b ) ->
+                        ( matchTime b ) - ( matchTime a )
+                    callback null, data
+            .catch ( err ) -> callback err, null
+        catch err
+            callback err.stack, null
 
 ## Compute advice for a player in a match
 
@@ -65,24 +69,29 @@ API.  Then fetch the telemetry data attached to the match.  Pass that to
 the callback.
 
     exports.getAdviceForPlayerInMatch = ( matchId, ign, callback ) ->
-        console.log 'fetching advice for', ign, 'in', matchId
-        faculty = require './faculty'
-        utils = require './harvesters/utils'
-        vg.matches.single matchId
-        .then ( matchObject ) ->
-            participant = utils.getParticipantFromIGN matchObject, ign
-            utils.fetchTelemetryData matchObject, ( result ) ->
-                if not result?
-                    callback 'Could not fetch telemetry data', null, null
-                else
-                    try
-                        callback null, matchObject,
-                            faculty.getAllAdvice matchObject, participant
-                    catch e
-                        console.log e
-                        callback e, null, null
-        .catch ( err ) ->
-            callback err, null, null
+        try
+            console.log 'fetching advice for', ign, 'in', matchId
+            faculty = require './faculty'
+            utils = require './harvesters/utils'
+            vg.matches.single matchId
+            .then ( matchObject ) ->
+                participant = utils.getParticipantFromIGN matchObject, ign
+                utils.fetchTelemetryData matchObject, ( result ) ->
+                    if not result?
+                        callback 'Could not fetch telemetry data', null,
+                            null
+                    else
+                        try
+                            callback null, matchObject,
+                                faculty.getAllAdvice matchObject,
+                                    participant
+                        catch e
+                            console.log e
+                            callback e, null, null
+            .catch ( err ) ->
+                callback err, null, null
+        catch err
+            callback err.stack, null, null
 
 ## Get archive data
 

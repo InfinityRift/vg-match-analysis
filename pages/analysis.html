@@ -444,6 +444,7 @@
                  + '<i class="fa fa-backward"></i></a></h2>';
         }
         function renderMatchListError ( error ) {
+            console.log( error );
             return '<h2>Could not find your matches</h2>'
                  + '<h3 align=center>This tool only analyzes ranked '
                  + 'matches in the past month.</h3>'
@@ -675,6 +676,7 @@
                      + ' Pick a different match '
                      + '<i class="fa fa-backward"></i></a></h2>';
             } else {
+                console.log( error );
                 return '<h2>Empty and Sad</h2>'
                      + '<h3>Oops.  I wish this website were '
                      + 'perfect, but it turns out we\'ve hit an error.'
@@ -843,7 +845,6 @@
         }
         if ( count % 2 == 1 ) proPlayersHTML += '</tr>';
         proPlayersHTML += '</table>';
-        console.log( proPlayersHTML );
         document.getElementById( 'proList' ).innerHTML = proPlayersHTML;
     </script>
 </body>
