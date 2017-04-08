@@ -22,6 +22,7 @@
     ======================================================= -->
     <style>
         .aboutus a { text-decoration: underline; }
+        .gapabove { margin-top: 40px; }
     </style>
   </head>
   <body>
@@ -50,7 +51,7 @@
 								<li role="presentation"><a href="analysis.html">Get Started</a></li>
 								<li role="presentation"><a href="faculty.html">Meet the Faculty</a></li>
 								<li role="presentation"><a href="archive.html">Data Archive</a></li>
-								<li role="presentation"><a href="about.html">About</a></li>
+								<li role="presentation"><a href="about.html">News/About</a></li>
 							</ul>
 						</div>
 					</div>
@@ -63,111 +64,99 @@
 		<div class="container">
 			<div class="breadcrumb">
 				<li><a href="index.html">Home</a></li>
-				<li>About</li>
+				<li>News and About This Site</li>
 			</div>
 		</div>
 	</div>
 
 	<div class="aboutus">
 		<div class="container">
-			<h3>Where did this come from?</h3>
-			<hr>
-			<div class="col-md-12 wow fadeInDown" data-wow-duration="1000ms" data-wow-delay="300ms">
-                <!--
-				<img src="images/7.jpg" class="img-responsive">
-				<h4>This will be a heading!</h4>
-                -->
-				<p>I made this site because I thought there were a lot of
-                cool data that can be gleaned from the telemetry information
-                that Super Evil Megacorp and MadGlory recently released to
-                the developer community.  It's not as polished as I'd like,
-                because I threw it together in one week.</p>
-				<p>I'm a Vainglory player of no decent skill tier at all,
-                and I hope some of these robots I built can coach me!
-                I sometimes do
-                <a href='https://www.youtube.com/channel/UCbgosf7UWyBmnqP3-luQymw'>Vainglory analytics videos over here</a>, although
-                not as recently as I would like.</p>
-                <p>But I really enjoyed seeing the kinds of analyses we can
-                do with even the basic data we have now.  And I'm also very
-                excited to see what other developers in the Vainglory API
-                Discord have been doing, because there are tons of cool
-                ideas there as well.</p>
-                <p>Speaking of which, one of them is
-                <a href='https://github.com/seripap'>Dan</a>, who built a
-                very nice <a href='https://github.com/seripap/vainglory'
-                >JavaScript Vainglory API Client</a> that I used in this
-                project, and which several others are using in their work
-                as well.</p>
-			</div>
-                    <!--
-			<div class="col-md-5 wow fadeInDown" data-wow-duration="1000ms" data-wow-delay="600ms">
-				<div class="skill">
-					<div class="progress-wrap">
-						<h3>Graphic Design</h3>
-						<div class="progress">
-						  <div class="progress-bar  color1" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 85%">
-							<span class="bar-width">85%</span>
-						  </div>
 
-						</div>
-					</div>
+            <!-- EACH NEWS ITEM IS A ROW, LIKE THIS: -->
+            <div class="row">
+                <div class="col-md-8">
+        			<h3>No more "Empty and Sad"</h3>
+                    <p>April 7, 2017</p>
+        			<p>Several folks pointed out to me a bug in the site
+                    that would unpredictably give "Empty and Sad" results
+                    rather than your actual grades from the heroes.
+                    <strong>This bug has been fixed!</strong></p>
+                    <p>Thank you very much for the reporting, and I'm glad
+                    everything is working smoothly now.  Enjoy!</p>
+                </div>
+                <div class="col-md-4" style="text-align: center;">
+                    <img class="gapabove" src="images/sad-to-happy.png">
+                </div>
+            </div>
 
-					<div class="progress-wrap">
-						<h4>HTML</h4>
-						<div class="progress">
-						  <div class="progress-bar color2" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 95%">
-						   <span class="bar-width">95%</span>
-						  </div>
-						</div>
-					</div>
+            <!-- between any two news items, draw a line -->
+            <div class="row"><div class="col-md-12"><hr></div></div>
 
-					<div class="progress-wrap">
-						<h4>CSS</h4>
-						<div class="progress">
-						  <div class="progress-bar color3" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 80%">
-							<span class="bar-width">80%</span>
-						  </div>
-						</div>
-					</div>
 
-					<div class="progress-wrap">
-						<h4>Wordpress</h4>
-						<div class="progress">
-						  <div class="progress-bar color4" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: 90%">
-							<span class="bar-width">90%</span>
-						  </div>
-						</div>
-					</div>
-				</div>
-			</div>
-                    -->
+            <!-- EACH NEWS ITEM IS A ROW, LIKE THIS: -->
+            <div class="row">
+                <div class="col-md-4" style="text-align: center;">
+                    <img class="gapabove" src="images/api-challenge-win.jpg"
+                         width="90%" height="90%">
+                </div>
+                <div class="col-md-8">
+        			<h3>API Challenge Win!</h3>
+                    <p>April 6, 2017</p>
+        			<p>Vainglory Univeristy won the 2017 API Challenge!</p>
+                    <p>I'm amazed, excited, and floored by this news.
+                    Furthermore, there were several other winners, and you
+                    can find out about their awesome work on
+                    <a href="https://developer.vainglorygame.com/rules#winners"
+                    >the API Challenge results page</a>.</p>
+                    <p>Thanks to SEMC and MadGlory for providing us the
+                    tools and opportunity, to Dan for the great
+                    <a href="https://github.com/seripap/vainglory"
+                    >Javascript toolkit</a> he wrote that underlies this
+                    site, and to the whole API Discord community for all our
+                    fun and collaboration this past month, and into the
+                    future.</p>
+                </div>
+            </div>
+
+            <!-- between any two news items, draw a line -->
+            <div class="row"><div class="col-md-12"><hr></div></div>
+
+            <!-- EACH NEWS ITEM IS A ROW, LIKE THIS: -->
+            <div class="row">
+                <div class="col-md-8">
+        			<h3>Where did this come from?</h3>
+                    <p>March 24, 2017</p>
+        			<p>I made this site because I thought there were a lot
+                    of cool data that can be gleaned from the telemetry
+                    information that Super Evil Megacorp and MadGlory
+                    recently released to the developer community.  It's not
+                    as polished as I'd like, because I threw it together in
+                    one week.</p>
+        			<p>I'm a Vainglory player of no decent skill tier at
+                    all, and I hope some of these robots I built can coach
+                    me! I sometimes do <a
+                    href='https://www.youtube.com/channel/UCbgosf7UWyBmnqP3-luQymw'>Vainglory analytics videos over here</a>,
+                    although not as recently as I would like.</p>
+                    <p>But I really enjoyed seeing the kinds of analyses we
+                    can do with even the basic data we have now.  And I'm
+                    also very excited to see what other developers in the
+                    Vainglory API Discord have been doing, because there
+                    are tons of cool ideas there as well.</p>
+                    <p>Speaking of which, one of them is
+                    <a href='https://github.com/seripap'>Dan</a>, who built
+                    a very nice <a
+                    href='https://github.com/seripap/vainglory'
+                    >JavaScript Vainglory API Client</a> that I used in this
+                    project, and which several others are using in their
+                    work as well.</p>
+                </div>
+                <div class="col-md-4" style="text-align: center;">
+                    <img class="gapabove" src="images/vgu-logo-large.png">
+                </div>
+            </div>
+
 		</div>
 	</div>
-
-    <!--
-	<div class="our-team">
-		<div class="container">
-			<h3>Our Team</h3>
-			<div class="text-center">
-				<div class="col-md-4 wow fadeInDown" data-wow-duration="1000ms" data-wow-delay="300ms">
-					<img src="images/services/1.jpg" alt="" >
-					<h4>John Doe</h4>
-					<p>Lorem ipsum dolor sit amet consectetur adipisicing eil sed deiusmod tempor</p>
-				</div>
-				<div class="col-md-4 wow fadeInDown" data-wow-duration="1000ms" data-wow-delay="600ms">
-					<img src="images/services/2.jpg" alt="" >
-					<h4>John Doe</h4>
-					<p>Lorem ipsum dolor sit amet consectetur adipisicing eil sed deiusmod tempor</p>
-				</div>
-				<div class="col-md-4 wow fadeInDown" data-wow-duration="1000ms" data-wow-delay="900ms">
-					<img src="images/services/3.jpg" alt="" >
-					<h4>John Doe</h4>
-					<p>Lorem ipsum dolor sit amet consectetur adipisicing eil sed deiusmod tempor</p>
-				</div>
-			</div>
-		</div>
-	</div>
--->
 
 	<footer>
 		<div class="footer">
