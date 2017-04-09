@@ -44,8 +44,8 @@ Right now, only ranked mode is used on this server.
                     limit : options.pageSize
                 sort : '-createdAt' # doesn't seem to be working...see below
                 filter :
-                    'createdAt-start': before.toISOString()
-                    'createdAt-end': now.toISOString()
+                    'createdAt-start' : before.toISOString()
+                    'createdAt-end' : now.toISOString()
                     'playerNames' : [ options.ign ]
                     'gameMode' : [ 'ranked' ]
             .then ( data ) ->

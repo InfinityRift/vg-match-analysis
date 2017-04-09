@@ -28,6 +28,7 @@ match.
 This code answers queries to get match analysis.
 
         if dict.match? and dict.ign?
+            dict.ign = dict.ign.replace /\+/g, ' '
             queries.getAdviceForPlayerInMatch dict.match,
                 dict.shard?.toLowerCase() ? 'na',
                 dict.ign,
@@ -43,6 +44,7 @@ This code answers queries to get match analysis.
 This code answers queries to get lists of recent player ranked matches.
 
         else if dict.ign?
+            dict.ign = dict.ign.replace /\+/g, ' '
             queries.recentMatchesForPlayer
                 ign : dict.ign
                 region : dict.shard?.toLowerCase() ? 'na'
