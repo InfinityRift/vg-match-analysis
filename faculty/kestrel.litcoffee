@@ -32,7 +32,7 @@ Did my team (or theirs) have a certain hero on it?
             for participant in teamRoster
                 if participant.actor is heroName
                     return not wpOrCp? or \
-                        wpOrCP is builds.typeOfBuild participant.stats.items
+                        wpOrCp is builds.typeOfBuild participant.stats.items
             no
 
 Did I possess a certain item?  Did anyone on my team possess a certain item?
