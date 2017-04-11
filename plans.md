@@ -33,24 +33,12 @@ the deadline.
       and why.
  * So Lyra is on hold for now.
 
-## Extend professors Petal and Krul with counterbuilding information
+## New professor: Skaarf
 
- * Or optionally make this an entirely new professor
- * New routine needed:  Whether or not you counterbuilt
- * New routine needed:  Whether or not counterbuilding was even necessary
- * New routine needed:  Whether you opposite counterbuilt (e.g., bought an
-   atlas vs. no speed hitting, or armor vs. double CP)
- * Petal can praise you for when you did it, or didn't need to
- * Krul can criticize you for when you didn't do it, but needed to
- * Krul can really criticize you for opposite counterbuilding
-
-## Extend professors Petal and Krul with rotation information
-
- * Or optionally make this an entirely new professor
+ * His quote will be dragon onomatopoeia only.  His advice will be gestures
+   that are explained in plain text, since he can't actually say anything.
  * New routine needed:  How many times you rotated when you should have,
    and how many times you failed to rotate when you should have rotated
- * Petal can praise you for high % of siezing rotation opportunities
- * Krul can criticize you for a low % of them
 
 ## Extend professor Flicker
 

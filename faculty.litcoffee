@@ -20,6 +20,7 @@ the professors we'll use.
         'krul'
         'baron'
         'vox'
+        'kestrel'
         'celeste'
         'ardan'
         'flicker'

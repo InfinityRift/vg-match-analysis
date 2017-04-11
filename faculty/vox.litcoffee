@@ -2,8 +2,8 @@
 # Doctor Vox
 
     utils = require '../harvesters/utils'
-    harvester = require '../harvesters/builds'
     stats = require 'simple-statistics'
+    builds = require './buildtypes'
 
 This is the robot brain of Doctor Vox, one of the professors at VGU.
 He looks into your build.
@@ -34,16 +34,17 @@ purchased things that they did not purchase, so we can give those as
 suggestions.
 
         if myBuild.length > 0
-            myBuildType = typeOfBuild myBuild
+            myBuildType = builds.typeOfBuild myBuild
             peers = ( b for b in otherBuilds \
-                when myBuildType is typeOfBuild b )
-            numberInTheWild = ( 0 for index in itemList )
+                when myBuildType is builds.typeOfBuild b )
+            numberInTheWild = ( 0 for index in builds.itemList )
             for otherBuild in peers
                 numberInTheWild[index]++ for index in otherBuild
             frequencies =
                 ( 100 * x / peers.length for x in numberInTheWild )
             myMinFreq = stats.min ( frequencies[i] for i in myBuild )
-            whatIDidntBuy = ( index for index in [0...itemList.length] \
+            whatIDidntBuy = ( index \
+                for index in [0...builds.itemList.length] \
                 when index not in myBuild \
                 and frequencies[index] > myMinFreq )
             whatIDidntBuy.sort ( a, b ) -> frequencies[b] - frequencies[a]
@@ -52,12 +53,12 @@ If the player had an empty build:  Just rank all items by most commonly
 purchased in the same role and tier.
 
         else
-            numberInTheWild = ( 0 for index in itemList )
+            numberInTheWild = ( 0 for index in builds.itemList )
             for otherBuild in otherBuilds
                 numberInTheWild[index]++ for index in otherBuild
             frequencies = ( 100 * x / otherBuilds.length \
                 for x in numberInTheWild )
-            whatIDidntBuy = [0...itemList.length]
+            whatIDidntBuy = [0...builds.itemList.length]
             whatIDidntBuy.sort ( a, b ) -> frequencies[b] - frequencies[a]
 
 Now generate some build advice from the `whatIDidntBut` list.
@@ -66,17 +67,20 @@ Now generate some build advice from the `whatIDidntBut` list.
             long = "There are some items you might try,
                 because they're favored by #{role} players in tier #{next}.
                 <ul>
-                <li><strong>#{itemList[whatIDidntBuy[0]]}</strong> shows up
+                <li><strong>#{builds.itemList[whatIDidntBuy[0]]}</strong>
+                shows up
                 in #{Number( frequencies[whatIDidntBuy[0]] ).toFixed 0}% of
                 the builds.</li>
-                <li><strong>#{itemList[whatIDidntBuy[1]]}</strong> shows up
+                <li><strong>#{builds.itemList[whatIDidntBuy[1]]}</strong>
+                shows up
                 in #{Number( frequencies[whatIDidntBuy[1]] ).toFixed 0}% of
                 them.</li>
                 </ul>"
         else if whatIDidntBuy.length is 1
             long = "There is one item you might try,
                 because it's favored by #{role} players in tier #{next}:<br>
-                <strong>#{itemList[whatIDidntBuy[0]]}</strong> shows up
+                <strong>#{builds.itemList[whatIDidntBuy[0]]}</strong>
+                shows up
                 in #{Number( frequencies[whatIDidntBuy[0]] ).toFixed 0}% of
                 the builds.  But I don't have any other tips -- you bought
                 great."
@@ -142,67 +146,12 @@ Create the advice texts.
         data : if myBuild.length > 0 then [
             type : 'bars'
             bars : for index in myBuild
-                icon : nameToIcon itemList[index]
-                type : typeOfItem[itemList[index]]
-                title : itemList[index]
+                icon : builds.nameToIcon builds.itemList[index]
+                type : builds.typeOfItem[builds.itemList[index]]
+                title : builds.itemList[index]
                 min : 0
                 max : 100
                 value : frequencies[index]
                 percent : frequencies[index]
                 label : "#{Number( frequencies[index] ).toFixed 0}%"
         ] else null
-
-A dictionary mapping all the items we track with
-[the builds harvester](../harvesters/builds.litcoffee) to a classification
-into WP, CP, D(efense), or U(tility).
-
-    typeOfItem =
-        'Sorrowblade' : 'WP'
-        'Shatterglass' : 'CP'
-        'Tornado Trigger' : 'WP'
-        'Metal Jacket' : 'D'
-        'Clockwork' : 'CP'
-        'Serpent Mask' : 'WP'
-        'Tension Bow' : 'WP'
-        'Bonesaw' : 'WP'
-        'Shiversteel' : 'U'
-        'Frostburn' : 'CP'
-        'Fountain of Renewal' : 'D'
-        'Crucible' : 'D'
-        'Journey Boots' : 'U'
-        'Tyrant\'s Monocle' : 'WP'
-        'Aftershock' : 'CP'
-        'Broken Myth' : 'CP'
-        'War Treads' : 'U'
-        'Atlas Pauldron' : 'D'
-        'Aegis' : 'D'
-        'Breaking Point' : 'WP'
-        'Alternating Current' : 'CP'
-        'Eve of Harvest' : 'CP'
-        'Contraption' : 'U'
-        'Halcyon Chargers' : 'U'
-        'Stormcrown' : 'U'
-        'Poisoned Shiv' : 'WP'
-        'Nullwave Gauntlet' : 'U'
-        'Echo' : 'CP'
-        'Slumbering Husk' : 'D'
-    itemList = harvester.getTrackedItems()
-
-A utility for looking at a build and deciding if it's a WP build, a CP
-build, or something else.
-
-    typeOfBuild = ( build ) ->
-        types = WP : 0, CP : 0, D : 0, U : 0
-        types[typeOfItem[itemList[index]]]++ for index in build
-        if types.WP >= 2 and types.CP < 2 and types.D <= 2 and types.U < 2
-            return 'WP'
-        if types.CP >= 2 and types.WP < 2 and types.D <= 2 and types.U < 2
-            return 'CP'
-        'other'
-
-And the icon name can be computed for each item as follows.
-
-    nameToIcon = ( name ) ->
-        name.replace RegExp( ' ', 'g' ), '-'
-        .replace '\'', ''
-        .toLowerCase()

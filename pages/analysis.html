@@ -31,6 +31,7 @@
         .ct-series-d .ct-slice-pie { fill: #bbb; }
         .panel-body { color: #000; }
         .panel-footer { color: #000; }
+        td { color: #000; }
     </style>
   </head>
   <body>
@@ -522,8 +523,8 @@
                     }
                     function addRow ( cells, tag ) {
                         for ( var j = 0 ; j < cells.length ; j++ )
-                            result += '<' + tag + '><p>&nbsp;' + cells[j]
-                                    + '&nbsp;</p></' + tag + '>';
+                            result += '<' + tag + ' valign="top"><p>&nbsp;'
+                                    + cells[j] + '&nbsp;</p></' + tag + '>';
                     }
                     if ( row.headings ) {
                         addRow( row.headings, 'th' );
