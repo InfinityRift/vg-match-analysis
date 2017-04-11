@@ -7,6 +7,11 @@ more before
 but this is just thinking ahead in case I play with this project more after
 the deadline.
 
+## Bug report
+
+ * Visual glitches on some devices, [as shown in this
+   tweet](https://twitter.com/VGsenlark/status/850185258158800897/photo/1)
+
 ## Quality of Life/UX Improvements
 
  * Create a new university on [Rate My
