@@ -37,11 +37,15 @@ Did my team (or theirs) have a certain hero on it?
 
 Did I possess a certain item?  Did anyone on my team possess a certain item?
 
-        iHadItem = ( itemName ) -> itemName in participant.stats.items
+        participantHadItem = ( participant, itemName ) ->
+            cleanUp = ( x ) -> x.toLowerCase().replace /'/g, ''
+            cleanUp( itemName ) in for item in participant._stats.items
+                cleanUp item
+        iHadItem = ( itemName ) -> participantHadItem participant, itemName
         teamHadItem = ( itemName, roster = myTeamRoster() ) ->
             if roster.participants? then roster = roster.participants
             for teammate in roster
-                if itemName in teammate._stats.items
+                if participantHadItem teammate, itemName
                     return teammate.actor
             return no
 
