@@ -147,7 +147,7 @@ Create the advice texts.
             type : 'bars'
             bars : for index in myBuild
                 icon : builds.nameToIcon builds.itemList[index]
-                type : builds.typeOfItem[builds.itemList[index]]
+                type : builds.getTypeOfItem builds.itemList[index]
                 title : builds.itemList[index]
                 min : 0
                 max : 100
