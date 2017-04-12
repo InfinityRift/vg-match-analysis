@@ -52,9 +52,9 @@ Utility functions for constructing arrays of results.
                 [ "#{hero}'s #{asset}" ]
             else
                 [ ]
-        itemAsset = ( roster, item ) ->
+        itemAsset = ( roster, item, more = '' ) ->
             if hero = teamHadItem item, roster
-                [ "#{hero}'s #{item}" ]
+                [ "#{hero}'s #{item} #{more}" ]
             else
                 [ ]
 
@@ -187,10 +187,12 @@ or an empty array if there were none.
 
         armorSources = ( roster ) ->
             [
-                itemAsset( roster, 'Metal Jacket' )...
+                itemAsset( roster, 'Metal Jacket', '(though Coat of Plates
+                    is better)' )...
                 itemAsset( roster, 'Coat of Plates' )...
                 itemAsset( roster, 'Atlas Pauldron' )...
-                itemAsset( roster, 'Aegis' )...
+                itemAsset( roster, 'Aegis', '(which has a little armor,
+                    but Coat of Plates is much better)' )...
             ]
 
 Did a team have sources of shield?  This will return a list of shield
@@ -198,10 +200,13 @@ sources, or an empty array if there were none.
 
         shieldSources = ( roster ) ->
             [
-                itemAsset( roster, 'Kinetic Shield' )...
-                itemAsset( roster, 'Coat of Plates' )...
+                itemAsset( roster, 'Kinetic Shield', '(though Aegis is
+                    better)' )...
+                itemAsset( roster, 'Coat of Plates', '(which has a little
+                    shield, but Aegis is much better)' )...
                 itemAsset( roster, 'Aegis' )...
-                itemAsset( roster, 'Fountain of Renewal' )...
+                itemAsset( roster, 'Fountain of Renewal', '(though this has
+                    very little shield)' )...
             ]
 
 Did a team have sources of armor pierce?  This will return a list of armor
@@ -209,7 +214,8 @@ pierce sources, or an empty array if there were none.
 
         armorPierceSources = ( roster ) ->
             [
-                itemAsset( roster, 'Piercing Spear' )...
+                itemAsset( roster, 'Piercing Spear', '(though Tension Bow
+                    and Bonesaw are better)' )...
                 itemAsset( roster, 'Tension Bow' )...
                 itemAsset( roster, 'Bonesaw' )...
             ]
@@ -219,7 +225,8 @@ pierce sources, or an empty array if there were none.
 
         shieldPierceSources = ( roster ) ->
             [
-                itemAsset( roster, 'Piercing Shard' )...
+                itemAsset( roster, 'Piercing Shard', '(though Broken Myth
+                    is better)' )...
                 itemAsset( roster, 'Broken Myth' )...
             ]
 
@@ -392,5 +399,5 @@ Return Kestrel's advice.
         long : 'I look for these threats:  CP, WP, CC, stealth, burst,
             attack speed, heals, armor, shield, and fortified health.<br>
             Obviously they don\'t all show up at once.'
-        letter : finalGrade()
+        letter : "#{finalGrade()} in counterbuilding"
         data : [ table ]
