@@ -44,8 +44,7 @@ Only show progress every 10 matches, to reduce console spam.
                 if index > 0
                     elapsed = ( new Date ) - start
                     ratio = ( 100 - pctDone ) / pctDone
-                    remaining = elapsed * ratio / 60000
-                    report = "#{Number( remaining ).toFixed 2} minutes"
+                    report = niceTime elapsed * ratio
                 else
                     report = "(no estimate available yet)"
                 console.log "Processed #{index}/#{ids.length} matches
@@ -60,7 +59,7 @@ Loop complete.
 
         if showProgress then console.log 'Done.'
 
-## One utility
+## Two utilities
 
 This is just an example function that gets run if you don't provide your own
 processing function.  So you can call `traverseMatchArchive()` and just see
@@ -68,3 +67,15 @@ how it goes before you provide your own `f`.
 
     example = ( match ) ->
         console.log "#{match.data.id} has #{match.telemetry.length} events"
+
+This formats times in MM:SS format for nicer output.
+
+    niceTime = ( msElapsed ) ->
+        sElapsed = ( msElapsed / 1000 ) | 0
+        seconds = sElapsed % 60
+        minutes = ( sElapsed - seconds ) / 60
+        seconds = "#{seconds}"
+        while seconds.length < 2 then seconds = "0#{seconds}"
+        result = "#{minutes}:#{seconds}"
+        while result.length < 5 then result = "0#{result}"
+        result
