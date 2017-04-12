@@ -341,7 +341,7 @@ If the enemy has lots of CC, you should build blocks.
 
         addRow 'Crowd control', crowdControlSources( theirTeamRoster() ),
                'Blocks', blockSources( myTeamRoster(), participant ), 2, 1,
-               100, 'blast-tremor'
+               100, 'stars'
 
 If the enemy has stealth, your team should have vision.
 
