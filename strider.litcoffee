@@ -44,7 +44,7 @@ Only show progress every 10 matches, to reduce console spam.
                 if index > 0
                     elapsed = ( new Date ) - start
                     ratio = ( 100 - pctDone ) / pctDone
-                    report = niceTime elapsed * ratio
+                    report = exports.niceTime elapsed * ratio
                 else
                     report = "(no estimate available yet)"
                 console.log "Processed #{index}/#{ids.length} matches
@@ -70,7 +70,7 @@ how it goes before you provide your own `f`.
 
 This formats times in MM:SS format for nicer output.
 
-    niceTime = ( msElapsed ) ->
+    exports.niceTime = ( msElapsed ) ->
         sElapsed = ( msElapsed / 1000 ) | 0
         seconds = sElapsed % 60
         minutes = ( sElapsed - seconds ) / 60

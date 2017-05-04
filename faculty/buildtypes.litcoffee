@@ -40,13 +40,18 @@ into WP, CP, D(efense), or U(tility).
         'Nullwave Gauntlet' : 'U'
         'Echo' : 'CP'
         'Slumbering Husk' : 'D'
+    exports.itemList = harvester.getTrackedItems()
+    cleanup = ( x ) -> x?.toLowerCase()?.replace /'/g, ''
     exports.getTypeOfItem = ( itemName ) ->
-        cleanup = ( x ) -> x?.toLowerCase()?.replace /'/g, ''
         for own key, value of exports.typeOfItem
             if cleanup( itemName ) is cleanup( key )
                 return value
         undefined
-    exports.itemList = harvester.getTrackedItems()
+    exports.itemNameToIndex = ( itemName ) ->
+        for name, index in exports.itemList
+            if cleanup( name ) is cleanup( itemName )
+                return index
+        -1
 
 A utility for looking at a build and deciding if it's a WP build, a CP
 build, or something else.
@@ -54,7 +59,8 @@ build, or something else.
     exports.typeOfBuild = ( build ) ->
         types = WP : 0, CP : 0, D : 0, U : 0
         for index in build
-            types[exports.getTypeOfItem exports.itemList[index]]++
+            type = exports.getTypeOfItem exports.itemList[index]
+            types[type]++
         if types.WP >= 2 and types.CP < 2 and types.D <= 2 and types.U < 2
             return 'WP'
         if types.CP >= 2 and types.WP < 2 and types.D <= 2 and types.U < 2
