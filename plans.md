@@ -7,6 +7,10 @@ more before
 but this is just thinking ahead in case I play with this project more after
 the deadline.
 
+## Feature request
+
+ * Allow players to have their casual matches graded, too.
+
 ## Bug report
 
  * Visual glitches on some devices, [as shown in this
