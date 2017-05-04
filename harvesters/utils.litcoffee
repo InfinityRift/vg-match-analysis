@@ -62,9 +62,9 @@ categorization of heroes.
                  'lance', 'lyra', 'phinn' ]
     junglers = [ 'grumpjaw', 'alpha', 'glaive', 'joule', 'koshka', 'krul',
                  'ozo', 'petal', 'reim', 'rona', 'taka' ]
-    carries = [ 'baron', 'blackfeather', 'celeste', 'gwen', 'idris',
-                'kestrel', 'ringo', 'samuel', 'saw', 'skaarf', 'skye',
-                'vox' ]
+    carries = [ 'baptiste', 'baron', 'blackfeather', 'celeste', 'gwen',
+                'idris', 'kestrel', 'ringo', 'samuel', 'saw', 'skaarf',
+                'skye', 'vox' ]
     exports.typicalHeroRole = ( heroName ) ->
         if heroName.toLowerCase() in captains then return 'captain'
         if heroName.toLowerCase() in junglers then return 'jungler'
