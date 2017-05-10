@@ -18,6 +18,21 @@ the deadline.
 
 ## Quality of Life/UX Improvements
 
+ * Some grades don't make sense for some roles.  For instance, the top grade
+   is always Ringo grading CS, even though captains don't care about their
+   CS.  Some good captain players have even told me they should get more
+   points for *lower* CS.  Three ideas come out of this:
+    * Organize the UI more like a report card, where you don't scroll to see
+      the subjects, but you choose them from tabs.  Then things you don't
+      want to see, you just never see.
+    * Make each professor return a relevance assessment as one of the
+      properties in the advice object.  Sort the resulting advice list by
+      relevance, with the most relevant stuff first.
+    * If a professor returns a low relevance assessment, make them say
+      something about it in their feedback.  For instance, right now Ardan
+      says that his advice probably only applies to captains.  Those kinds of
+      comments make the AI seem smarter and more human, so put them everywhere
+      that the relevance scores are low.
  * Create a new university on [Rate My
    Professors](http://www.ratemyprofessors.com/) and add all the faculty.
    Then add links from each of their output to go complain/brag about grades
