@@ -29,10 +29,10 @@ Did my team (or theirs) have a certain hero on it?
         teamHadHero = ( teamRoster, heroName, wpOrCp = null ) ->
             if teamRoster.participants?
                 teamRoster = teamRoster.participants
-            for participant in teamRoster
-                if participant.actor is heroName
+            for p in teamRoster
+                if p.actor is heroName
                     return not wpOrCp? or \
-                        wpOrCp is builds.typeOfBuild participant.stats.items
+                        wpOrCp is builds.typeOfBuild p.stats.items
             no
 
 Did I possess a certain item?  Did anyone on my team possess a certain item?
