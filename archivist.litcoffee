@@ -413,8 +413,9 @@ yet again, recursively traversing the whole current page of results.
                 #{fetched.data.length} - type #{type}"
             runningQuery.accumulated.found[type]++
             return do ( match ) ->
-                archiveFunction match, runningQuery.accumulated[type],
-                    -> archiveOneMatch match ; nextArchiveStep()
+                archiveFunction match,
+                    runningQuery.accumulated[type],
+                    -> exports.archiveOneMatch match ; nextArchiveStep()
 
 The only other possible outcome is that we have processed the entire page of
 results, so we delete the processed page of data.  This will force the next
