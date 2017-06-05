@@ -135,12 +135,12 @@ functions in combination with the previous ones.
 
     exports.eventActorIsOnMyTeam = ( match, participant, event ) ->
         team = exports.sideForParticipant match, participant
-        team.toLowerCase() is event.payload.Team.toLowerCase()
+        team.toLowerCase() is event.payload.Team?.toLowerCase()
     exports.eventTargetIsOnMyTeam = ( match, participant, event ) ->
         if event.type isnt 'DealDamage' and event.type isnt 'KillActor'
             return no
         team = exports.sideForParticipant match, participant
-        team.toLowerCase() isnt event.payload.Team.toLowerCase()
+        team.toLowerCase() isnt event.payload.Team?.toLowerCase()
 
 Compute total gold earned in a match from various sources.  The `source`
 parameter can be lane, jungle, or kills.  The events parameter is the match
