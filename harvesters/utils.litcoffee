@@ -59,7 +59,7 @@ Take a hero name and convert it to an estimated role, based on the in-game
 categorization of heroes.
 
     captains = [ 'adagio', 'ardan', 'catherine', 'flicker', 'fortress',
-                 'lance', 'lyra', 'phinn' ]
+                 'lance', 'lyra', 'phinn', 'grace' ]
     junglers = [ 'grumpjaw', 'alpha', 'glaive', 'joule', 'koshka', 'krul',
                  'ozo', 'petal', 'reim', 'rona', 'taka' ]
     carries = [ 'baptiste', 'baron', 'blackfeather', 'celeste', 'gwen',
