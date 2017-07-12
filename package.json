@@ -15,7 +15,7 @@
     "restore-backup": "rm -f archive-*.json full-archive.json && cp backup-archive/archive-*.json backup-archive/full-archive.json .",
     "start": "node_modules/coffeescript/bin/coffee server.litcoffee",
     "matches": "node_modules/coffeescript/bin/coffee match-fetch.litcoffee",
-    "publish" : "git push origin master && git push heroku master"
+    "publish": "git push origin master && git push heroku master"
   },
   "keywords": [
     "game",
@@ -32,7 +32,7 @@
     "coffeescript": "^1.12.4",
     "express": "^4.15.2",
     "simple-statistics": "^2.5.0",
-    "vainglory": "^1.0.0"
+    "vainglory": "^1.3.0"
   },
   "engines": {
     "node": "7.10.1"
