@@ -61,7 +61,7 @@ categorization of heroes.
     captains = [ 'adagio', 'ardan', 'catherine', 'flicker', 'fortress',
                  'lance', 'lyra', 'phinn', 'grace' ]
     junglers = [ 'grumpjaw', 'alpha', 'glaive', 'joule', 'koshka', 'krul',
-                 'ozo', 'petal', 'reim', 'rona', 'taka' ]
+                 'ozo', 'petal', 'reim', 'rona', 'taka', 'reza' ]
     carries = [ 'baptiste', 'baron', 'blackfeather', 'celeste', 'gwen',
                 'idris', 'kestrel', 'ringo', 'samuel', 'saw', 'skaarf',
                 'skye', 'vox' ]
