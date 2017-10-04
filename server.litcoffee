@@ -48,7 +48,7 @@ This code answers queries to get lists of recent player ranked matches.
             queries.recentMatchesForPlayer
                 ign : dict.ign
                 region : dict.shard?.toLowerCase() ? 'na'
-                howRecent : 30*24*60*60*1000
+                howRecent : 14*24*60*60*1000
             , ( error, result ) ->
                 res.setHeader 'Content-Type', 'application/json'
                 if error
